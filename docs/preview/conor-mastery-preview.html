@@ -1,0 +1,475 @@
+<title>Conor Mastery Preview</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: a phone running the real economy rules on the left, the Monke -> Mastery notes on the right; stacks on phones. */
+:root {
+  color-scheme: dark;
+  --night: #141a2e;
+  --night-2: #1d2540;
+  --ink: #0d1020;
+  --paper: #f6f1e3;
+  --vermilion: #e4572e;
+  --gold: #f2b134;
+  --jade: #2ba84a;
+  --sky: #5cc0f2;
+  --grass: #6e9e5c;
+  --grass-2: #5a874c;
+  --water: #284f86;
+  --muted: #9aa3bf;
+  --line: rgba(255,255,255,.12);
+  --display: "Dela Gothic One", "Arial Black", system-ui, sans-serif;
+  --body: "M PLUS Rounded 1c", "Nunito", system-ui, sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { background: var(--night); color: var(--paper); }
+body { font-family: var(--body); font-size: 15px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 28px 48px; }
+.wrap { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 400px minmax(0, 1fr); gap: 48px; align-items: start; }
+@media (max-width: 900px) { .wrap { grid-template-columns: minmax(0, 1fr); justify-items: center; } }
+header.page { max-width: 1080px; margin: 0 auto 24px; }
+header.page h1 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 5vw, 46px); line-height: 1.05; margin: 0; text-wrap: balance; }
+header.page p { color: var(--muted); margin: 8px 0 0; max-width: 62ch; }
+
+/* Phone */
+.phone { width: 100%; max-width: 390px; height: 780px; border-radius: 46px; background: var(--ink); padding: 12px; box-shadow: 0 0 0 2px #2c3456, 0 30px 80px rgba(0,0,0,.5); position: relative; }
+.screen { width: 100%; height: 100%; border-radius: 36px; overflow: hidden; background: var(--night-2); position: relative; display: flex; flex-direction: column; }
+.view { flex: 1; overflow-y: auto; position: relative; }
+.view[hidden] { display: none !important; }
+.tabbar { display: grid; grid-template-columns: repeat(5, 1fr); background: rgba(13,16,32,.92); border-top: 1px solid var(--line); padding: 6px 4px 14px; }
+.tabbar button { background: none; border: 0; color: var(--muted); font: 600 10px var(--body); display: grid; justify-items: center; gap: 2px; padding: 6px 0; cursor: pointer; border-radius: 10px; }
+.tabbar button .ico { font-size: 18px; filter: grayscale(1); opacity: .7; }
+.tabbar button[aria-selected="true"] { color: var(--vermilion); }
+.tabbar button[aria-selected="true"] .ico { filter: none; opacity: 1; }
+button:focus-visible, input:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+.hud { display: inline-flex; align-items: center; gap: 10px; background: rgba(13,16,32,.88); border-radius: 999px; padding: 7px 14px; font-weight: 800; font-size: 13px; font-variant-numeric: tabular-nums; }
+.hud .sep { width: 1px; height: 18px; background: var(--line); }
+.belt { width: 18px; height: 6px; border-radius: 3px; display: inline-block; box-shadow: 0 0 0 1px rgba(255,255,255,.5); }
+.lvlbar { width: 40px; height: 4px; background: rgba(255,255,255,.15); border-radius: 2px; overflow: hidden; display: block; margin-top: 2px; }
+.lvlbar i { display: block; height: 100%; background: var(--jade); }
+.fire { color: var(--vermilion); } .grit { color: var(--gold); }
+
+/* Dojo */
+#dojo { background: linear-gradient(var(--night), #20294a); }
+#world { position: absolute; inset: 0; width: 100%; height: 100%; }
+.dojo-ui { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 10px; padding: 14px 14px 0; height: 100%; pointer-events: none; }
+.dojo-ui > * { pointer-events: auto; }
+.card { background: rgba(13,16,32,.86); border-radius: 16px; padding: 12px 14px; }
+.progress { display: flex; justify-content: space-between; }
+.progress b { display: block; font-size: 17px; font-variant-numeric: tabular-nums; }
+.progress small { color: var(--muted); font-size: 11px; }
+.challenge small { color: var(--gold); font-weight: 800; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+.challenge p { margin: 4px 0 8px; font-weight: 700; font-size: 14px; }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.pill-btn { border: 0; border-radius: 10px; padding: 7px 12px; font: 800 13px var(--body); cursor: pointer; background: var(--jade); color: #fff; }
+.pill-btn:disabled { opacity: .45; cursor: default; }
+.bottom { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; padding-bottom: 14px; }
+.game-btn { font: 400 19px var(--display); color: var(--ink); border: 3px solid var(--ink); border-radius: 14px; padding: 9px 22px; cursor: pointer; box-shadow: 0 4px 0 var(--ink); }
+.game-btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.round { width: 52px; height: 52px; border-radius: 50%; background: var(--paper); border: 3px solid var(--ink); font-size: 22px; cursor: pointer; display: grid; place-items: center; }
+
+/* Lists */
+.list { padding: 14px; display: flex; flex-direction: column; gap: 10px; }
+.list h2 { font-family: var(--display); font-weight: 400; font-size: 24px; margin: 4px 0 0; }
+.group-title { color: var(--muted); font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; margin-top: 6px; }
+.habit { background: var(--paper); color: var(--ink); border-radius: 16px; padding: 12px 14px; display: grid; gap: 6px; }
+.habit .top { display: flex; align-items: baseline; gap: 8px; }
+.habit .top strong { font-size: 16px; flex: 1; }
+.habit .id { font-style: italic; color: #5b6070; font-size: 13px; }
+.habit .min { font-size: 12px; color: #5b6070; }
+.dots { display: flex; gap: 4px; }
+.dots i { width: 8px; height: 8px; border-radius: 50%; background: #d7d2c2; }
+.dots i.f { background: var(--jade); } .dots i.m { background: var(--gold); } .dots i.s { background: var(--vermilion); }
+.acts { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.acts button { border: 2px solid var(--ink); background: #fff; color: var(--ink); border-radius: 10px; padding: 4px 10px; font: 800 12px var(--body); cursor: pointer; }
+.acts button.on { background: var(--jade); color: #fff; border-color: var(--jade); }
+.acts button.min-on { background: var(--gold); border-color: var(--gold); }
+.acts button.slip-on { background: var(--vermilion); color: #fff; border-color: var(--vermilion); }
+.steps { display: grid; gap: 4px; font-size: 13px; }
+.steps label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+.chip { font-size: 11px; font-weight: 800; color: var(--jade); }
+.reward { font-size: 12px; font-weight: 800; color: #a87412; font-variant-numeric: tabular-nums; }
+
+/* Focus */
+.focus { display: grid; place-items: center; text-align: center; gap: 14px; padding: 40px 20px; min-height: 100%; background: radial-gradient(circle at 50% 40%, #3a2f22 0, var(--night) 70%); }
+.timer { font: 400 64px var(--display); font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+.seg { display: inline-flex; background: rgba(255,255,255,.08); border-radius: 12px; padding: 3px; }
+.seg button { border: 0; background: none; color: var(--paper); font: 700 13px var(--body); padding: 7px 12px; border-radius: 9px; cursor: pointer; }
+.seg button[aria-pressed="true"] { background: var(--paper); color: var(--ink); }
+.toggle { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--muted); }
+
+/* Sleep */
+.form { display: grid; gap: 10px; }
+.form label { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,.06); border-radius: 12px; padding: 10px 12px; font-weight: 700; }
+.form input { background: var(--ink); color: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; font: 700 14px var(--body); width: 110px; }
+.stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.stat-grid div { background: rgba(255,255,255,.06); border-radius: 12px; padding: 10px 12px; }
+.stat-grid b { display: block; font-size: 18px; font-variant-numeric: tabular-nums; }
+.stat-grid small { color: var(--muted); }
+.bars { display: flex; align-items: flex-end; gap: 6px; height: 110px; padding: 8px 4px 0; border-bottom: 1px dashed var(--muted); position: relative; }
+.bars span { flex: 1; border-radius: 4px 4px 0 0; background: var(--jade); }
+.bars span.off { background: var(--vermilion); opacity: .75; }
+
+/* Coach */
+.proto { background: rgba(255,255,255,.06); border-radius: 14px; padding: 12px 14px; }
+.proto summary { cursor: pointer; font-weight: 800; }
+.proto p { margin: 6px 0; font-size: 13px; color: #d6d9e6; }
+.proto a { color: var(--sky); font-size: 12px; }
+
+/* Shop */
+.sheet { position: absolute; inset: 60px 0 0; background: var(--ink); border-radius: 24px 24px 0 0; z-index: 5; display: flex; flex-direction: column; box-shadow: 0 -10px 40px rgba(0,0,0,.5); }
+.sheet header { display: flex; justify-content: space-between; align-items: center; padding: 14px 16px; border-bottom: 1px solid var(--line); }
+.sheet header h3 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 20px; }
+.shop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 14px; overflow-y: auto; }
+.item { background: var(--night-2); border-radius: 14px; padding: 12px; text-align: center; display: grid; gap: 6px; }
+.item .glyph { font-size: 40px; }
+.item button { border: 0; border-radius: 9px; padding: 6px; font: 800 12px var(--body); background: var(--paper); color: var(--ink); cursor: pointer; }
+.item button:disabled { opacity: .4; cursor: default; }
+.toast { position: absolute; top: 14px; left: 50%; transform: translateX(-50%); background: rgba(246,241,227,.95); color: var(--ink); padding: 8px 16px; border-radius: 999px; font-weight: 800; font-size: 13px; z-index: 9; white-space: nowrap; transition: opacity .3s; }
+
+/* Notes column */
+.notes { display: grid; gap: 22px; min-width: 0; }
+.notes h2 { font-family: var(--display); font-weight: 400; font-size: 22px; margin: 0 0 8px; }
+.notes p { margin: 0; color: #cfd3e3; max-width: 62ch; }
+table.map { width: 100%; border-collapse: collapse; font-size: 14px; }
+table.map th { text-align: left; color: var(--muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; padding: 0 10px 6px 0; }
+table.map td { padding: 8px 10px 8px 0; border-top: 1px solid var(--line); vertical-align: top; }
+table.map td:first-child { color: var(--gold); font-weight: 700; white-space: nowrap; }
+.tablebox { overflow-x: auto; }
+.rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+.rules div { border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.rules b { display: block; font-family: var(--display); font-weight: 400; font-size: 20px; color: var(--gold); }
+.rules small { color: var(--muted); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important; } }
+</style>
+
+<header class="page">
+  <h1>Conor Mastery</h1>
+  <p>A working preview of the iPhone app, running the same reward rules as the Swift core. Tick habits, run a focus session, log sleep, and spend grit on your garden. This is a browser mock: the real app enforces habits with Screen Time, which a browser can't do.</p>
+</header>
+
+<div class="wrap">
+  <div class="phone" aria-label="App preview">
+    <div class="screen">
+      <div class="toast" id="toast" style="opacity:0" role="status" aria-live="polite"></div>
+
+      <section class="view" id="dojo">
+        <canvas id="world" aria-label="Your dojo garden"></canvas>
+        <div class="dojo-ui">
+          <div class="row"><span class="hud" data-hud></span></div>
+          <div class="card progress" id="progress"></div>
+          <div class="card challenge" id="challenge"></div>
+          <div class="bottom">
+            <button class="round" id="buildBtn" aria-label="Build mode">✏️</button>
+            <div style="display:grid;gap:10px;justify-items:center">
+              <button class="game-btn" style="background:var(--vermilion)" data-go="today">CHECK-IN</button>
+              <button class="game-btn" style="background:var(--sky)" data-go="focus">FOCUS</button>
+            </div>
+            <button class="round" id="shopBtn" aria-label="Shop">🛒</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="view" id="today" hidden><div class="list" id="todayList"></div></section>
+
+      <section class="view" id="focus" hidden>
+        <div class="focus">
+          <span class="hud" data-hud></span>
+          <div style="font-size:70px" aria-hidden="true">🧘🔥</div>
+          <div class="timer" id="timer">25:00</div>
+          <div class="seg" role="group" aria-label="Session length">
+            <button aria-pressed="true" data-min="25">25 min</button><button aria-pressed="false" data-min="50">50 min</button><button aria-pressed="false" data-min="90">90 min</button>
+          </div>
+          <label class="toggle"><input type="checkbox" id="locked"> Locked in · 1.5x grit · stopping early costs 10</label>
+          <div class="row" style="gap:10px">
+            <button class="game-btn" style="background:var(--vermilion)" id="focusStart">START</button>
+            <button class="game-btn" style="background:var(--paper)" id="focusSkip" title="Demo: finish instantly">FINISH</button>
+          </div>
+          <small style="color:var(--muted)">Preview: FINISH completes the session instantly so you can see the reward.</small>
+        </div>
+      </section>
+
+      <section class="view" id="sleep" hidden>
+        <div class="list">
+          <h2>Sleep</h2>
+          <div class="form">
+            <label for="bed">Went to bed <input type="time" id="bed" value="23:10"></label>
+            <label for="wake">Woke up <input type="time" id="wake" value="06:45"></label>
+            <label for="hrs">Actually slept (h) <input type="number" id="hrs" step="0.25" min="0" max="14" value="7.25"></label>
+            <button class="pill-btn" id="logSleep">Log last night</button>
+          </div>
+          <div class="stat-grid" id="sleepStats"></div>
+          <div class="group-title">Last 7 nights · dashed line = 7.5 h target</div>
+          <div class="bars" id="bars" aria-label="Sleep hours chart"></div>
+        </div>
+      </section>
+
+      <section class="view" id="coach" hidden><div class="list" id="coachList"></div></section>
+
+      <div class="sheet" id="shop" hidden>
+        <header><h3>Shop</h3><span class="hud" data-hud></span><button class="round" style="width:36px;height:36px;font-size:16px" id="shopClose" aria-label="Close shop">✕</button></header>
+        <div class="shop-grid" id="shopGrid"></div>
+      </div>
+
+      <nav class="tabbar" role="tablist">
+        <button role="tab" data-tab="dojo" aria-selected="true"><span class="ico">⛰️</span>Dojo</button>
+        <button role="tab" data-tab="today" aria-selected="false"><span class="ico">✅</span>Today</button>
+        <button role="tab" data-tab="focus" aria-selected="false"><span class="ico">🎯</span>Focus</button>
+        <button role="tab" data-tab="sleep" aria-selected="false"><span class="ico">🌙</span>Sleep</button>
+        <button role="tab" data-tab="coach" aria-selected="false"><span class="ico">📖</span>Coach</button>
+      </nav>
+    </div>
+  </div>
+
+  <div class="notes">
+    <section>
+      <h2>What we took from Monke</h2>
+      <div class="tablebox">
+        <table class="map">
+          <tr><th>Monke</th><th>Conor Mastery</th></tr>
+          <tr><td>Bananas</td><td>Grit. Hard habits pay 15, medium 10, easy 5, and the bad-day minimum pays half. It buys garden items, land, and a 15-minute app unlock.</td></tr>
+          <tr><td>Lvl + 1 XP/focus min</td><td>Belt ranks from white to black. You earn 10 XP per habit, 1 XP per focus minute, and 10 for an on-target night.</td></tr>
+          <tr><td>Streak + potions</td><td>Perfect Day streak. Seven perfect days earn a Second Wind that saves one miss. You can hold two at most, and you can't buy them.</td></tr>
+          <tr><td>Island you build</td><td>A dojo garden that grows from a fire pit to a pagoda, using original art only.</td></tr>
+          <tr><td>Hardcore focus</td><td>Locked in: your apps are blocked, you earn 1.5x grit, and stopping early costs 10.</td></tr>
+          <tr><td>Lock apps until habits done</td><td>Morning gate: social apps lock at 21:30 and stay locked until your morning routine is done.</td></tr>
+          <tr><td>Random daily challenge</td><td>The coach picks the challenge from your weakest habit over the last 14 days.</td></tr>
+          <tr><td>Paywall after the survey</td><td>Removed. This is your own app.</td></tr>
+        </table>
+      </div>
+    </section>
+    <section>
+      <h2>Reward rules</h2>
+      <div class="rules">
+        <div><b>15 / 10 / 5</b><small>grit for hard / medium / easy</small></div>
+        <div><b>½</b><small>for the Min version</small></div>
+        <div><b>+1/wk</b><small>streak bonus, max +5</small></div>
+        <div><b>50·L·(L+1)</b><small>XP to reach the next level</small></div>
+      </div>
+    </section>
+    <section>
+      <h2>Where the coach's advice comes from</h2>
+      <p>Each habit's "why", identity line and daily challenges are compiled from 12 YouTube source notes. The sources include Huberman, Matthew Walker, James Clear and the monke channel itself, plus Franklin's virtue tracking, and every timestamp citation was checked against its transcript by a script. Tap a habit in Coach to see its sources.</p>
+    </section>
+  </div>
+</div>
+
+<script>
+const PLAN = {"format": "conor-mastery-plan", "version": 1, "generated_at": "2026-10-16T14:58:26-04:00", "weekly_focus": "Foundations first: sleep and phone. Lock those in, then body, then focus.", "notes": ["Never miss twice. One missed day is noise; two is the start of a new habit. (James Clear, yt:mNeXuCYiE0U @ 20:00)", "On a bad day, do the Min version. A rep is a vote for who you are becoming. (yt:U_nzqnXWvSo @ 06:38)", "Plans beat motivation: every habit has a when and where. Set them in Today. (yt:mNeXuCYiE0U @ 06:44)"], "habits": [{"id": "morning-routine", "title": "Morning routine", "kind": "checklist", "difficulty": "medium", "group": "morning", "schedule": "daily", "identity": "I own my mornings before my phone does.", "why": "The first hour sets the day. Light in the eyes soon after waking times your energy and starts the clock for tonight's sleep; picking up the phone first hands the morning to someone else. Finishing this unlocks your blocked apps.", "full": "All five steps", "min": "No phone for 30 min + 2 min outside", "steps": ["No phone for the first 30 minutes", "Outside light 5-15 min (no sunglasses)", "10 push-ups", "Water + protein-first breakfast", "First caffeine 90 min after waking"], "citations": [{"source": "yt:1pbSbW7ABgY", "locator": "01:04"}, {"source": "yt:RTgJSQtvo88", "locator": "05:32"}, {"source": "yt:RTgJSQtvo88", "locator": "10:37"}, {"source": "yt:FYSNIBmqHj4", "locator": "02:34"}, {"source": "yt:1pbSbW7ABgY", "locator": "04:09"}], "challenges": ["Phone stays in another room until you've been outside.", "Get 15 minutes of outdoor light before 9 am, even if cloudy.", "Tonight, put a book where your phone usually sits in the morning.", "Protein-first breakfast: eggs, Greek yogurt or cottage cheese."]}, {"id": "sleep", "title": "Sleep", "kind": "sleep", "difficulty": "hard", "group": "morning", "schedule": "daily", "identity": "I protect my sleep like training.", "why": "Sleep is the base the other habits stand on. Lost sleep can't be fully paid back, and a short-week, long-weekend pattern hurts health. The same bed and wake times every day, weekends included, are the lever.", "full": "In bed within 30 min of your target and 7.5+ hours asleep", "min": "Log the night honestly", "citations": [{"source": "yt:lRp5AC9W_F8", "locator": "05:44"}, {"source": "yt:lRp5AC9W_F8", "locator": "04:11"}, {"source": "yt:lRp5AC9W_F8", "locator": "05:13"}, {"source": "yt:RTgJSQtvo88", "locator": "29:27"}, {"source": "yt:Zc2lu3u-0CQ", "locator": "02:04"}], "challenges": ["Wake within an hour of your weekday time, even today.", "One alarm, no snooze. Feet on the floor when it rings.", "No caffeine after 2 pm today.", "Bedroom cool tonight: drop it a few degrees."]}, {"id": "meditation", "title": "Meditation", "kind": "timer", "difficulty": "medium", "group": "morning", "schedule": "daily", "identity": "I can sit with my own mind.", "why": "A short daily sit trains attention, the same skill that resists the urge to check the phone. Start tiny and grow it once it's automatic.", "full": "10 minutes, eyes closed, attention on the breath", "min": "2 minutes", "target_minutes": 10, "min_minutes": 2, "citations": [{"source": "yt:2VpDCs0tbGA", "locator": "04:06"}, {"source": "yt:u_DfrP-oaRQ", "locator": "02:33"}], "challenges": ["Sit for 12 minutes today, one more than usual.", "Meditate before you look at your phone.", "When your mind wanders, count it. Just notice the number."]}, {"id": "workout", "title": "Workout", "kind": "build", "difficulty": "hard", "group": "day", "schedule": "daily", "identity": "I'm an athlete. I train.", "why": "ConorHealth owns the program; this habit owns showing up. Logging a session in ConorHealth ticks it automatically. On a rest or bad day, 10 minutes of movement keeps the chain alive.", "full": "Today's ConorHealth session (auto-ticks when logged)", "min": "10 minutes of movement", "citations": [{"source": "yt:Zc2lu3u-0CQ", "locator": "03:05"}, {"source": "yt:mNeXuCYiE0U", "locator": "16:56"}, {"source": "yt:1pbSbW7ABgY", "locator": "02:06"}], "challenges": ["Make the start the habit: shoes on and out the door by your set time.", "Do 10 minutes of cardio outside before work.", "Pack your gym bag tonight and leave it by the door."]}, {"id": "reset-focus", "title": "Reset focus", "kind": "focus", "difficulty": "medium", "group": "day", "schedule": "daily", "identity": "I do one thing at a time, fully.", "why": "Focus is a skill that levels with use. One block of single-task work a day, with distractions removed first, beats a day of half-attention. Start at 25 minutes and climb toward 60.", "full": "One 25-minute focus block, phone outside the room", "min": "10 minutes", "target_minutes": 25, "min_minutes": 10, "citations": [{"source": "yt:Zc2lu3u-0CQ", "locator": "03:35"}, {"source": "yt:2VpDCs0tbGA", "locator": "02:34"}, {"source": "yt:2VpDCs0tbGA", "locator": "01:33"}, {"source": "yt:2VpDCs0tbGA", "locator": "03:05"}], "challenges": ["Before you start: phone out of the room, tabs closed, water on the desk.", "Use Locked In mode for your focus block today.", "Take your break as a walk, no screens.", "Go 5 minutes longer than your last block."]}, {"id": "deep-breathing", "title": "Deep breathing", "kind": "timer", "difficulty": "easy", "group": "day", "schedule": "daily", "identity": "I can calm my body on command.", "why": "Slow breathing is the fastest tool you have to bring stress down mid-day, and it's the reset between focus blocks. The app paces box breathing (4 in, 4 hold, 4 out, 4 hold).", "full": "5 minutes of box breathing", "min": "1 minute", "target_minutes": 5, "min_minutes": 1, "citations": [], "challenges": ["Do 1 minute of box breathing before you open any app after lunch.", "Breathe for 2 minutes before your focus block.", "When a craving hits today, breathe for 1 minute first."]}, {"id": "no-social-media", "title": "No social media", "kind": "avoid", "difficulty": "hard", "group": "day", "schedule": "daily", "identity": "My attention is mine.", "why": "Willpower loses to environment. The app locks social apps outside one evening window and keeps them locked until your morning routine is done. Paying grit to unlock early is allowed, but it counts as a slip.", "full": "No social apps outside the 19:00-19:30 window", "citations": [{"source": "yt:mNeXuCYiE0U", "locator": "12:50"}, {"source": "yt:1gxKyEuj5RA", "locator": "02:03"}, {"source": "yt:bt5ue-1wLvc", "locator": "02:31"}, {"source": "yt:Zc2lu3u-0CQ", "locator": "02:34"}, {"source": "yt:u_DfrP-oaRQ", "locator": "03:34"}], "challenges": ["Delete one social app from your home screen tonight.", "Go the whole day without paying to unlock.", "Replace bedtime scrolling with an audiobook or podcast.", "Phone downtime: hand the passcode to someone you trust."]}, {"id": "no-nicotine", "title": "No nicotine", "kind": "avoid", "difficulty": "hard", "group": "day", "schedule": "daily", "identity": "I'm free. I don't need it.", "why": "Unaided cold turkey works only about 5% of the time, and most relapses happen in the first week, so plan for that week instead of relying on willpower. Part of the pull is the hand-to-mouth habit, so replace the ritual. Morning urges are strongest because you wake in withdrawal. Talk to a doctor about replacement therapy or medication; the app does not give doses.", "full": "Nicotine-free today (vape, cigarettes, pouches)", "citations": [{"source": "yt:QpnGsasp9j8", "locator": "00:02"}, {"source": "yt:QpnGsasp9j8", "locator": "05:43"}, {"source": "yt:QpnGsasp9j8", "locator": "06:15"}, {"source": "yt:QpnGsasp9j8", "locator": "13:59"}, {"source": "yt:QpnGsasp9j8", "locator": "08:47"}], "challenges": ["Have a replacement for your hands and mouth ready before your usual first hit.", "Write down your top trigger today and your if-then plan for it.", "When the urge hits, do 1 minute of breathing first, then decide.", "Book a doctor's appointment to talk about a quit plan."]}, {"id": "night-routine", "title": "Night routine", "kind": "checklist", "difficulty": "medium", "group": "night", "schedule": "daily", "identity": "I end my day on purpose.", "why": "Tomorrow's morning starts tonight. Dim light and no screens let sleep come, a cool body falls asleep faster, and writing tomorrow's first move removes morning decisions. Franklin tracked his virtues the same way, marking the day's faults every evening.", "full": "All five steps", "min": "Phone out of bed + lights dim", "steps": ["Last-orders alarm: teeth + pajamas 15 min before bed", "Lights dim, screens off 1 hour before bed", "Hot shower, cool bedroom", "Phone charges outside the bedroom", "Write tomorrow's first action + a 2-line reflection"], "citations": [{"source": "yt:lRp5AC9W_F8", "locator": "06:46"}, {"source": "yt:bt5ue-1wLvc", "locator": "03:01"}, {"source": "yt:bt5ue-1wLvc", "locator": "01:31"}, {"source": "yt:RTgJSQtvo88", "locator": "21:44"}, {"source": "yt:1gxKyEuj5RA", "locator": "02:03"}, {"source": "book:franklin-autobiography", "locator": "virtues ¶10"}], "challenges": ["Set the last-orders alarm 15 minutes before bed and obey it.", "Audiobook instead of scrolling in bed tonight.", "Write the very first thing you'll do tomorrow before you sleep.", "Lights to lamps only after 10 pm."]}]};
+const BASE = { easy: 5, medium: 10, hard: 15 };
+const ITEMS = [
+  ["bamboo","Bamboo",50,1,"🎋"],["pine","Black Pine",80,1,"🌲"],["lantern","Stone Lantern",100,1,"🏮"],["tent","Tent",120,1,"⛺️"],
+  ["boulder","Boulder",40,1,"🪨"],["training-post","Training Post",90,1,"🥋"],["bonsai","Bonsai",120,3,"🪴"],["maple","Red Maple",150,5,"🍁"],
+  ["pond","Koi Pond",300,5,"🐟"],["cherry","Cherry Blossom",250,10,"🌸"],["torii","Torii Gate",500,15,"⛩️"],["dojo","Dojo",900,20,"🏯"],["pagoda","Pagoda",1500,30,"🗼"]
+];
+const BELTS = [[50,"Black","#111"],[40,"Brown","#8a5a2b"],[30,"Purple","#8e44ad"],[20,"Blue","#2e7de1"],[15,"Green","#2ba84a"],[10,"Orange","#f08a24"],[5,"Yellow","#f2d024"],[1,"White","#fff"]];
+
+// Example state: 9 days of history so streaks, strips and stats have something to show.
+const S = {
+  grit: 420, xp: 2350, streak: 9, today: {}, steps: {}, focusMin: 0, earned: 0, challengeDone: false, building: false, sel: null,
+  land: 5, garden: [{id:"fire-pit",g:"🔥",x:2,y:2},{id:"bamboo",g:"🎋",x:0,y:1},{id:"pine",g:"🌲",x:4,y:0},{id:"lantern",g:"🏮",x:3,y:3},{id:"training-post",g:"🥋",x:1,y:4}],
+  inv: {}, history: {}, nights: [7.6, 6.9, 7.8, 8.0, 6.4, 7.5, 7.7]
+};
+PLAN.habits.forEach((h, i) => { S.history[h.id] = Array.from({length: 6}, (_, d) => (i + d) % 5 === 0 ? "" : ((i * d) % 7 === 3 ? "m" : "f")); });
+
+const $ = (q, el = document) => el.querySelector(q);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const level = xp => { let l = 1; while (50 * (l + 1) * l <= xp) l++; return l; };
+const levelFloor = l => 50 * l * (l - 1);
+const belt = l => BELTS.find(b => l >= b[0]);
+const bonus = () => Math.min(Math.floor(S.streak / 7), 5);
+
+function reward(h, lvl) {
+  if (lvl === "f") return BASE[h.difficulty] + bonus();
+  if (lvl === "m") return Math.ceil(BASE[h.difficulty] / 2) + bonus();
+  return 0;
+}
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.style.opacity = 1; clearTimeout(toast.t); toast.t = setTimeout(() => t.style.opacity = 0, 1800); }
+
+function setLevel(h, lvl) {
+  const prev = S.today[h.id] || "";
+  const next = prev === lvl ? "" : lvl;
+  const dg = reward(h, next) - reward(h, prev);
+  const dx = (next === "f" || next === "m" ? 10 : 0) - (prev === "f" || prev === "m" ? 10 : 0);
+  S.today[h.id] = next; S.grit += dg; S.xp += dx; S.earned += Math.max(dg, 0);
+  if (dg > 0) toast(`${h.title}  +${dg} grit  +${dx} XP`);
+  if (h.id === "morning-routine" && next) toast("Morning routine done: apps unlocked");
+  render();
+}
+
+function hud() {
+  const l = level(S.xp), b = belt(l), pct = ((S.xp - levelFloor(l)) / (levelFloor(l + 1) - levelFloor(l))) * 100;
+  return `<span class="belt" style="background:${b[2]}"></span><span>Lvl ${l}<span class="lvlbar"><i style="width:${pct}%"></i></span></span><span class="sep"></span><span class="fire">🔥 ${S.streak}</span><span class="sep"></span><span class="grit">◉ ${S.grit}</span>`;
+}
+
+function weakest() {
+  const scored = PLAN.habits.map(h => [h, S.history[h.id].filter(x => x).length]).sort((a, b) => a[1] - b[1]);
+  return scored[0][0];
+}
+
+function renderDojo() {
+  const req = PLAN.habits.length, done = PLAN.habits.filter(h => S.today[h.id] === "f" || S.today[h.id] === "m").length;
+  $("#progress").innerHTML = `<div><b>✓ ${done}/${req}</b><small>habits</small></div><div><b>⏱ ${S.focusMin}m</b><small>focused</small></div><div><b class="grit">+${S.earned}</b><small>grit today</small></div>`;
+  const w = weakest(), text = w.challenges[new Date().getDate() % w.challenges.length];
+  $("#challenge").innerHTML = `<small>Daily challenge · ${esc(w.title)}</small><p>${esc(text)}</p><div class="row"><span class="grit">◉ +20</span><button class="pill-btn" id="chal" ${S.challengeDone ? "disabled" : ""}>${S.challengeDone ? "Done" : "Mark complete"}</button></div>`;
+  $("#chal").onclick = () => { S.challengeDone = true; S.grit += 20; S.xp += 10; S.earned += 20; toast("Daily challenge  +20 grit"); render(); };
+  $("#progress").hidden = $("#challenge").hidden = S.building;
+  drawWorld();
+}
+
+function drawWorld() {
+  const c = $("#world"), r = c.getBoundingClientRect(), dpr = devicePixelRatio || 1;
+  c.width = r.width * dpr; c.height = r.height * dpr;
+  const g = c.getContext("2d"); g.scale(dpr, dpr);
+  const tw = 58, th = 29, ox = r.width / 2, oy = r.height * 0.6 - (S.land * th) / 2;
+  g.fillStyle = "rgba(40,79,134,.45)"; g.fillRect(0, 0, r.width, r.height);
+  const center = (x, y) => [ox + (x - y) * tw / 2, oy + (x + y) * th / 2 + th / 2];
+  for (let x = 0; x < S.land; x++) for (let y = 0; y < S.land; y++) {
+    const [cx, cy] = center(x, y);
+    g.beginPath(); g.moveTo(cx, cy - th / 2); g.lineTo(cx + tw / 2, cy); g.lineTo(cx, cy + th / 2); g.lineTo(cx - tw / 2, cy); g.closePath();
+    g.fillStyle = (x + y) % 2 ? "#5a874c" : "#6e9e5c"; g.fill();
+    g.strokeStyle = S.building ? "rgba(13,16,32,.55)" : "rgba(13,16,32,.2)"; g.stroke();
+  }
+  g.textAlign = "center"; g.textBaseline = "middle";
+  [...S.garden].sort((a, b) => (a.x + a.y) - (b.x + b.y)).forEach(p => {
+    const [cx, cy] = center(p.x, p.y); g.font = "34px serif"; g.fillText(p.g, cx, cy - 12);
+  });
+  const fire = S.garden.find(p => p.id === "fire-pit"); const [fx, fy] = center(fire.x, fire.y);
+  g.font = "30px serif"; g.fillText("🧘", fx - 24, fy - 8);
+  c.onclick = e => {
+    if (!S.building) return;
+    const px = (e.offsetX - ox) / (tw / 2), py = (e.offsetY - oy) / (th / 2);
+    const x = Math.floor((px + py) / 2), y = Math.floor((py - px) / 2);
+    if (x < 0 || y < 0 || x >= S.land || y >= S.land) return;
+    const at = S.garden.findIndex(p => p.x === x && p.y === y);
+    if (at >= 0 && S.garden[at].id !== "fire-pit") { const p = S.garden.splice(at, 1)[0]; S.inv[p.id] = (S.inv[p.id] || 0) + 1; toast(`Picked up ${p.g}`); }
+    else if (at < 0) {
+      const id = Object.keys(S.inv).find(k => S.inv[k] > 0);
+      if (!id) return toast("Buy something in the shop first");
+      S.inv[id]--; S.garden.push({ id, g: ITEMS.find(i => i[0] === id)[4], x, y });
+    }
+    drawWorld();
+  };
+}
+
+function renderToday() {
+  const groups = { morning: "Morning", day: "Day", night: "Night" };
+  let html = `<span class="hud" data-hud></span><h2>${new Date().toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" })}</h2>`;
+  for (const [key, label] of Object.entries(groups)) {
+    const hs = PLAN.habits.filter(h => h.group === key);
+    if (!hs.length) continue;
+    html += `<div class="group-title">${label}</div>`;
+    hs.forEach(h => {
+      const lvl = S.today[h.id] || "", strip = [...S.history[h.id], lvl];
+      const avoid = h.kind === "avoid";
+      const steps = h.kind === "checklist" ? `<div class="steps">${h.steps.map((s, i) => `<label><input type="checkbox" data-step="${h.id}|${i}" ${(S.steps[h.id] || []).includes(i) || lvl === "f" ? "checked" : ""}> ${esc(s)}</label>`).join("")}</div>` : "";
+      html += `<article class="habit">
+        <div class="top"><strong>${esc(h.title)}</strong>${avoid ? `<span class="chip">${h.id === "no-nicotine" ? 23 : 6}d clean</span>` : ""}<span class="reward">◉ ${BASE[h.difficulty]}</span></div>
+        <div class="id">${esc(h.identity)}</div>
+        ${h.min ? `<div class="min">Min: ${esc(h.min)}</div>` : ""}
+        ${steps}
+        <div class="row"><div class="dots" aria-label="Last 7 days">${strip.map(x => `<i class="${x}"></i>`).join("")}</div>
+        <div class="acts">${avoid
+          ? `<button data-act="${h.id}|f" class="${lvl === "f" ? "on" : ""}">Clean today</button><button data-act="${h.id}|s" class="${lvl === "s" ? "slip-on" : ""}">Slipped</button>`
+          : `${h.min ? `<button data-act="${h.id}|m" class="${lvl === "m" ? "min-on" : ""}">Min</button>` : ""}<button data-act="${h.id}|f" class="${lvl === "f" ? "on" : ""}">${h.kind === "timer" ? "▶ " + h.target_minutes + " min" : h.kind === "sleep" ? "Log sleep" : h.kind === "focus" ? "Focus " + h.target_minutes + "m" : "Done"}</button>`}</div></div>
+      </article>`;
+    });
+  }
+  $("#todayList").innerHTML = html;
+  $("#todayList").querySelectorAll("[data-act]").forEach(b => b.onclick = () => {
+    const [id, lvl] = b.dataset.act.split("|"), h = PLAN.habits.find(x => x.id === id);
+    if (h.kind === "sleep") return go("sleep");
+    if (h.kind === "focus") return go("focus");
+    setLevel(h, lvl);
+  });
+  $("#todayList").querySelectorAll("[data-step]").forEach(cb => cb.onchange = () => {
+    const [id, i] = cb.dataset.step.split("|"), h = PLAN.habits.find(x => x.id === id);
+    const set = new Set(S.steps[id] || []); cb.checked ? set.add(+i) : set.delete(+i); S.steps[id] = [...set];
+    const all = set.size === h.steps.length;
+    if (all && S.today[id] !== "f") setLevel(h, "f"); else if (!all && S.today[id] === "f") setLevel(h, "f");
+  });
+}
+
+function renderSleep() {
+  const n = S.nights, avg = n.reduce((a, b) => a + b, 0) / n.length, debt = 7.5 * n.length - n.reduce((a, b) => a + b, 0);
+  $("#sleepStats").innerHTML = `<div><b>${avg.toFixed(1)} h</b><small>average</small></div><div><b>${n.filter(x => x >= 7.5).length}/7</b><small>on target</small></div><div><b>±24 min</b><small>bedtime spread</small></div><div><b>${Math.abs(debt).toFixed(1)} h</b><small>${debt >= 0 ? "sleep debt" : "ahead"}</small></div>`;
+  $("#bars").innerHTML = n.map(h => `<span class="${h >= 7.5 ? "" : "off"}" style="height:${(h / 10) * 100}%" title="${h} h"></span>`).join("") + `<i style="position:absolute;left:0;right:0;bottom:75%;border-top:1px dashed var(--muted)"></i>`;
+}
+
+function renderCoach() {
+  let html = `<span class="hud" data-hud></span><h2>Coach</h2><div class="card"><div class="group-title" style="margin:0">This week</div><strong>${esc(PLAN.weekly_focus)}</strong></div>`;
+  html += PLAN.notes.map(n => `<div class="card" style="font-size:13px">${esc(n)}</div>`).join("");
+  html += PLAN.habits.map(h => `<details class="proto"><summary>${esc(h.title)}</summary><p><i>${esc(h.identity)}</i></p><p>${esc(h.why)}</p>${(h.citations || []).map(c => {
+    if (!c.source.startsWith("yt:")) return `<p style="font-size:12px;color:var(--muted)">${esc(c.source)} · ${esc(c.locator)}</p>`;
+    const [m, s] = c.locator.split(":").map(Number);
+    return `<a href="https://www.youtube.com/watch?v=${encodeURIComponent(c.source.slice(3))}&t=${m * 60 + s}s" target="_blank" rel="noopener">▶ ${esc(c.source)} @ ${esc(c.locator)}</a><br>`;
+  }).join("") || `<p style="font-size:12px;color:var(--muted)">Source note pending.</p>`}</details>`).join("");
+  $("#coachList").innerHTML = html;
+}
+
+function renderShop() {
+  const l = level(S.xp);
+  $("#shopGrid").innerHTML = ITEMS.map(([id, name, price, min, g]) => `<div class="item"><div class="glyph" style="opacity:${l < min ? .35 : 1}">${g}</div><strong>${name}</strong>${S.inv[id] ? `<small>${S.inv[id]} to place</small>` : ""}<button data-buy="${id}" ${l < min || S.grit < price ? "disabled" : ""}>${l < min ? "🔒 Lvl " + min : "◉ " + price}</button></div>`).join("");
+  $("#shopGrid").querySelectorAll("[data-buy]").forEach(b => b.onclick = () => {
+    const it = ITEMS.find(i => i[0] === b.dataset.buy);
+    S.grit -= it[2]; S.inv[it[0]] = (S.inv[it[0]] || 0) + 1; toast(`Bought ${it[4]}. Tap ✏️ to place it`); render(); renderShop();
+  });
+}
+
+function render() {
+  document.querySelectorAll("[data-hud]").forEach(el => el.innerHTML = hud());
+  renderDojo(); renderToday(); renderSleep(); renderCoach();
+  document.querySelectorAll("[data-hud]").forEach(el => el.innerHTML = hud());
+}
+
+function go(tab) {
+  document.querySelectorAll(".view").forEach(v => v.hidden = v.id !== tab);
+  document.querySelectorAll("[data-tab]").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === tab));
+  $("#shop").hidden = true;
+  if (tab === "dojo") requestAnimationFrame(drawWorld);
+}
+document.querySelectorAll("[data-tab]").forEach(b => b.onclick = () => go(b.dataset.tab));
+document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => go(b.dataset.go));
+$("#shopBtn").onclick = () => { renderShop(); $("#shop").hidden = false; };
+$("#shopClose").onclick = () => $("#shop").hidden = true;
+$("#buildBtn").onclick = () => { S.building = !S.building; $("#buildBtn").textContent = S.building ? "✔️" : "✏️"; toast(S.building ? "Tap a tile to place, tap an item to pick it up" : "Garden saved"); renderDojo(); };
+
+// Focus
+let mins = 25, tick = null, left = 0;
+const fmt = s => `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`;
+document.querySelectorAll("[data-min]").forEach(b => b.onclick = () => { if (tick) return; mins = +b.dataset.min; document.querySelectorAll("[data-min]").forEach(x => x.setAttribute("aria-pressed", x === b)); $("#timer").textContent = fmt(mins * 60); });
+function finishFocus(early) {
+  clearInterval(tick); tick = null;
+  const done = early ? Math.floor((mins * 60 - left) / 60) : mins, locked = $("#locked").checked;
+  let g = Math.floor(done / 5); if (locked) g = early ? g - 10 : Math.floor(g * 1.5);
+  g = Math.max(g, -S.grit); S.grit += g; S.xp += done; S.focusMin += done; if (g > 0) S.earned += g;
+  const reset = PLAN.habits.find(h => h.id === "reset-focus");
+  if (done >= 25 && S.today["reset-focus"] !== "f") setLevel(reset, "f"); else if (done >= 10 && !S.today["reset-focus"]) setLevel(reset, "m");
+  toast(`${done} min focused  ${g >= 0 ? "+" : ""}${g} grit  +${done} XP`);
+  $("#focusStart").textContent = "START"; $("#timer").textContent = fmt(mins * 60); render();
+}
+$("#focusStart").onclick = () => {
+  if (tick) return finishFocus(true);
+  left = mins * 60; $("#focusStart").textContent = "STOP";
+  tick = setInterval(() => { left--; $("#timer").textContent = fmt(left); if (left <= 0) finishFocus(false); }, 1000);
+};
+$("#focusSkip").onclick = () => { left = 0; finishFocus(false); };
+
+// Sleep
+$("#logSleep").onclick = () => {
+  const [bh, bm] = $("#bed").value.split(":").map(Number), [wh, wm] = $("#wake").value.split(":").map(Number);
+  const inBed = (((wh * 60 + wm) - (bh * 60 + bm) + 1440) % 1440 || 1440) / 60;
+  const hrs = parseFloat($("#hrs").value) || inBed;
+  const offset = m => (m - 720 + 1440) % 1440, onTime = Math.abs(offset(bh * 60 + bm) - offset(22 * 60 + 30)) <= 30;
+  S.nights = [...S.nights.slice(1), hrs];
+  const h = PLAN.habits.find(x => x.kind === "sleep");
+  if (!S.today[h.id]) setLevel(h, onTime && hrs >= 7.5 ? "f" : "m");
+  toast(onTime && hrs >= 7.5 ? "On target: full habit" : `Logged ${hrs.toFixed(2)} h in bed ${inBed.toFixed(1)} h. Counts as Min`);
+  renderSleep();
+};
+
+addEventListener("resize", () => { if (!$("#dojo").hidden) drawWorld(); });
+render();
+</script>

@@ -1,0 +1,72 @@
+import MasteryCore
+import SwiftUI
+
+/// The daily check-in: habit cards grouped Morning / Day / Night, then tasks.
+struct TodayView: View {
+    @Environment(MasteryStore.self) private var store
+    @State private var newTask = ""
+    @State private var timerHabit: HabitDefinition?
+    @State private var showSleepLog = false
+
+    var body: some View {
+        NavigationStack {
+            List {
+                Section { HStack { HUDPill(); Spacer() }.listRowBackground(Color.clear) }
+                ForEach(HabitGroup.allCases, id: \.self) { group in
+                    let habits = store.habits(in: group)
+                    if !habits.isEmpty {
+                        Section(title(group)) {
+                            ForEach(habits) { habit in
+                                HabitCard(habit: habit, onTimer: { timerHabit = habit }, onSleep: { showSleepLog = true })
+                            }
+                        }
+                    }
+                }
+                tasksSection
+            }
+            .navigationTitle(Date.now.formatted(.dateTime.weekday(.wide).month().day()))
+            .sheet(item: $timerHabit) { habit in HabitTimerSheet(habit: habit) }
+            .sheet(isPresented: $showSleepLog) { SleepLogSheet() }
+            .overlay {
+                if store.habits.isEmpty {
+                    ContentUnavailableView("No habits yet", systemImage: "list.bullet.clipboard",
+                                           description: Text("Connect the CoachSync folder in Settings to load your coach plan."))
+                }
+            }
+        }
+    }
+
+    private func title(_ group: HabitGroup) -> String {
+        switch group {
+        case .morning: return "Morning"
+        case .day: return "Day"
+        case .night: return "Night"
+        }
+    }
+
+    private var tasksSection: some View {
+        Section("Tasks · +\(RewardRules.taskGrit) grit each") {
+            ForEach(store.tasks.filter { $0.day == store.today.rawValue }) { task in
+                HStack {
+                    Button { store.toggle(task: task) } label: {
+                        Image(systemName: task.isDone ? "checkmark.circle.fill" : "circle")
+                            .foregroundStyle(task.isDone ? Theme.jade : .secondary)
+                    }
+                    .buttonStyle(.plain)
+                    .accessibilityLabel(task.isDone ? "Mark not done" : "Mark done")
+                    Text(task.title).strikethrough(task.isDone)
+                }
+                .swipeActions { Button("Delete", role: .destructive) { store.delete(task: task) } }
+            }
+            HStack {
+                TextField("Add task", text: $newTask).submitLabel(.done).onSubmit(addTask)
+                Button("Add", action: addTask).disabled(newTask.trimmingCharacters(in: .whitespaces).isEmpty)
+            }
+        }
+    }
+
+    private func addTask() {
+        store.addTask(newTask)
+        newTask = ""
+    }
+}

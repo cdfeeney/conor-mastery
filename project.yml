@@ -1,0 +1,83 @@
+# XcodeGen spec. CI runs `xcodegen generate` on the macOS runner (no Mac locally).
+name: ConorMastery
+options:
+  bundleIdPrefix: com.conorfee
+  deploymentTarget:
+    iOS: "18.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    DEVELOPMENT_TEAM: 6VBFL287PT
+    SWIFT_VERSION: "6.0"
+    MARKETING_VERSION: "0.1.0"
+    CURRENT_PROJECT_VERSION: "1"
+packages:
+  MasteryCore:
+    path: MasteryCore
+targets:
+  ConorMastery:
+    type: application
+    platform: iOS
+    sources:
+      - App/ConorMastery
+      - Shared
+      - path: App/Resources
+        buildPhase: resources
+    dependencies:
+      - package: MasteryCore
+      - target: MasteryMonitor
+    entitlements:
+      path: App/ConorMastery.entitlements
+      properties:
+        com.apple.developer.family-controls: true
+        com.apple.security.application-groups: [group.com.conorfee.conormastery]
+    info:
+      path: App/Info.plist
+      properties:
+        CFBundleDisplayName: Mastery
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
+        CFBundleURLTypes:
+          - CFBundleURLSchemes: [conormastery]
+        LSSupportsOpeningDocumentsInPlace: true
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.conorfee.conormastery
+        TARGETED_DEVICE_FAMILY: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+  MasteryMonitor:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Extensions/MasteryMonitor
+      - Shared
+    dependencies:
+      - package: MasteryCore
+    entitlements:
+      path: Extensions/MasteryMonitor/MasteryMonitor.entitlements
+      properties:
+        com.apple.developer.family-controls: true
+        com.apple.security.application-groups: [group.com.conorfee.conormastery]
+    info:
+      path: Extensions/MasteryMonitor/Info.plist
+      properties:
+        CFBundleDisplayName: Mastery Monitor
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.deviceactivity.monitor-extension
+          NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).MasteryMonitor
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.conorfee.conormastery.monitor
+  ConorMasteryTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [App/ConorMasteryTests]
+    dependencies:
+      - target: ConorMastery
+schemes:
+  ConorMastery:
+    build:
+      targets:
+        ConorMastery: all
+    test:
+      targets: [ConorMasteryTests]

@@ -1,0 +1,15 @@
+.build/
+MasteryCore/.build/
+*.xcodeproj/
+DerivedData/
+.DS_Store
+# Raw transcripts are copyrighted source material: keep local, commit only cited notes.
+coach/raw/
+research/monke/rev*.json
+research/monke/rea-err.txt
+__pycache__/
+# Monke's own assets/code stay local (evidence only; teardown doc is committed).
+research/monke/screens/
+research/monke/web-focus/
+research/monke/*.html
+research/monke/rea-web-focus.json

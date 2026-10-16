@@ -1,0 +1,40 @@
+# Curated sources for the Conor Mastery coach KB.
+# Owner reviews this list (PRD action A4). Add a video: id + habits it informs.
+# Books: owned copies only; notes are page-cited summaries, never bulk text.
+youtube:
+  # --- Sleep / night routine
+  - {id: RTgJSQtvo88, habits: [sleep, night-routine], note: "Huberman Essentials: Sleep Toolkit"}
+  - {id: lRp5AC9W_F8, habits: [sleep, night-routine], note: "Matthew Walker: How to improve your sleep"}
+  - {id: bt5ue-1wLvc, habits: [sleep, night-routine], note: "monke: 5 habits for good sleep"}
+  # --- Morning routine
+  - {id: STAffeSFBVk, habits: [morning-routine, sleep], note: "Huberman: morning & evening sunlight"}
+  - {id: FYSNIBmqHj4, habits: [morning-routine], note: "monke: 5 habits for great mornings"}
+  - {id: 1pbSbW7ABgY, habits: [morning-routine, reset-focus], note: "monke: morning routine to focus all day"}
+  # --- No nicotine
+  - {id: QpnGsasp9j8, habits: [no-nicotine], note: "Huberman: how to quit smoking/vaping/dip"}
+  - {id: dXC38rZMrTU, habits: [no-nicotine], note: "Vaping withdrawal timeline"}
+  # --- No social media / dopamine
+  - {id: D34KyceGhPE, habits: [no-social-media], note: "Lembke + Huberman: beat social media addiction"}
+  - {id: 3E7hkPZ-HTk, habits: [no-social-media, reset-focus], note: "Cal Newport TEDx: Quit social media"}
+  - {id: 652y-f1YFjU, habits: [no-social-media], note: "monke: don't delete social media, do this instead"}
+  - {id: u_DfrP-oaRQ, habits: [no-social-media, reset-focus], note: "monke: escape the dopamine trap"}
+  # --- Focus
+  - {id: 8e3RC1L5V_Y, habits: [reset-focus], note: "Huberman Essentials: focus & concentration"}
+  - {id: 2VpDCs0tbGA, habits: [reset-focus], note: "monke: focusing all day gets easy"}
+  # --- Meditation / breathing / NSDR
+  - {id: rBdhqBGqiMc, habits: [deep-breathing], note: "Huberman: physiological sigh"}
+  - {id: KHIbgSN2qAU, habits: [meditation, deep-breathing], note: "Huberman: 10 min NSDR"}
+  # --- Habit science (all habits)
+  - {id: U_nzqnXWvSo, habits: [all], note: "James Clear: Atomic Habits 1% better"}
+  - {id: mNeXuCYiE0U, habits: [all], note: "James Clear: 1% better every day (talk)"}
+  - {id: Zc2lu3u-0CQ, habits: [all], note: "monke: make self-improvement a video game"}
+  - {id: xcPX3VkQjAY, habits: [all], note: "monke: 30 small habits"}
+  # --- Workout (ConorHealth owns programming; this is only the habit side)
+  - {id: 1gxKyEuj5RA, habits: [workout, all], note: "monke: how to do hard things even if lazy"}
+
+books:
+  # Already in D:/projects/mind-coach/kb/books (read-only): stoic/character notes.
+  - {path: "D:/projects/mind-coach/kb/books/james", habits: [all], note: "existing mind-coach notes"}
+  - {path: "D:/projects/mind-coach/kb/books/franklin", habits: [all], note: "Franklin's 13 virtues: daily virtue tracking"}
+  # Add owned PDFs (Atomic Habits, Why We Sleep, Dopamine Nation...) to coach/inbox-pdfs/ and run
+  # coach-kb's OCR tool; then write page-cited notes in coach/kb/sources/.

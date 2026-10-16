@@ -1,0 +1,38 @@
+name: ios
+
+# Manual only: macOS minutes are expensive (owner gate, same as ConorHealth).
+on:
+  workflow_dispatch:
+
+jobs:
+  core:
+    runs-on: macos-15
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: MasteryCore tests
+        working-directory: MasteryCore
+        run: swift test
+
+  app:
+    runs-on: macos-15
+    timeout-minutes: 30
+    needs: core
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install XcodeGen
+        run: brew install xcodegen
+      - name: Generate project
+        run: xcodegen generate
+      - name: Build and test (simulator, unsigned)
+        run: |
+          set -o pipefail
+          xcodebuild test \
+            -project ConorMastery.xcodeproj -scheme ConorMastery \
+            -destination 'platform=iOS Simulator,name=iPhone 16' \
+            CODE_SIGNING_ALLOWED=NO | tee xcodebuild.log
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: xcodebuild-log
+          path: xcodebuild.log
