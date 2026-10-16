@@ -8,7 +8,7 @@ included, 1,915 PNGs). 21 garden sprites are already cut out by `art/tools/build
 
 | Catalog item (MasteryCore) | Pack sprite | Source | Status |
 |---|---|---|---|
-| Fire Pit (starter) | camp fire / brazier | tileset_camp.png | to crop |
+| Fire Pit (starter) | stone fire ring with logs | tileset_camp.png 161,50 | **done** (animated flame: FX later) |
 | Raked Gravel / Moss | floor tiles | TilesetFloor / TilesetFloorDetail | to crop (ground layer) |
 | Stepping Stone | small rocks | TilesetNature (rock row) | to crop |
 | Boulder | grey boulder | TilesetNature 256,128 | **done** |
@@ -19,8 +19,8 @@ included, 1,915 PNGs). 21 garden sprites are already cut out by `art/tools/build
 | Cherry Blossom | pink tree | TilesetNature 0,288 | **done** |
 | Stone Lantern | stone statue / column | TilesetHouse (stone set) | to crop or **draw** (no true tōrō in pack) |
 | Koi Pond | grass-edged pond + red/white/yellow fish | TilesetWater 0,96 + Actor/Animal/Fish | **done** (pond edge needs autotile cleanup) |
-| Arched Bridge | wooden bridge | TilesetHouse (planks) | to crop |
-| Training Post | wooden dummy | TilesetElement | to crop |
+| Arched Bridge | wooden planks | TilesetHouse 144,240 | cropped, needs a proper bridge shape |
+| Training Post | wooden post figure | TilesetElement 1,81 | **done** |
 | Tent | tent | TilesetHouse 0,112 | **done** |
 | Torii Gate | red torii | TilesetHouse 0,80 | **done** |
 | Dojo | red-roof hall + "DOJO" sign | TilesetHouse 192,0 + 64,64 | **done** |
@@ -42,12 +42,11 @@ included, 1,915 PNGs). 21 garden sprites are already cut out by `art/tools/build
 
 ## 3. Build steps (in order)
 
-1. **Cut the remaining sprites**: fire pit, gravel/moss, stepping stone, bridge, training post, lantern stand-in.
-   Extend `SPRITES` in `art/tools/build_sprites.py`.
+1. ~~Cut the remaining sprites~~ fire pit, training post, potted plant and bridge planks are **done**. Still left: gravel/moss ground, stepping stone.
 2. **Ground**: replace the flat two-tone grass with the pack's grass autotile (`TilesetFloor`), and fix the pond
    edge (render it with the water autotile instead of a single tile).
 3. **Draw 2 missing pieces** (16 px grid, pack palette only): stone lantern and pagoda (stacked roofs).
-4. **Belt hero**: script a palette swap and write `belt-<colour>.png` × 8.
+4. ~~Belt hero~~ **Done**: `belt-<colour>.png` × 8 (full animation sheets); the headband and sash take the belt colour. Preview: `art/preview/belts.png`.
 5. **Asset catalog**: export every sprite at 1x into `App/Resources/Assets.xcassets/Sprites/` and render it in
    SwiftUI with `.interpolation(.none)` at an integer scale (4x = 64 pt tiles).
 6. **Swap the renderer**: `WorldView` moves from isometric emoji to a **top-down** sprite grid (the pack's view),
