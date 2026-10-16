@@ -61,9 +61,10 @@ struct HabitCard: View {
                 Label("ConorHealth", systemImage: "link").font(.caption2).foregroundStyle(.secondary)
             }
             Spacer()
-            Label("\(RewardRules.baseGrit(habit.difficulty))", systemImage: "seal.fill")
+            TierBadge(tier: store.tier(habit.id), multiplier: store.multiplier(habit.id))
+            Label("\(price)", systemImage: "seal.fill")
                 .font(.caption.monospacedDigit()).foregroundStyle(Theme.gold)
-                .accessibilityLabel("\(RewardRules.baseGrit(habit.difficulty)) grit")
+                .accessibilityLabel("\(price) grit")
         }
     }
 
@@ -95,6 +96,14 @@ struct HabitCard: View {
             Button(level == .full ? "Done ✓" : "Done") { store.log(.full, habitID: habit.id) }
                 .buttonStyle(.borderedProminent).tint(Theme.jade).disabled(level == .full)
         }
+    }
+
+    /// Today's full price: weak habits pay more (strength), per-habit streak bonus included.
+    private var price: Int {
+        let streak = StrengthEngine.habitStreak(habit, completions: store.state.completions, before: store.today,
+                                                start: store.settings.startDay, restDays: store.settings.restDays)
+        return RewardRules.habitReward(difficulty: habit.difficulty, level: .full,
+                                       strengthValue: store.strength[habit.id] ?? 0, habitStreakDays: streak).grit
     }
 
     private var minutesLabel: String {
@@ -138,5 +147,23 @@ struct WeekStrip: View {
         case .slipped: return Theme.accent
         default: return .gray.opacity(0.3)
         }
+    }
+}
+
+/// Wilted (red, pays more) / healthy / blooming (blue, pays less): Habitica-style strength, our colours.
+struct TierBadge: View {
+    let tier: HabitTier
+    let multiplier: Double
+
+    var body: some View {
+        let (symbol, color, label): (String, Color, String) = switch tier {
+        case .wilted: ("leaf.arrow.triangle.circlepath", Theme.accent, "Wilting")
+        case .healthy: ("leaf.fill", Theme.jade, "Healthy")
+        case .blooming: ("camera.macro", .blue, "Blooming")
+        }
+        Label(String(format: "×%.1f", multiplier), systemImage: symbol)
+            .font(.caption2.weight(.bold).monospacedDigit())
+            .foregroundStyle(color)
+            .accessibilityLabel("\(label) habit, pays \(String(format: "%.1f", multiplier)) times")
     }
 }

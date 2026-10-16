@@ -26,8 +26,9 @@ public enum RewardRules {
     public static let lockedInEarlyStopPenalty = 10
     public static let dailyChallengeGrit = 20
     public static let taskGrit = 3
-    public static let streakBonusBlockDays = 7
-    public static let streakBonusMax = 5
+    /// Per-habit streak bonus: +1% grit per day of that habit's own streak, capped at +30%.
+    public static let habitStreakBonusPerDay = 0.01
+    public static let habitStreakBonusMax = 0.30
     public static let unblockGritCost = 25
     public static let unblockMinutes = 15
 
@@ -39,22 +40,23 @@ public enum RewardRules {
         }
     }
 
-    /// +1 grit per full 7-day block of the current streak, capped.
-    public static func streakBonus(streakDays: Int) -> Int {
-        Swift.min(Swift.max(streakDays, 0) / streakBonusBlockDays, streakBonusMax)
+    public static func habitStreakBonus(days: Int) -> Double {
+        Swift.min(Double(Swift.max(days, 0)) * habitStreakBonusPerDay, habitStreakBonusMax)
     }
 
-    public static func habitReward(difficulty: Difficulty, level: CompletionLevel, streakDays: Int) -> Reward {
+    /// v0.2 reward (approved design): base by difficulty (half for Min, rounded up)
+    /// x strength multiplier (weak habits pay up to 3x) x (1 + habit-streak bonus), doubled on a Focused Strike.
+    public static func habitReward(difficulty: Difficulty, level: CompletionLevel, strengthValue: Double = 0,
+                                   habitStreakDays: Int = 0, strike: Bool = false) -> Reward {
+        let base: Int
         switch level {
-        case .notDone, .slipped:
-            return .zero
-        case .full:
-            return Reward(grit: baseGrit(difficulty) + streakBonus(streakDays: streakDays), xp: xpPerHabit)
-        case .minimum:
-            // Half pay, rounded up so the minimum is never worth nothing.
-            let grit = (baseGrit(difficulty) + 1) / 2 + streakBonus(streakDays: streakDays)
-            return Reward(grit: grit, xp: xpPerHabit)
+        case .notDone, .slipped: return .zero
+        case .full: base = baseGrit(difficulty)
+        case .minimum: base = (baseGrit(difficulty) + 1) / 2
         }
+        let scaled = Double(base) * StrengthRules.multiplier(strengthValue) * (1 + habitStreakBonus(days: habitStreakDays))
+        let grit = Swift.max(Int(scaled.rounded()), 1) * (strike ? 2 : 1)
+        return Reward(grit: grit, xp: xpPerHabit)
     }
 
     /// Focus pays per minute actually focused. Locked-In multiplies grit; stopping early costs grit.

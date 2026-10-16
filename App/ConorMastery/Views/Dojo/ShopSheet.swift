@@ -5,6 +5,8 @@ struct ShopSheet: View {
     @Environment(MasteryStore.self) private var store
     @Environment(\.dismiss) private var dismiss
     @State private var category: ItemCategory?
+    @State private var treatName = ""
+    @State private var treatPrice = 100
 
     private let columns = [GridItem(.flexible()), GridItem(.flexible())]
 
@@ -13,6 +15,7 @@ struct ShopSheet: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 16) {
                     categoryChips
+                    treatsCard
                     if let expansion = store.world.nextExpansion { landCard(expansion) }
                     LazyVGrid(columns: columns, spacing: 12) {
                         ForEach(items) { item in itemTile(item) }
@@ -47,6 +50,32 @@ struct ShopSheet: View {
         Button(title, action: action)
             .buttonStyle(.bordered)
             .tint(selected ? Theme.accent : .secondary)
+    }
+
+    /// Real-life rewards you price yourself (Habitica's custom rewards).
+    private var treatsCard: some View {
+        VStack(alignment: .leading, spacing: 10) {
+            Text("Real-life treats").font(.headline)
+            ForEach(store.settings.treats) { treat in
+                HStack {
+                    Text(treat.name)
+                    Spacer()
+                    Button { store.buy(treat: treat) } label: { Label("\(treat.price)", systemImage: "seal.fill") }
+                        .buttonStyle(.borderedProminent).tint(Theme.accent).disabled(store.grit < treat.price)
+                }
+                .swipeActions { Button("Delete", role: .destructive) { store.removeTreat(treat) } }
+                .contextMenu { Button("Delete", role: .destructive) { store.removeTreat(treat) } }
+            }
+            HStack {
+                TextField("New treat (e.g. cheat meal)", text: $treatName)
+                Stepper("\(treatPrice)", value: $treatPrice, in: 10...2000, step: 10).fixedSize()
+                Button("Add") { store.addTreat(name: treatName, price: treatPrice); treatName = "" }
+                    .disabled(treatName.trimmingCharacters(in: .whitespaces).isEmpty)
+            }
+            .font(.subheadline)
+        }
+        .padding()
+        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 14))
     }
 
     private func landCard(_ expansion: (size: Int, price: Int)) -> some View {

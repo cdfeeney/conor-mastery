@@ -15,9 +15,17 @@ extension MasteryStore {
                                               minutes: minutes, stepsDone: stepsDone)))
         persistLedgerTail(from: state.ledger, to: result.state.ledger)
         setState(result.state)
+        if let drop = result.drop {
+            // Seeds and koi eggs land in the garden inventory, ready to place.
+            var inventory = world.inventory
+            inventory[drop.itemID, default: 0] += 1
+            replace(world: WorldState(landSize: world.landSize, inventory: inventory, placements: world.placements))
+        }
         save()
         if result.delta.grit > 0 || result.delta.xp > 0 {
-            lastReward = RewardToast(title: state.habit(habitID)?.title ?? "Habit", reward: result.delta)
+            let title = state.habit(habitID)?.title ?? "Habit"
+            lastReward = RewardToast(title: result.strike ? "Focused Strike! \(title)" : title, reward: result.delta,
+                                     drop: result.drop)
         }
     }
 
@@ -76,8 +84,7 @@ extension MasteryStore {
     func record(focus session: FocusSession) {
         let booked = FocusEngine.record(session, ledger: state.ledger)
         persistLedgerTail(from: state.ledger, to: booked.ledger)
-        setState(MasteryState(habits: state.habits, completions: state.completions, ledger: booked.ledger,
-                              startDay: state.startDay, strictStreak: state.strictStreak, timeZone: timeZone))
+        setState(state.with(ledger: booked.ledger))
         context.insert(FocusRecord(id: session.id, day: session.day.rawValue, plannedMinutes: session.plannedMinutes,
                                    focusedMinutes: session.focusedMinutes, lockedIn: session.lockedIn,
                                    note: session.note, habitID: session.habitID))
@@ -205,6 +212,48 @@ extension MasteryStore {
         }
     }
 
+    // MARK: - Treats and rest days
+
+    func addTreat(name: String, price: Int) {
+        let treat = Treat(name: name, price: price)
+        guard !treat.name.isEmpty else { return }
+        var s = settings
+        s.treats.append(treat)
+        update(settings: s)
+    }
+
+    func removeTreat(_ treat: Treat) {
+        var s = settings
+        s.treats.removeAll { $0.id == treat.id }
+        update(settings: s)
+    }
+
+    /// Spend grit on a real-life reward you set yourself.
+    func buy(treat: Treat) {
+        do {
+            commitLedger(try state.ledger.spending(treat.price, day: today, reason: .treat, ref: "treat@\(treat.id)"))
+            save()
+            lastReward = RewardToast(title: "Enjoy: \(treat.name)", reward: Reward(grit: -treat.price, xp: 0))
+        } catch {
+            errorMessage = Self.describe(error)
+        }
+    }
+
+    /// Mark or unmark today as a rest day (sick, travel). Limited to 3 a month.
+    func toggleRestDay() {
+        var s = settings
+        if s.restDays.contains(today) {
+            s.restDays.remove(today)
+        } else {
+            guard RestRules.canRest(on: today, restDays: s.restDays) else {
+                errorMessage = "You've used your \(RestRules.perMonth) rest days this month."
+                return
+            }
+            s.restDays.insert(today)
+        }
+        update(settings: s)
+    }
+
     // MARK: - When/where plans
 
     func setPlan(_ plan: HabitPlan?, habitID: String) {
@@ -224,8 +273,7 @@ extension MasteryStore {
 
     func commitLedger(_ next: GritLedger) {
         persistLedgerTail(from: state.ledger, to: next)
-        setState(MasteryState(habits: state.habits, completions: state.completions, ledger: next,
-                              startDay: state.startDay, strictStreak: state.strictStreak, timeZone: timeZone))
+        setState(state.with(ledger: next))
     }
 
     static func describe(_ error: Error) -> String {

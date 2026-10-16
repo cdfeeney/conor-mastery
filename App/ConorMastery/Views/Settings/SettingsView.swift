@@ -17,6 +17,13 @@ struct SettingsView: View {
                 screenTimeSection
                 gateSection
                 sleepSection
+                Section {
+                    Toggle("Today is a rest day", isOn: Binding(get: { store.isRestDay }, set: { _ in store.toggleRestDay() }))
+                } header: {
+                    Text("Rest")
+                } footer: {
+                    Text("Sick or travelling? Nothing is required today: streak, habit strength and energy pause. \(RestRules.perMonth) per month.")
+                }
                 Section("Streak") {
                     Toggle("Strict streak (no Second Winds)", isOn: setting(\.strictStreak))
                     LabeledContent("Second Winds", value: "\(store.streak.secondWinds)")

@@ -3,24 +3,32 @@ import Testing
 
 @Suite struct EconomyTests {
     @Test func fullHabitPaysBaseGritAndTenXP() {
-        #expect(RewardRules.habitReward(difficulty: .hard, level: .full, streakDays: 0) == Reward(grit: 15, xp: 10))
+        #expect(RewardRules.habitReward(difficulty: .hard, level: .full) == Reward(grit: 15, xp: 10))
     }
 
     @Test func minimumPaysHalfRoundedUp() {
-        #expect(RewardRules.habitReward(difficulty: .easy, level: .minimum, streakDays: 0).grit == 3)
-        #expect(RewardRules.habitReward(difficulty: .medium, level: .minimum, streakDays: 0).grit == 5)
+        #expect(RewardRules.habitReward(difficulty: .easy, level: .minimum).grit == 3)
+        #expect(RewardRules.habitReward(difficulty: .medium, level: .minimum).grit == 5)
     }
 
     @Test func slippedAndNotDonePayNothing() {
-        #expect(RewardRules.habitReward(difficulty: .hard, level: .slipped, streakDays: 30) == .zero)
-        #expect(RewardRules.habitReward(difficulty: .hard, level: .notDone, streakDays: 30) == .zero)
+        #expect(RewardRules.habitReward(difficulty: .hard, level: .slipped, habitStreakDays: 30, strike: true) == .zero)
+        #expect(RewardRules.habitReward(difficulty: .hard, level: .notDone, habitStreakDays: 30) == .zero)
     }
 
-    @Test func streakBonusIsOnePerWeekCappedAtFive() {
-        #expect(RewardRules.streakBonus(streakDays: 6) == 0)
-        #expect(RewardRules.streakBonus(streakDays: 7) == 1)
-        #expect(RewardRules.streakBonus(streakDays: 100) == 5)
-        #expect(RewardRules.streakBonus(streakDays: -3) == 0)
+    @Test func habitStreakBonusIsOnePercentPerDayCappedAtThirty() {
+        #expect(RewardRules.habitStreakBonus(days: 10) == 0.10)
+        #expect(RewardRules.habitStreakBonus(days: 100) == 0.30)
+        #expect(RewardRules.habitStreakBonus(days: -3) == 0)
+        #expect(RewardRules.habitReward(difficulty: .medium, level: .full, habitStreakDays: 30).grit == 13)
+    }
+
+    @Test func weakHabitsPayMoreAndStrikesDouble() {
+        let neglected = RewardRules.habitReward(difficulty: .medium, level: .full, strengthValue: -47).grit
+        let mastered = RewardRules.habitReward(difficulty: .medium, level: .full, strengthValue: 21).grit
+        #expect(neglected == 30) // capped at 3x
+        #expect(mastered == 6)   // 0.58x
+        #expect(RewardRules.habitReward(difficulty: .medium, level: .full, strike: true).grit == 20)
     }
 
     @Test func focusPaysOneGritPerFiveMinutesAndOneXPPerMinute() {

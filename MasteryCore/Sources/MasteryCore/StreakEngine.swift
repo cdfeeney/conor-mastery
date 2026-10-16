@@ -42,7 +42,7 @@ public struct StreakEngine: Sendable {
 
     /// Replays every day from `start` through `today`.
     public func evaluate(from start: DayKey, through today: DayKey,
-                         habits: [HabitDefinition], completions: [Completion]) -> StreakState {
+                         habits: [HabitDefinition], completions: [Completion], restDays: Set<DayKey> = []) -> StreakState {
         let index = CompletionIndex(completions)
         var current = 0
         var best = 0
@@ -51,7 +51,8 @@ public struct StreakEngine: Sendable {
         var outcomes: [DayKey: DayOutcome] = [:]
 
         for day in DayKey.range(start, through: today, timeZone: timeZone) {
-            let perfect = isPerfect(day, habits: habits, index: index)
+            // Rest days (sick, travel) require nothing: the streak pauses instead of breaking.
+            let perfect = restDays.contains(day) ? nil : isPerfect(day, habits: habits, index: index)
             let outcome: DayOutcome
             switch perfect {
             case .none:

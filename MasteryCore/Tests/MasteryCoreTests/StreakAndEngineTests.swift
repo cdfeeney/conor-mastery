@@ -79,6 +79,10 @@ import Testing
         MasteryState(habits: habits, completions: [], ledger: GritLedger(), startDay: start, timeZone: utc)
     }
 
+    func expected(_ level: CompletionLevel, _ id: String = "a", _ d: DayKey) -> Int {
+        RewardRules.habitReward(difficulty: .hard, level: level, strike: StrikeRules.isStrike(habitID: id, day: d)).grit
+    }
+
     @Test func togglingTheSameDayNeverFarmsGrit() {
         var s = state()
         for _ in 0..<5 {
@@ -86,16 +90,17 @@ import Testing
             s = MasteryEngine.clear(habitID: "a", day: start, in: s).state
         }
         s = MasteryEngine.log(.full, habitID: "a", day: start, in: s).state
-        #expect(s.ledger.balance == 15)
+        #expect(s.ledger.balance == expected(.full, "a", start))
         #expect(s.ledger.totalXP == 10)
+        #expect(s.ledger.transactions.filter { $0.reason == .drop }.count <= 1) // a drop is granted once at most
     }
 
     @Test func downgradingToMinimumRefundsTheDifference() {
         var s = MasteryEngine.log(.full, habitID: "a", day: start, in: state()).state
         let result = MasteryEngine.log(.minimum, habitID: "a", day: start, in: s)
         s = result.state
-        #expect(result.delta.grit == -7)
-        #expect(s.ledger.balance == 8)
+        #expect(result.delta.grit == expected(.minimum, "a", start) - expected(.full, "a", start))
+        #expect(s.ledger.balance == expected(.minimum, "a", start))
         #expect(s.ledger.totalXP == 10)
     }
 
@@ -104,12 +109,18 @@ import Testing
         #expect(result.delta == .zero && result.state.completions.isEmpty)
     }
 
-    @Test func streakBonusUsesYesterdaysStreak() {
-        var s = state([habit("a", .easy)])
+    @Test func priceUsesYesterdaysStrengthAndHabitStreak() {
+        let h = habit("a", .medium)
+        var s = state([h])
         for offset in 0..<7 {
             s = MasteryEngine.log(.full, habitID: "a", day: start.adding(days: offset, timeZone: utc), in: s).state
         }
-        let eighth = MasteryEngine.log(.full, habitID: "a", day: start.adding(days: 7, timeZone: utc), in: s)
-        #expect(eighth.delta.grit == 6) // 5 base + 1 week bonus
+        let eighthDay = start.adding(days: 7, timeZone: utc)
+        let strength = s.strength(on: eighthDay)["a"] ?? 0
+        #expect(strength > 0) // 7 done days made the habit stronger
+        let eighth = MasteryEngine.log(.full, habitID: "a", day: eighthDay, in: s)
+        let want = RewardRules.habitReward(difficulty: .medium, level: .full, strengthValue: strength, habitStreakDays: 7,
+                                           strike: StrikeRules.isStrike(habitID: "a", day: eighthDay)).grit
+        #expect(eighth.delta.grit == want)
     }
 }

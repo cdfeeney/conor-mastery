@@ -66,6 +66,11 @@ struct RewardToastView: View {
                 Text(toast.title).font(.subheadline.weight(.semibold))
                 if toast.reward.grit != 0 { Label("\(toast.reward.grit > 0 ? "+" : "")\(toast.reward.grit)", systemImage: "flame.fill") }
                 if toast.reward.xp > 0 { Text("+\(toast.reward.xp) XP").foregroundStyle(Theme.gold) }
+                if let drop = toast.drop {
+                    Label(drop.kind == .koiEgg ? "Koi egg!" : "Seed: \(Catalog.item(drop.itemID)?.name ?? drop.itemID)",
+                          systemImage: drop.kind == .koiEgg ? "fish.fill" : "leaf.fill")
+                        .foregroundStyle(Theme.jade)
+                }
             }
             .font(.subheadline.monospacedDigit())
             .padding(.horizontal, 16).padding(.vertical, 10)

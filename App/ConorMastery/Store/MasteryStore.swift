@@ -41,6 +41,13 @@ final class MasteryStore {
     /// Habits shown and required today. `state.habits` also holds archived/retired ones for history.
     var habits: [HabitDefinition] { state.habits.filter { $0.isActive(on: today) } }
 
+    /// Strength as of the start of today (drives price, plant tier and drop chance).
+    var strength: [String: Double] { state.strength(on: today) }
+    func tier(_ habitID: String) -> HabitTier { StrengthRules.tier(strength[habitID] ?? 0) }
+    func multiplier(_ habitID: String) -> Double { StrengthRules.multiplier(strength[habitID] ?? 0) }
+    var energy: EnergyState { state.energy(on: today) }
+    var isRestDay: Bool { settings.restDays.contains(today) }
+
     func draftSteps(_ habitID: String) -> [String] { drafts[Self.draftKey(habitID, today)] ?? [] }
 
     static func draftKey(_ habitID: String, _ day: DayKey) -> String { "\(habitID)|\(day.rawValue)" }
@@ -102,7 +109,8 @@ final class MasteryStore {
         let ledger = GritLedger(fetch(SortDescriptor(\LedgerRecord.createdAt)).compactMap(Self.transaction))
         stampFirstSeen()
         state = MasteryState(habits: habitDefinitions(), completions: completions, ledger: ledger,
-                             startDay: settings.startDay, strictStreak: settings.strictStreak, timeZone: timeZone)
+                             startDay: settings.startDay, strictStreak: settings.strictStreak,
+                             restDays: settings.restDays, timeZone: timeZone)
         sleep = fetch(SortDescriptor(\SleepRecord.wakeDay)).compactMap(Self.sleepEntry)
         focus = fetch(SortDescriptor(\FocusRecord.createdAt)).compactMap(Self.focusSession)
         world = Self.loadBlob(WorldState.self, key: BlobKey.world, context: context) ?? WorldState()
@@ -218,4 +226,5 @@ struct RewardToast: Equatable, Identifiable {
     let id = UUID()
     let title: String
     let reward: Reward
+    var drop: Drop? = nil
 }

@@ -15,9 +15,12 @@ struct DojoView: View {
             LinearGradient(colors: [Theme.night, Theme.night.opacity(0.75)], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
             WorldView(building: building, selectedItem: $selectedItem)
+                // Low energy greys the garden out; a Perfect Day or level-up brings colour back.
+                .saturation(1 - store.energy.greyness * 0.85)
             VStack(spacing: 10) {
                 topBar
                 if !building {
+                    EnergyBar(energy: store.energy, isRestDay: store.isRestDay)
                     ProgressCard()
                     if let challenge = store.challenge { ChallengeCard(challenge: challenge) }
                 }
@@ -125,5 +128,23 @@ struct ChallengeCard: View {
         let end = Calendar.current.startOfDay(for: .now).addingTimeInterval(86_400)
         let minutes = Int(end.timeIntervalSinceNow / 60)
         return "\(minutes / 60)h \(minutes % 60)m left"
+    }
+}
+
+struct EnergyBar: View {
+    let energy: EnergyState
+    let isRestDay: Bool
+
+    var body: some View {
+        HStack(spacing: 8) {
+            Image(systemName: isRestDay ? "bed.double.fill" : "bolt.fill").foregroundStyle(Theme.gold)
+            ProgressView(value: Double(energy.value), total: Double(EnergyRules.max))
+                .tint(energy.value > 50 ? Theme.jade : Theme.accent)
+            Text(isRestDay ? "Rest day" : "\(energy.value)").font(.caption.monospacedDigit()).foregroundStyle(.white)
+        }
+        .padding(.horizontal, 14).padding(.vertical, 8)
+        .background(Theme.ink.opacity(0.85), in: Capsule())
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(isRestDay ? "Rest day" : "Energy \(energy.value) of \(EnergyRules.max)")
     }
 }

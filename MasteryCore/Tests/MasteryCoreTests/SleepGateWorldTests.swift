@@ -141,10 +141,11 @@ import Testing
     @Test func undoAfterSpendingGoesNegativeInsteadOfFarming() throws {
         var s = MasteryState(habits: [habit("a", .hard)], completions: [], ledger: GritLedger(), startDay: day("2026-10-01"), timeZone: utc)
         s = MasteryEngine.log(.full, habitID: "a", day: day("2026-10-01"), in: s).state
-        let spent = try s.ledger.spending(15, day: day("2026-10-01"), reason: .purchase, ref: "bamboo")
-        s = MasteryState(habits: s.habits, completions: s.completions, ledger: spent, startDay: s.startDay, timeZone: utc)
+        let paid = s.ledger.balance
+        let spent = try s.ledger.spending(paid, day: day("2026-10-01"), reason: .purchase, ref: "bamboo")
+        s = s.with(ledger: spent)
         s = MasteryEngine.clear(habitID: "a", day: day("2026-10-01"), in: s).state
-        #expect(s.ledger.balance == -15)
+        #expect(s.ledger.balance == -paid)
         s = MasteryEngine.log(.full, habitID: "a", day: day("2026-10-01"), in: s).state
         #expect(s.ledger.balance == 0)
     }

@@ -13,3 +13,9 @@ research/monke/screens/
 research/monke/web-focus/
 research/monke/*.html
 research/monke/rea-web-focus.json
+art/vendor/*
+!art/vendor/README.txt
+art/index/
+# Owned books are copyrighted: never commit them.
+coach/inbox-pdfs/*
+!coach/inbox-pdfs/README.txt

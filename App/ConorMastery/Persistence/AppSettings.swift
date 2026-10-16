@@ -22,6 +22,10 @@ struct AppSettings: Codable, Equatable {
     var soundOn = true
     /// When/where per habit (implementation intentions).
     var habitPlans: [String: HabitPlan] = [:]
+    /// Rest days (sick, travel): nothing required; streak, strength and energy pause. Max 3 a month.
+    var restDays: Set<DayKey> = []
+    /// Real-life rewards priced in grit.
+    var treats: [Treat] = []
 
     static func fresh(today: DayKey) -> AppSettings { AppSettings(startDay: today) }
 
@@ -42,6 +46,8 @@ struct AppSettings: Codable, Equatable {
         lockedInUntil = try c.decodeIfPresent(Date.self, forKey: .lockedInUntil)
         soundOn = try c.decodeIfPresent(Bool.self, forKey: .soundOn) ?? true
         habitPlans = try c.decodeIfPresent([String: HabitPlan].self, forKey: .habitPlans) ?? [:]
+        restDays = try c.decodeIfPresent(Set<DayKey>.self, forKey: .restDays) ?? []
+        treats = try c.decodeIfPresent([Treat].self, forKey: .treats) ?? []
     }
 }
 
