@@ -3,6 +3,7 @@ source: yt:u_DfrP-oaRQ
 title: How to Escape the Dopamine Trap (and Actually Build Something)
 channel: monke
 habits: [no-social-media, reset-focus]
+evidence: "anecdote/opinion (creator channel, unsourced science)"
 ---
 ## Claims
 - Feeling lost around 20-30 is partly the loss of externally imposed structure. [01:31]

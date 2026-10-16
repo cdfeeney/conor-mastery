@@ -3,6 +3,7 @@ source: yt:lRp5AC9W_F8
 title: How To Improve Your Sleep | Matthew Walker
 channel: Penguin Books UK
 habits: [sleep, night-routine]
+evidence: "expert-opinion (sleep scientist, studies unnamed)"
 ---
 ## Claims
 - Alcohol sedates the cortex rather than producing natural sleep, so a nightcap is not a real sleep aid. [00:33]

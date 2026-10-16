@@ -3,6 +3,7 @@ source: yt:RTgJSQtvo88
 title: "Essentials: Sleep Toolkit for Optimizing Sleep & Sleep-Wake Timing"
 channel: Andrew Huberman
 habits: [sleep, night-routine]
+evidence: "expert-opinion (cites literature, guideline numbers are his)"
 ---
 ## Claims
 - Bright light in the first 30-60 minutes after waking helps put the cortisol peak early in the day and starts a timer for sleepiness roughly 16 hours later. [01:01]

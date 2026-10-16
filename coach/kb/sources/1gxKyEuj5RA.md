@@ -3,6 +3,7 @@ source: yt:1gxKyEuj5RA
 title: "How to do hard things (even if you're lazy)"
 channel: monke
 habits: [workout, all]
+evidence: "anecdote/opinion (creator channel, unsourced science)"
 ---
 ## Claims
 - Pushing work onto "tomorrow you" just makes tomorrow worse. [00:00]

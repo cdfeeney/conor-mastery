@@ -19,6 +19,9 @@ Habit citations use `source: "res:<key>"`, `locator: "abstract"` (or a table/fig
 | patel2016 | Patel et al. 2016, "Framing financial incentives to increase physical activity", *Ann Intern Med* 164(6):385–394, doi:10.7326/M15-1635 | RCT (n=281, 13 weeks) | A **loss-framed incentive** (start with $42/month, lose $1.40 per missed day) gave a **50% relative increase** in days the 7,000-step goal was met. **An equal gain-framed reward did no better than control.** | No lasting effect after the incentive stopped. | game: "energy you can lose" beats "points you gain" (loss aversion) |
 | deci1999 | Deci, Koestner & Ryan 1999, extrinsic rewards meta-analysis, *Psychol Bull* 125:627–668 | MA (128 studies) | **Expected, tangible, task-contingent rewards undermined intrinsic motivation** (free-choice d ≈ −0.28 to −0.40). **Positive feedback enhanced it.** | Contested by Cameron & Pierce, though the authors' 2001 follow-up defends it. | game: lead with identity and feedback, not payment; avoid paying for things already enjoyed |
 | mazeas2022 | Mazeas et al. 2022, gamification and physical activity meta-analysis of RCTs, *JMIR* 24(1):e26779, PMC8767479 | MA (RCTs 2010–2020) | **Gamified interventions increased physical activity**, but **long-term effects were small and volatile** (novelty fades). | The pooled steps/day figure is unverified. | game: gamification helps, but needs enforcement and meaning to last |
+| uspstf2021 | USPSTF 2021, "Interventions for tobacco smoking cessation in adults" (final recommendation, Jan 19 2021) | Guideline (grade A) | **Behavioral support plus FDA-approved medication, alone or combined, has substantial net benefit** for non-pregnant adults who smoke (grade A, high certainty). **E-cigarettes as a quit tool: evidence insufficient** (I statement). | Guideline, not a single trial. Drug choice belongs to a clinician. | no-nicotine: "talk to a doctor" is the evidence-based first step, not a disclaimer |
+| lindson2019 | Lindson et al. 2019, Cochrane review CD013308, NRT doses, durations and forms | MA (68 studies, 43k) | **Combination NRT (patch + fast-acting form) beat a single form, RR 1.27 (95% CI 1.17–1.37), high certainty**. Fast-acting alone was similar to the patch alone. | Medication: discuss with a doctor. The app never gives doses. | no-nicotine: why the coach suggests asking about combination NRT |
+| withdrawal-cc | Cleveland Clinic, "Nicotine withdrawal" (clinical patient guide) | Clinical guide | **Onset 4–24 h** after the last dose, **peak on days 2–3**, physical symptoms fade over **~3–4 weeks**. Cravings can linger longer. | Patient-education source, not a trial. | no-nicotine: a day-by-day warning (days 2–3 hardest; week 1 has the most relapses) |
 | burns2023 | Burns et al. 2023, daily light exposure and psychiatric disorders, *Nature Mental Health* (UK Biobank, ~86.7k) | OBS | **More daytime light was associated with lower odds of depression, and more night light with higher odds**, after adjusting for shift work and sleep. **(press)**: about −20% (day) and +30% (night) for depression. | Observational. Sample-size figure differs between sources (86,772 vs 86,631). | morning-routine (outdoor light), night-routine (dim lights) |
 
 ## What this changes in the plan
@@ -28,7 +31,7 @@ Habit citations use `source: "res:<key>"`, `locator: "abstract"` (or a table/fig
 3. **Sleep scoring should weight regularity**, not only hours (windred2024). The app already tracks bedtime and wake spread.
 4. **Deep breathing defaults to cyclic sighing** (balban2023).
 5. **The no-social-media window is evidence-backed**: ~30 min/day, not zero (hunt2018).
-6. **Nicotine: abrupt quit day plus support** (lindson2016). Medication and NRT stay with a doctor.
+6. **Nicotine: abrupt quit day plus support** (lindson2016). Behavioral support plus medication is grade A (uspstf2021), and combination NRT beats a single form (lindson2019). Days 2–3 are the hardest (withdrawal-cc). The app never doses: medication goes through a doctor.
 7. **Game design**: loss framing works (patel2016) but can undermine motivation if it feels like payment
    (deci1999), and novelty fades (mazeas2022). Use softened loss (energy) plus identity and feedback plus
    Screen Time enforcement.
@@ -44,3 +47,6 @@ Habit citations use `source: "res:<key>"`, `locator: "abstract"` (or a table/fig
 - Deci: https://leeds-faculty.colorado.edu/dahe7472/deci%201999.pdf
 - Mazeas: https://jmir.org/2022/1/e26779
 - Burns: https://www.nationalelfservice.net/mental-health/depression/associations-between-daily-light-exposure-and-psychiatric-disorders/
+- USPSTF: https://www.uspreventiveservicestaskforce.org/uspstf/recommendation/tobacco-use-in-adults-and-pregnant-women-counseling-and-interventions
+- Cochrane CD013308: https://www.cochrane.org/evidence/CD013308_which-combinations-stop-smoking-medications-and-e-cigarettes-help-people-quit
+- Withdrawal: https://my.clevelandclinic.org/health/diseases/21587-nicotine-withdrawal

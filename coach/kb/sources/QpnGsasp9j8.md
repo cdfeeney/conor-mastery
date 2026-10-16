@@ -3,6 +3,7 @@ source: yt:QpnGsasp9j8
 title: How to Quit Smoking, Vaping or Dipping Tobacco
 channel: Huberman Lab Clips
 habits: [no-nicotine]
+evidence: "expert-opinion (names 1993 hypnosis study + 2020 review)"
 ---
 ## Claims
 - Unaided cold-turkey quitting succeeds only about 5% of the time, and many of those later relapse. [00:02]

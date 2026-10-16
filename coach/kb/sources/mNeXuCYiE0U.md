@@ -3,6 +3,7 @@ source: yt:mNeXuCYiE0U
 title: "1% Better Every Day - James Clear at ConvertKit Craft + Commerce 2017"
 channel: Kit
 habits: [all]
+evidence: "expert-opinion (retells studies, e.g. implementation intentions: res:gollwitzer2006)"
 ---
 ## Claims
 - British Cycling's "marginal gains" approach: improve many small things by 1% (gear, sleep pillows, hand washing). [01:06]

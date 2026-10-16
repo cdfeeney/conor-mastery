@@ -3,6 +3,7 @@ source: yt:U_nzqnXWvSo
 title: "Atomic Habits: How to Get 1% Better Every Day - James Clear"
 channel: APB Speakers
 habits: [all]
+evidence: "expert-opinion (popular author, retells studies)"
 ---
 ## Claims
 - Daily 1% gains compound to roughly 37x in a year; 1% daily decline compounds toward zero. [00:01]

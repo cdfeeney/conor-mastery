@@ -3,6 +3,7 @@ source: yt:bt5ue-1wLvc
 title: 5 habits for good sleep.
 channel: monke
 habits: [sleep, night-routine]
+evidence: "anecdote/opinion (creator channel, unsourced science)"
 ---
 ## Claims
 - Going to bed and waking at the same times daily, plus morning sunlight, anchors the circadian rhythm. [01:01]

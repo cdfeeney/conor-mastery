@@ -3,6 +3,7 @@ source: yt:3E7hkPZ-HTk
 title: "Quit social media | Dr. Cal Newport | TEDxTysons"
 channel: TEDx Talks
 habits: [no-social-media, reset-focus]
+evidence: "expert-opinion (argument, no named studies)"
 ---
 ## Claims
 - The speaker has never had a social media account and reports still having friends, news and collaborators. [01:12]

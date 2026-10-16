@@ -3,6 +3,7 @@ source: book:bennett-24-hours
 title: How to Live on 24 Hours a Day
 author: Arnold Bennett
 habits: [morning-routine, reset-focus, night-routine, meditation, no-social-media]
+evidence: "historical-opinion (pre-modern essay; not research)"
 ---
 ## Claims
 - Everyone gets the same 24 hours daily; it cannot be stolen or saved, only spent well or badly. [¶19]

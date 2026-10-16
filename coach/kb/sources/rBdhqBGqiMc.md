@@ -3,6 +3,7 @@ source: yt:rBdhqBGqiMc
 title: "Reduce Anxiety & Stress with the Physiological Sigh"
 channel: Andrew Huberman
 habits: [deep-breathing]
+evidence: "expert-opinion (later tested: res:balban2023)"
 ---
 ## Claims
 - Most stress tools require stepping away; the physiological sigh calms you in real time, mid-task. [00:35]

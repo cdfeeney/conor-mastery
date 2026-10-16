@@ -3,6 +3,7 @@ source: yt:2VpDCs0tbGA
 title: Focusing all day gets easy if you do these habits
 channel: monke
 habits: [reset-focus]
+evidence: "anecdote/opinion (creator channel, unsourced science)"
 ---
 ## Claims
 - Better focus shortens required study time. [00:30]

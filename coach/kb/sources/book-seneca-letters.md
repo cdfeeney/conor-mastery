@@ -3,6 +3,7 @@ source: book:seneca-letters
 title: Moral Letters to Lucilius
 author: Seneca (tr. Gummere)
 habits: [reset-focus, no-social-media, night-routine, meditation, morning-routine, sleep, deep-breathing]
+evidence: "historical-opinion (pre-modern essay; not research)"
 ---
 ## Claims
 - Time is the one thing truly ours, and much of it leaks away through carelessness, idleness or off-purpose activity. [¶3]

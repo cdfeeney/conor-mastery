@@ -3,6 +3,7 @@ source: yt:KHIbgSN2qAU
 title: "10 Minute Non-Sleep Deep Rest (NSDR)"
 channel: Huberman Lab Clips
 habits: [meditation, deep-breathing]
+evidence: "expert-opinion (guided protocol)"
 ---
 ## Claims
 - NSDR is a guided protocol to relax the nervous system and restore mental and physical energy, any time of day. [00:04]

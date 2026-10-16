@@ -3,6 +3,7 @@ source: book:smiles-self-help
 title: Self-Help
 author: Samuel Smiles
 habits: [workout, no-nicotine, morning-routine, reset-focus, night-routine]
+evidence: "historical-opinion (pre-modern essay; not research)"
 ---
 ## Claims
 - Luck mostly favours the people who keep showing up; ordinary qualities like attention, application and perseverance matter more than special talent. [¶195]

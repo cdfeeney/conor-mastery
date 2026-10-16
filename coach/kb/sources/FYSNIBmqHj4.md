@@ -3,6 +3,7 @@ source: yt:FYSNIBmqHj4
 title: 5 habits for great mornings
 channel: monke
 habits: [morning-routine]
+evidence: "anecdote/opinion (creator channel, unsourced science)"
 ---
 ## Claims
 - Morning light on the eyes triggers a cortisol spike and sets a sleep timer; melatonin arrives about 16 hours later. [00:30]

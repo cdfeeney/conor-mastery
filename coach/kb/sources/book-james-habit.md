@@ -3,6 +3,7 @@ source: book:james-habit
 title: Habit (Principles of Psychology, ch. 4)
 author: William James
 habits: [morning-routine, no-nicotine, night-routine, reset-focus]
+evidence: "historical-opinion (pre-modern essay; not research)"
 ---
 ## Claims
 - The nervous system grows to the ways in which it has been exercised. [¶16]

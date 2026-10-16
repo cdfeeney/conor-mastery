@@ -3,6 +3,7 @@ source: yt:Zc2lu3u-0CQ
 title: How To Make Self-Improvement Into A Video Game
 channel: monke
 habits: [all]
+evidence: "anecdote/opinion (creator channel, unsourced science)"
 ---
 ## Claims
 - Discipline, focus and confidence are skills that level with use, not fixed traits. [00:31]

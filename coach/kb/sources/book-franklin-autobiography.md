@@ -3,6 +3,7 @@ source: book:franklin-autobiography
 title: Autobiography (thirteen virtues and the little book)
 author: Benjamin Franklin
 habits: [night-routine, morning-routine, reset-focus, no-nicotine]
+evidence: "historical-opinion (pre-modern essay; not research)"
 ---
 ## Claims
 - Merely believing it is in your interest to be good does not stop slips; old habits must be broken and new ones established. [¶194]

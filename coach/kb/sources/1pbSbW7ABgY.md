@@ -3,6 +3,7 @@ source: yt:1pbSbW7ABgY
 title: If you want to focus all day, do this easy morning routine.
 channel: monke
 habits: [morning-routine, reset-focus]
+evidence: "anecdote/opinion (creator channel, unsourced science)"
 ---
 ## Claims
 - A realistic daily routine beats an extreme 4 am hero routine for people with work or school. [00:00]
