@@ -6,6 +6,7 @@ enum AppTab: Hashable { case dojo, today, focus, sleep, coach }
 struct RootView: View {
     @State private var store: MasteryStore
     @State private var screenTime = ScreenTimeService()
+    private let notifications = NotificationService()
     @State private var tab: AppTab = .dojo
     @Environment(\.scenePhase) private var scenePhase
 
@@ -36,7 +37,12 @@ struct RootView: View {
         }
         .onChange(of: scenePhase) { _, phase in if phase == .active { refresh() } }
         // Any habit change can open or close the morning gate.
-        .onChange(of: store.state.completions.count) { _, _ in screenTime.apply(store: store) }
+        .onChange(of: store.state.completions.count) { _, _ in
+            screenTime.apply(store: store)
+            Task { await notifications.reschedule(store.reminders()) }
+        }
+        .onChange(of: store.settings) { _, _ in Task { await notifications.reschedule(store.reminders()) } }
+        .task { if await notifications.requestAuthorization() { await notifications.reschedule(store.reminders()) } }
     }
 
     private var errorBinding: Binding<Bool> {
@@ -47,6 +53,7 @@ struct RootView: View {
         store.reload()
         store.syncCoach()
         screenTime.apply(store: store)
+        Task { await notifications.reschedule(store.reminders()) }
     }
 }
 

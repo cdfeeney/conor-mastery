@@ -8,6 +8,7 @@ struct HabitCard: View {
     let onSleep: () -> Void
     @Environment(MasteryStore.self) private var store
     @State private var expanded = false
+    @State private var editingPlan = false
 
     private var completion: Completion? { store.completion(habit.id) }
     private var level: CompletionLevel? { completion?.level }
@@ -16,6 +17,12 @@ struct HabitCard: View {
         VStack(alignment: .leading, spacing: 8) {
             header
             Text(habit.identity).font(.subheadline.italic()).foregroundStyle(.secondary)
+            Button { editingPlan = true } label: {
+                Label(store.settings.habitPlans[habit.id]?.cue ?? "Set when & where", systemImage: "clock")
+                    .font(.caption.weight(.semibold))
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(store.settings.habitPlans[habit.id] == nil ? Theme.accent : .secondary)
             if let min = habit.min { Text("Min: \(min)").font(.caption).foregroundStyle(.secondary) }
             if habit.kind == .checklist && (expanded || level == nil) { checklist }
             HStack {
@@ -40,6 +47,7 @@ struct HabitCard: View {
             if completion != nil { Button("Undo") { store.clear(habitID: habit.id) }.tint(.blue) }
         }
         .accessibilityElement(children: .contain)
+        .sheet(isPresented: $editingPlan) { HabitPlanSheet(habit: habit) }
     }
 
     private var header: some View {

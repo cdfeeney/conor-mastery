@@ -20,6 +20,8 @@ struct AppSettings: Codable, Equatable {
     /// Locked-in focus end time (the monitor reads it through the gate snapshot).
     var lockedInUntil: Date?
     var soundOn = true
+    /// When/where per habit (implementation intentions).
+    var habitPlans: [String: HabitPlan] = [:]
 
     static func fresh(today: DayKey) -> AppSettings { AppSettings(startDay: today) }
 
@@ -39,6 +41,7 @@ struct AppSettings: Codable, Equatable {
         unblockUntil = try c.decodeIfPresent(Date.self, forKey: .unblockUntil)
         lockedInUntil = try c.decodeIfPresent(Date.self, forKey: .lockedInUntil)
         soundOn = try c.decodeIfPresent(Bool.self, forKey: .soundOn) ?? true
+        habitPlans = try c.decodeIfPresent([String: HabitPlan].self, forKey: .habitPlans) ?? [:]
     }
 }
 

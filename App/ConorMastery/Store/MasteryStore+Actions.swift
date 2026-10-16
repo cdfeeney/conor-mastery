@@ -205,6 +205,21 @@ extension MasteryStore {
         }
     }
 
+    // MARK: - When/where plans
+
+    func setPlan(_ plan: HabitPlan?, habitID: String) {
+        var s = settings
+        s.habitPlans[habitID] = (plan?.time == nil && plan?.place == nil) ? nil : plan
+        update(settings: s)
+    }
+
+    func reminders(now: Date = .now) -> [Reminder] {
+        let parts = Calendar.current.dateComponents([.hour, .minute], from: now)
+        return ReminderPlanner.plan(day: today, now: ClockTime(hour: parts.hour ?? 0, minute: parts.minute ?? 0),
+                                    habits: habits, plans: settings.habitPlans, index: index, gate: settings.gate,
+                                    streakDays: streak.current, timeZone: timeZone)
+    }
+
     // MARK: - Helpers
 
     func commitLedger(_ next: GritLedger) {

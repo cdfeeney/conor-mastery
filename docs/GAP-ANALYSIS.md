@@ -18,10 +18,10 @@ but have never been compiled. The first Mac build is owner-approved and pending.
 | # | Gap | Why it matters | Size |
 |---|---|---|---|
 | P1 | **Art is emoji** | The owner rejected it. The world is the main reward, so it has to look earned. | L (see ART-DIRECTION.md) |
-| P2 | **No notifications** | Monke's #2 enforcement tool. Without them there's no morning nudge, no wind-down warning and no "streak at risk". | S |
+| P2 | ~~No notifications~~ **Done (uncompiled)**: ReminderPlanner (tested) + NotificationService: habit cues, wind-down warning, streak at risk | Monke's #2 enforcement tool. Without them there's no morning nudge, no wind-down warning and no "streak at risk". | S |
 | P3 | **Rewards are flat** | No habit-strength drift, no crits, no drops (Habitica). Every tick pays the same, so it gets boring by week 3. | M (core logic) |
 | P4 | **No real loss** | Only the streak can be lost. Nothing wilts, so missing costs little in the game. | M |
-| P5 | **No when/where per habit** | The KB's strongest finding: a written time and place roughly doubles follow-through (Clear, mNeXuCYiE0U @ 06:44). | S |
+| P5 | ~~No when/where~~ **Done (uncompiled)**: HabitPlan + plan sheet on every card; drives the cue reminder | The KB's strongest finding: a written time and place roughly doubles follow-through (Clear, mNeXuCYiE0U @ 06:44). | S |
 | P6 | **No habit editor** | Habits come only from the coach plan, so you can't add your own or change times on the phone. | M |
 | P7 | **No onboarding** | Monke's survey becomes a plan. Ours opens straight into 9 habits. | M |
 | P8 | **Coach doesn't adapt** | The app writes daily-log.json, but nothing on the PC reads it to change the plan or challenges. | M (Python) |
