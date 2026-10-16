@@ -1,0 +1,197 @@
+<title>Conor Mastery Briefing</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: one reading column with a sticky section index on wide screens; tables scroll inside their own box. */
+:root {
+  --bg: #f7f5ef; --surface: #ffffff; --fg: #1d2030; --muted: #5e6275; --line: #e2ddd0;
+  --accent: #b8432a; --jade: #1f7a43; --gold: #a8730c; --warn-bg: #fdf1e8; --ok-bg: #eaf5ee; --chip: #efe9dc;
+  --display: "Fraunces", Georgia, serif; --body: "Atkinson Hyperlegible", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #15171f; --surface: #1d2029; --fg: #ecebe6; --muted: #a4a7b6; --line: #2e3240;
+  --accent: #ec7a5d; --jade: #5cc489; --gold: #e3b04b; --warn-bg: #2a1f1a; --ok-bg: #18271f; --chip: #262a35; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #15171f; --surface: #1d2029; --fg: #ecebe6; --muted: #a4a7b6; --line: #2e3240;
+  --accent: #ec7a5d; --jade: #5cc489; --gold: #e3b04b; --warn-bg: #2a1f1a; --ok-bg: #18271f; --chip: #262a35; color-scheme: dark; }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font: 16px/1.6 var(--body);
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px; }
+.page { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 48px; }
+@media (max-width: 860px) { .page { grid-template-columns: minmax(0, 1fr); } nav.toc { display: none; } }
+nav.toc { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 24px); align-self: start; font-size: 14px; display: grid; gap: 6px; }
+nav.toc a { color: var(--muted); text-decoration: none; } nav.toc a:hover { color: var(--accent); }
+main { min-width: 0; max-width: 72ch; }
+h1 { font: 800 clamp(34px, 6vw, 52px)/1.05 var(--display); margin: 0 0 10px; text-wrap: balance; }
+h2 { font: 800 28px/1.15 var(--display); margin: 56px 0 12px; text-wrap: balance; scroll-margin-top: 24px; }
+h3 { font: 600 19px/1.3 var(--display); margin: 28px 0 8px; }
+p { margin: 0 0 14px; }
+.lede { font-size: 19px; color: var(--muted); }
+.eyebrow { text-transform: uppercase; letter-spacing: .1em; font-size: 12px; font-weight: 700; color: var(--accent); }
+.box { overflow-x: auto; margin: 14px 0 20px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; }
+th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); padding: 10px 12px; border-bottom: 1px solid var(--line); }
+td { padding: 10px 12px; border-top: 1px solid var(--line); vertical-align: top; }
+tr:first-child td { border-top: 0; }
+.pill { display: inline-block; font-size: 12px; font-weight: 700; padding: 2px 9px; border-radius: 999px; white-space: nowrap; }
+.ok { background: var(--ok-bg); color: var(--jade); } .warn { background: var(--warn-bg); color: var(--accent); } .mid { background: var(--chip); color: var(--gold); }
+.loop { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 16px 0; }
+.loop div { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.loop b { display: block; font-family: var(--display); font-size: 17px; }
+.loop small { color: var(--muted); }
+.chart { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin: 14px 0; }
+.chart svg { width: 100%; height: auto; display: block; }
+.chart text { fill: var(--muted); font: 12px var(--body); }
+.callout { border-left: 3px solid var(--accent); padding: 4px 0 4px 16px; margin: 18px 0; color: var(--fg); }
+code { background: var(--chip); padding: 1px 6px; border-radius: 6px; font-size: 13.5px; }
+ol.decide li { margin-bottom: 8px; }
+a { color: var(--accent); }
+</style>
+
+<div class="page">
+  <nav class="toc" aria-label="Sections">
+    <a href="#built">1. What's built</a>
+    <a href="#gamification">2. How gamification works</a>
+    <a href="#compare">3. Monke vs Habitica vs us</a>
+    <a href="#v2">4. Proposed reward system</a>
+    <a href="#gaps">5. Gaps</a>
+    <a href="#art">6. Art</a>
+    <a href="#decide">7. Your decisions</a>
+  </nav>
+  <main>
+    <div class="eyebrow">Conor Mastery · 16 Oct 2026</div>
+    <h1>What we built, and what's still missing</h1>
+    <p class="lede">A plain-language walkthrough before the first real build: what exists, how the game side is meant to keep you coming back, where the programming and the knowledge base are still thin, and how the pixel-art garden replaces the emoji.</p>
+
+    <h2 id="built">1. What's built</h2>
+    <p>Think of the app as four layers. Only the bottom two have been run and checked. The top two are written, but no iPhone build has run yet.</p>
+    <div class="box"><table>
+      <tr><th>Layer</th><th>What it does</th><th>Status</th></tr>
+      <tr><td><b>Coach knowledge base</b></td><td>Turns 15 YouTube videos and 5 public-domain books (Franklin, William James, Arnold Bennett, Samuel Smiles, Seneca) into cited notes. These feed each habit's reason, identity line, minimum version and daily challenges.</td><td><span class="pill ok">Verified</span> 363 citations checked by script</td></tr>
+      <tr><td><b>Game logic</b> (MasteryCore)</td><td>All the rules: grit, XP, belt levels, the Perfect Day streak, Second Winds, sleep stats, when apps lock, the garden, and the file format shared with the coach.</td><td><span class="pill ok">Verified</span> 54 automated tests pass</td></tr>
+      <tr><td><b>iPhone screens</b></td><td>Dojo (garden + HUD), Today (habit cards), Focus timer, Sleep log, Coach, Shop, Settings.</td><td><span class="pill mid">Written</span> never compiled</td></tr>
+      <tr><td><b>Enforcement</b></td><td>Screen Time blocking: social apps lock at wind-down until the morning routine is done. Locked-in focus. Paid unlocks.</td><td><span class="pill mid">Written</span> needs a real iPhone and Apple's entitlement</td></tr>
+    </table></div>
+    <p>A clickable browser mock of the screens is in the <a href="https://claude.ai/artifact/UNdfhm6Ax2TGRXzr68zDzC" target="_blank" rel="noopener">app preview</a>.</p>
+
+    <h2 id="gamification">2. How gamification actually works</h2>
+    <p>Points and badges alone don't change behaviour. A habit game works when it pulls on a handful of well-understood levers. These are the ones that matter for you:</p>
+    <div class="loop">
+      <div><b>Trigger</b><small>Something prompts you: a notification, the morning gate, the app icon.</small></div>
+      <div><b>Action</b><small>The smallest possible step: tick a habit, start a timer.</small></div>
+      <div><b>Reward</b><small>Something you feel right away: grit, XP, a sound, a sprite popping.</small></div>
+      <div><b>Investment</b><small>You put something in that makes coming back worth more: the garden you built.</small></div>
+    </div>
+    <h3>The five levers</h3>
+    <div class="box"><table>
+      <tr><th>Lever</th><th>Why it works</th><th>How the apps use it</th></tr>
+      <tr><td><b>Visible progress</b></td><td>Seeing yourself get better (competence) is the strongest motivator there is.</td><td>Levels, belts, a garden that grows from bare ground.</td></tr>
+      <tr><td><b>Variable reward</b></td><td>A reward you can't predict is more compelling than a fixed one. It's the same pull as a slot machine, used for good here.</td><td>Habitica's 3% critical hits and random drops. Ours has none yet.</td></tr>
+      <tr><td><b>Loss aversion</b></td><td>Losing something hurts about twice as much as gaining it feels good.</td><td>Streaks, Habitica's health bar. Too harsh, though, and one bad week makes people quit.</td></tr>
+      <tr><td><b>Investment</b></td><td>The more you've built, the harder it is to walk away.</td><td>Monke's island, our garden.</td></tr>
+      <tr><td><b>Adaptive difficulty</b></td><td>Easy wins should pay little and hard things should pay a lot, or the game gets boring.</td><td>Habitica pays more for neglected habits. Ours pays the same every time.</td></tr>
+    </table></div>
+    <p class="callout">The trap to avoid: points can crowd out the real reason you're doing a habit. Researchers call this the overjustification effect. That's why every habit card leads with your identity line ("I'm free. I don't need it.") and the coach's reason, with the reward second.</p>
+
+    <h2 id="compare">3. Monke vs Habitica vs Conor Mastery</h2>
+    <p>Monke had to be reverse-engineered from the outside: screenshots, release notes, reviews and its web timer. Habitica is open source, so its actual formulas were read from the code.</p>
+    <div class="box"><table>
+      <tr><th></th><th>Monke</th><th>Habitica</th><th>Conor Mastery today</th></tr>
+      <tr><td>Currency</td><td>Bananas</td><td>Gold</td><td>Grit</td></tr>
+      <tr><td>Rewards scale with how weak a habit is</td><td>No</td><td><b>Yes</b> (task value drift)</td><td>No</td></tr>
+      <tr><td>Random bonus rewards</td><td>Character unlock chance</td><td><b>Crits + drops</b></td><td>No</td></tr>
+      <tr><td>Penalty for missing</td><td>Streak only (with potions)</td><td>Health damage, death</td><td>Streak only (Second Winds)</td></tr>
+      <tr><td>World you build</td><td><b>Island</b></td><td>Pets and mounts</td><td>Garden (emoji for now)</td></tr>
+      <tr><td>Blocks your apps</td><td><b>Yes</b></td><td>No</td><td><b>Yes</b></td></tr>
+      <tr><td>Real-life rewards you set</td><td>No</td><td><b>Yes</b></td><td>No</td></tr>
+      <tr><td>Coach with sources</td><td>Templates</td><td>No</td><td><b>Yes</b></td></tr>
+    </table></div>
+    <h3>Habitica's best idea: habits that are weak pay more</h3>
+    <p>Every Habitica task has a hidden "value". Doing it raises the value and missing it lowers it. The reward is <code>0.9747<sup>value</sup></code>, so a neglected habit pays up to about 3.4× and a habit you've mastered pays about 0.6×. The game automatically steers you toward what you're avoiding.</p>
+    <div class="chart" role="img" aria-label="Reward multiplier falls from about 3.4 at value minus 47 to about 0.58 at value plus 21">
+      <svg id="curve" viewBox="0 0 640 230"></svg>
+    </div>
+
+    <h2 id="v2">4. Proposed reward system (v0.2)</h2>
+    <p>The design keeps Monke's look and enforcement, adds Habitica's maths, and softens the punishment so one bad week can't end the game:</p>
+    <div class="box"><table>
+      <tr><th>Mechanic</th><th>Rule</th><th>Lever</th></tr>
+      <tr><td><b>Habit strength</b></td><td>Each habit drifts weak or strong. Weak habits pay up to 3× grit and show as a wilting plant in your garden.</td><td>Adaptive difficulty</td></tr>
+      <tr><td><b>Focused Strike</b></td><td>A 4% chance that any completion pays double, with a sound and a sprite burst.</td><td>Variable reward</td></tr>
+      <tr><td><b>Habit streak bonus</b></td><td>+1% grit per day of that habit's own streak (max +30%).</td><td>Loss aversion</td></tr>
+      <tr><td><b>Energy</b></td><td>Missed habits drain it, and the garden greys out. A Perfect Day or a level-up refills it. No death and no lost levels.</td><td>Loss aversion, softened</td></tr>
+      <tr><td><b>Never miss twice</b></td><td>A miss followed by a done day refunds half the lost energy.</td><td>Recovery (from the KB)</td></tr>
+      <tr><td><b>Rest days</b></td><td>Up to 3 per month for illness or travel. They pause streaks and energy.</td><td>Fairness</td></tr>
+      <tr><td><b>Seeds &amp; koi drops</b></td><td>Completions can drop seeds or koi eggs that grow into garden collectibles.</td><td>Variable reward + investment</td></tr>
+      <tr><td><b>Real-life treats</b></td><td>You price your own rewards ("cheat meal = 150 grit").</td><td>Meaningful currency</td></tr>
+    </table></div>
+
+    <h2 id="gaps">5. Gaps</h2>
+    <h3>Programming</h3>
+    <div class="box"><table>
+      <tr><th>Gap</th><th>Why it matters</th></tr>
+      <tr><td><span class="pill warn">High</span> Art is emoji</td><td>The garden is the main reward. See section 6.</td></tr>
+      <tr><td><span class="pill warn">High</span> No notifications</td><td>No morning nudge, no wind-down warning, no "streak at risk".</td></tr>
+      <tr><td><span class="pill warn">High</span> Rewards are flat</td><td>No strength drift, crits or drops (section 4).</td></tr>
+      <tr><td><span class="pill warn">High</span> Never compiled</td><td>One Mac build is approved and runs once you've read this.</td></tr>
+      <tr><td><span class="pill mid">Med</span> No when/where per habit</td><td>The KB's strongest finding: writing down when and where roughly doubles follow-through.</td></tr>
+      <tr><td><span class="pill mid">Med</span> No habit editor or onboarding</td><td>You can't add your own habits on the phone yet.</td></tr>
+      <tr><td><span class="pill mid">Med</span> Coach doesn't adapt</td><td>The app logs your days, but nothing reads the log to change the plan yet.</td></tr>
+      <tr><td><span class="pill mid">Med</span> No rest mode, treats, widgets, sound</td><td>Fairness and feel.</td></tr>
+    </table></div>
+    <h3>Knowledge base</h3>
+    <div class="box"><table>
+      <tr><th>Gap</th><th>Fix</th></tr>
+      <tr><td><span class="pill warn">High</span> No modern habit books (Atomic Habits, Tiny Habits, Dopamine Nation, Why We Sleep, Deep Work, Allen Carr)</td><td>They're copyrighted. If you own copies, put the PDFs in <code>coach/inbox-pdfs/</code> and they'll be OCR'd and page-cited like the training books.</td></tr>
+      <tr><td><span class="pill warn">High</span> No peer-reviewed research layer</td><td>Add open-access studies: habit formation takes a median of about 66 days (Lally 2010), the implementation-intentions meta-analysis (Gollwitzer &amp; Sheeran 2006), sleep regularity, and clinical nicotine-cessation guidance.</td></tr>
+      <tr><td><span class="pill mid">Med</span> Nicotine coverage is thin</td><td>One video plus one book chapter. Needs the clinical guidance and a withdrawal timeline. Medication stays with your doctor.</td></tr>
+      <tr><td><span class="pill mid">Med</span> Claims aren't graded</td><td>Tag each one research / expert opinion / anecdote. Most YouTube claims are the speaker's own word.</td></tr>
+      <tr><td><span class="pill mid">Med</span> 6 videos rate-limited</td><td>Re-run the fetcher later.</td></tr>
+    </table></div>
+
+    <h2 id="art">6. Art: from emoji to a pixel dojo</h2>
+    <p>You're right that emoji can't carry this. The plan is a 16×16 top-down pixel-art garden built on <b>Ninja Adventure</b> by pixel-boy. It's a free asset pack released as CC0 (public domain, fine to use in any app), with ninja characters, Japanese village tiles, trees, houses, UI, sound effects and music. Original sprites for the belt-coloured character, dojo, koi pond and torii will match its palette.</p>
+    <div class="box"><table>
+      <tr><th>Game state</th><th>What you'll see</th></tr>
+      <tr><td>Habit strength</td><td>Each habit is a plant: wilted, healthy or blooming.</td></tr>
+      <tr><td>Low energy</td><td>The garden desaturates and leaves fall.</td></tr>
+      <tr><td>Perfect Day</td><td>Lanterns light up at night and fireflies appear.</td></tr>
+      <tr><td>Level-up</td><td>Your belt colour changes, with a particle burst.</td></tr>
+      <tr><td>Focus</td><td>Your character meditates by an animated fire.</td></tr>
+    </table></div>
+    <p>One step needs you: itch.io blocks scripted downloads. On the <a href="https://pixel-boy.itch.io/ninja-adventure-asset-pack" target="_blank" rel="noopener">pack's page</a>, click <i>Download Now</i>, then <i>No thanks, just take me to the downloads</i>, and save <code>Ninja Adventure - Asset Pack.zip</code> to <code>D:\projects\conor-mastery\art\vendor\</code>.</p>
+
+    <h2 id="decide">7. Your decisions</h2>
+    <ol class="decide">
+      <li><b>Reward system</b>: adopt the section 4 design (strength drift, crits, energy without death, drops, treats)?</li>
+      <li><b>Art</b>: go with the Ninja Adventure pixel style, and download the zip?</li>
+      <li><b>Books</b>: do you own any of the modern habit books as PDF or Kindle?</li>
+      <li><b>Build order</b>: the recommendation is reward system + notifications + when/where, then art, then the first Mac build, so the build tests the real thing.</li>
+    </ol>
+  </main>
+</div>
+
+<script>
+(() => {
+  const svg = document.getElementById("curve");
+  const W = 640, H = 230, L = 46, R = 16, T = 14, B = 34;
+  const xMin = -47.27, xMax = 21.27, yMax = 3.5;
+  const x = v => L + (v - xMin) / (xMax - xMin) * (W - L - R);
+  const y = m => T + (1 - m / yMax) * (H - T - B);
+  const ns = "http://www.w3.org/2000/svg";
+  const el = (tag, attrs, text) => { const e = document.createElementNS(ns, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (text) e.textContent = text; svg.appendChild(e); return e; };
+  [0, 1, 2, 3].forEach(m => { el("line", { x1: L, x2: W - R, y1: y(m), y2: y(m), stroke: "currentColor", "stroke-opacity": .12 }); el("text", { x: L - 8, y: y(m) + 4, "text-anchor": "end" }, m + "×"); });
+  [-40, -20, 0, 20].forEach(v => el("text", { x: x(v), y: H - 12, "text-anchor": "middle" }, v));
+  el("text", { x: (L + W - R) / 2, y: H - 0, "text-anchor": "middle" }, "habit value  (neglected ← → mastered)");
+  let d = "";
+  for (let v = xMin; v <= xMax + 0.01; v += 0.5) d += (d ? "L" : "M") + x(v).toFixed(1) + " " + y(0.9747 ** v).toFixed(1);
+  const accent = getComputedStyle(document.documentElement).getPropertyValue("--accent").trim() || "#b8432a";
+  el("path", { d: d + `L${x(xMax)} ${y(0)} L${x(xMin)} ${y(0)} Z`, fill: accent, "fill-opacity": .12, stroke: "none" });
+  el("path", { d, fill: "none", stroke: accent, "stroke-width": 2.5 });
+  [[xMin, "3.4× neglected"], [0, "1× new"], [xMax, "0.58× mastered"]].forEach(([v, label], i) => {
+    const m = 0.9747 ** v; el("circle", { cx: x(v), cy: y(m), r: 4, fill: accent });
+    el("text", { x: x(v) + (i === 2 ? -6 : 8), y: y(m) - 8, "text-anchor": i === 2 ? "end" : "start" }, label);
+  });
+  svg.style.color = getComputedStyle(document.body).color;
+})();
+</script>
