@@ -5,7 +5,7 @@
 | Piece | Proof |
 |---|---|
 | Game logic: grit, XP, levels and belts, Perfect Day streak, Second Winds, sleep stats, gate policy, garden, coach contract | 54 tests pass on Windows |
-| Coach knowledge base: 15 YouTube notes, 5 public-domain books, 9 habit protocols | `check_kb.py`: 312 note citations + 51 habit citations, 0 bad |
+| Coach knowledge base: 15 YouTube notes, 5 public-domain books, 10 peer-reviewed studies, 9 habit protocols | `check_kb.py`: 312 note citations + 57 habit citations, 0 bad |
 | Monke and Habitica teardowns | `research/` |
 
 ## Built but never run
@@ -36,7 +36,7 @@ but have never been compiled. The first Mac build is owner-approved and pending.
 | # | Gap | Fix |
 |---|---|---|
 | K1 | **No modern habit-science books**: Atomic Habits, Tiny Habits, Dopamine Nation, Why We Sleep, Deep Work, Allen Carr's Easy Way to Stop Smoking | They're copyrighted, so they need owned copies (Kindle/PDF). Drop them in `coach/inbox-pdfs/`; OCR them, then write page-cited notes. |
-| K2 | **No research layer**: no peer-reviewed sources. Most YouTube claims are the speaker's own word. | Add open-access studies: Lally 2010 (habit formation takes a median ~66 days), Gollwitzer & Sheeran 2006 (implementation intentions meta-analysis), sleep-regularity studies, clinical nicotine-cessation guidance (CDC/USPSTF). |
+| K2 | ~~No research layer~~ **Done 2026-10-16**: `coach/kb/research/RESEARCH.md` has 10 verified studies (habit formation, implementation intentions, sleep regularity, cyclic sighing, social-media limits, abrupt quitting, loss-framed incentives, overjustification, gamification MA, light exposure). | Next: clinical cessation guidance (CDC/USPSTF) for K4. |
 | K3 | **6 videos still blocked** by YouTube rate limits (Huberman light, Lembke social media, Huberman focus, vaping withdrawal, two monke videos) | Re-run `fetch_youtube.py` later. |
 | K4 | **Nicotine is thin**: one Huberman clip, one book chapter | Add the clinical guidance (K2) plus a withdrawal timeline. Medication stays with a doctor. |
 | K5 | **No evidence grade on claims** | Tag each claim as research / expert opinion / anecdote so the coach weights them. |

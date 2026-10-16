@@ -20,6 +20,7 @@ BOOKS = ROOT / "raw" / "books"
 PARA = re.compile(r"\[¶(\d+)\]")
 SOURCES = ROOT / "kb" / "sources"
 HABITS = ROOT / "kb" / "habits"
+RESEARCH = ROOT / "kb" / "research" / "RESEARCH.md"
 MARK = re.compile(r"\[(\d{1,2}:\d{2})\]")
 
 
@@ -74,6 +75,11 @@ def check_habits() -> tuple[int, list[str]]:
             continue
         for citation in yaml.safe_load(match.group(1)).get("citations", []):
             source = str(citation.get("source", ""))
+            if source.startswith("res:"):
+                count += 1
+                if f"| {source[4:]} |" not in RESEARCH.read_text(encoding="utf-8"):
+                    problems.append(f"BAD {path.name}: {source} is not a row in research/RESEARCH.md")
+                continue
             if source.startswith("book:"):
                 count += 1
                 slug = source[5:]

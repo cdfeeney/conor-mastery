@@ -77,6 +77,8 @@ struct HabitProtocolView: View {
                     ForEach(habit.citations, id: \.self) { citation in
                         if let url = Self.url(citation) {
                             Link("\(citation.source) @ \(citation.locator)", destination: url)
+                        } else if citation.source.hasPrefix("res:") {
+                            Label("Study: \(citation.source.dropFirst(4))", systemImage: "flask")
                         } else {
                             Text("\(citation.source) · \(citation.locator)")
                         }

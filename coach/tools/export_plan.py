@@ -25,6 +25,7 @@ PLAN_META = REPO / "coach" / "kb" / "plan.yaml"
 SEED = REPO / "App" / "Resources" / "seed-plan.json"
 COACHSYNC = Path(os.environ.get("COACHSYNC_DIR", r"C:\Users\cdfee\iCloudDrive\CoachSync"))
 SOURCES = REPO / "coach" / "kb" / "sources"
+RESEARCH = REPO / "coach" / "kb" / "research" / "RESEARCH.md"
 
 KINDS = {"build", "avoid", "checklist", "timer", "focus", "sleep"}
 DIFFICULTIES = {"easy", "medium", "hard"}
@@ -69,8 +70,10 @@ def validate_habit(habit: dict, name: str) -> list[str]:
         locator = str(c.get("locator", "")).strip()
         if source.startswith("yt:") and not TIMESTAMP.match(locator):
             errors.append(f"{name}: video citation needs mm:ss, got {c}")
-        if not source.startswith(("yt:", "book:")) or not locator:
-            errors.append(f"{name}: citation needs yt:/book: source and a locator, got {c}")
+        if not source.startswith(("yt:", "book:", "res:")) or not locator:
+            errors.append(f"{name}: citation needs yt:/book:/res: source and a locator, got {c}")
+        if source.startswith("res:") and f"| {source[4:]} |" not in RESEARCH.read_text(encoding="utf-8"):
+            errors.append(f"{name}: cites {source} but it is not a row in coach/kb/research/RESEARCH.md")
         if source.startswith("yt:") and not (SOURCES / f"{source[3:]}.md").exists():
             errors.append(f"{name}: cites {source} but coach/kb/sources/{source[3:]}.md is missing")
     return errors

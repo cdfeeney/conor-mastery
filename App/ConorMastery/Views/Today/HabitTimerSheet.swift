@@ -1,7 +1,7 @@
 import MasteryCore
 import SwiftUI
 
-/// Countdown for timer habits (meditation, breathing). Deep breathing shows a 4-4-4-4 box pacer.
+/// Countdown for timer habits (meditation, breathing). Deep breathing shows a cyclic-sighing pacer.
 /// Minutes credit even if stopped early, so a short sit still counts toward the minimum.
 struct HabitTimerSheet: View {
     let habit: HabitDefinition
@@ -23,7 +23,7 @@ struct HabitTimerSheet: View {
                     TimelineView(.periodic(from: startedAt, by: 0.25)) { context in
                         let elapsed = context.date.timeIntervalSince(startedAt)
                         VStack(spacing: 24) {
-                            if habit.id == "deep-breathing" { BoxBreathPacer(elapsed: elapsed) }
+                            if habit.id == "deep-breathing" { CyclicSighPacer(elapsed: elapsed) }
                             Text(remaining(elapsed)).font(.system(size: 64, weight: .bold, design: .rounded).monospacedDigit())
                         }
                         .onChange(of: elapsed >= Double(minutes * 60)) { _, finished in if finished { finish() } }
@@ -58,25 +58,38 @@ struct HabitTimerSheet: View {
     }
 }
 
-/// Box breathing: inhale 4 s, hold 4 s, exhale 4 s, hold 4 s.
-struct BoxBreathPacer: View {
+/// Cyclic sighing (Balban et al. 2023): long nose inhale, short top-up inhale, long mouth exhale.
+struct CyclicSighPacer: View {
     let elapsed: TimeInterval
 
+    /// Seconds per phase: inhale, top-up, exhale. The exhale is the longest part.
+    private static let phases: [(label: String, seconds: Double)] = [("Breathe in", 2.5), ("Top up", 1), ("Long exhale", 6)]
+    private static let cycle = phases.reduce(0) { $0 + $1.seconds }
+
+    /// Which phase `elapsed` falls in, and how far through it (0...1).
+    static func position(_ elapsed: TimeInterval) -> (phase: Int, progress: Double) {
+        var t = elapsed.truncatingRemainder(dividingBy: cycle)
+        var phase = 0
+        while phase < phases.count - 1 && t >= phases[phase].seconds {
+            t -= phases[phase].seconds
+            phase += 1
+        }
+        return (phase, t / phases[phase].seconds)
+    }
+
     var body: some View {
-        let phase = Int(elapsed / 4) % 4
-        let progress = elapsed.truncatingRemainder(dividingBy: 4) / 4
+        let (phase, progress) = Self.position(elapsed)
         let scale: Double = switch phase {
-        case 0: 0.5 + 0.5 * progress
-        case 1: 1
-        case 2: 1 - 0.5 * progress
-        default: 0.5
+        case 0: 0.5 + 0.4 * progress
+        case 1: 0.9 + 0.1 * progress
+        default: 1 - 0.5 * progress
         }
         VStack(spacing: 12) {
             RoundedRectangle(cornerRadius: 24).fill(Theme.jade.opacity(0.35))
                 .overlay(RoundedRectangle(cornerRadius: 24).stroke(Theme.jade, lineWidth: 3))
                 .frame(width: 180, height: 180).scaleEffect(scale)
                 .animation(.linear(duration: 0.25), value: scale)
-            Text(["Breathe in", "Hold", "Breathe out", "Hold"][phase]).font(.title3.weight(.semibold))
+            Text(Self.phases[phase].label).font(.title3.weight(.semibold))
         }
         .accessibilityElement(children: .combine)
     }

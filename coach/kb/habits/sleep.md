@@ -6,7 +6,7 @@ difficulty: hard
 group: morning
 schedule: daily
 identity: "I protect my sleep like training."
-why: "Sleep is the base the other habits stand on. Lost sleep can't be fully paid back, and a short-week, long-weekend pattern hurts health. The same bed and wake times every day, weekends included, are the lever."
+why: "Sleep is the base the other habits stand on. A 61,000-person study found regular sleep timing predicted lower mortality better than sleep length. Lost sleep can't be fully paid back, and a short-week, long-weekend pattern hurts health. The same bed and wake times every day, weekends included, are the lever."
 full: "In bed within 30 min of your target and 7.5+ hours asleep"
 min: "Log the night honestly"
 citations:
@@ -15,6 +15,7 @@ citations:
   - {source: "yt:lRp5AC9W_F8", locator: "05:13"}
   - {source: "yt:RTgJSQtvo88", locator: "29:27"}
   - {source: "yt:Zc2lu3u-0CQ", locator: "02:04"}
+  - {source: "res:windred2024", locator: "abstract"}
 challenges:
   - "Wake within an hour of your weekday time, even today."
   - "One alarm, no snooze. Feet on the floor when it rings."

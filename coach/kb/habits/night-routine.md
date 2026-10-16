@@ -24,6 +24,7 @@ citations:
   - {source: "book:franklin-autobiography", locator: "¶202"}
   - {source: "book:seneca-letters", locator: "¶1061"}
   - {source: "book:bennett-24-hours", locator: "¶100"}
+  - {source: "res:burns2023", locator: "abstract"}
 challenges:
   - "Set the last-orders alarm 15 minutes before bed and obey it."
   - "Audiobook instead of scrolling in bed tonight."

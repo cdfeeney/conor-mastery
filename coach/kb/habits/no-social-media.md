@@ -6,7 +6,7 @@ difficulty: hard
 group: day
 schedule: daily
 identity: "My attention is mine."
-why: "Willpower loses to environment. The app locks social apps outside one evening window and keeps them locked until your morning routine is done. Paying grit to unlock early is allowed, but it counts as a slip."
+why: "Willpower loses to environment. The app locks social apps outside one evening window and keeps them locked until your morning routine is done. Paying grit to unlock early is allowed, but it counts as a slip. In a randomized trial, capping social apps at about 30 min a day cut loneliness and depression."
 full: "No social apps outside the 19:00-19:30 window"
 citations:
   - {source: "yt:mNeXuCYiE0U", locator: "12:50"}
@@ -17,6 +17,7 @@ citations:
   - {source: "yt:3E7hkPZ-HTk", locator: "10:54"}
   - {source: "yt:3E7hkPZ-HTk", locator: "08:22"}
   - {source: "book:seneca-letters", locator: "¶35"}
+  - {source: "res:hunt2018", locator: "abstract"}
 challenges:
   - "Delete one social app from your home screen tonight."
   - "Go the whole day without paying to unlock."

@@ -1,9 +1,11 @@
 {
  "format": "conor-mastery-plan",
  "version": 1,
- "generated_at": "2026-10-16T15:19:10-04:00",
+ "generated_at": "2026-10-16T18:48:31-04:00",
  "weekly_focus": "Foundations first: sleep and phone. Lock those in, then body, then focus.",
  "notes": [
+  "Habits take about 2 months to feel automatic (median ~66 days, range 18-254), not 21. Expect week 3 to feel hard. (res:lally2010)",
+  "A written when-and-where plan has a medium-to-large effect on follow-through (d=0.65). (res:gollwitzer2006)",
   "Never miss twice. One missed day is noise; two is the start of a new habit. (James Clear, yt:mNeXuCYiE0U @ 20:00)",
   "On a bad day, do the Min version. A rep is a vote for who you are becoming. (yt:U_nzqnXWvSo @ 06:38)",
   "Plans beat motivation: every habit has a when and where. Set them in Today. (yt:mNeXuCYiE0U @ 06:44)"
@@ -55,6 +57,10 @@
     {
      "source": "book:bennett-24-hours",
      "locator": "¶13"
+    },
+    {
+     "source": "res:burns2023",
+     "locator": "abstract"
     }
    ],
    "challenges": [
@@ -73,7 +79,7 @@
    "group": "morning",
    "schedule": "daily",
    "identity": "I protect my sleep like training.",
-   "why": "Sleep is the base the other habits stand on. Lost sleep can't be fully paid back, and a short-week, long-weekend pattern hurts health. The same bed and wake times every day, weekends included, are the lever.",
+   "why": "Sleep is the base the other habits stand on. A 61,000-person study found regular sleep timing predicted lower mortality better than sleep length. Lost sleep can't be fully paid back, and a short-week, long-weekend pattern hurts health. The same bed and wake times every day, weekends included, are the lever.",
    "full": "In bed within 30 min of your target and 7.5+ hours asleep",
    "min": "Log the night honestly",
    "citations": [
@@ -96,6 +102,10 @@
     {
      "source": "yt:Zc2lu3u-0CQ",
      "locator": "02:04"
+    },
+    {
+     "source": "res:windred2024",
+     "locator": "abstract"
     }
    ],
    "challenges": [
@@ -230,7 +240,7 @@
    "schedule": "daily",
    "identity": "I can calm my body on command.",
    "why": "Breathing is the fastest way to calm down without stepping away. The physiological sigh (two inhales through the nose, one long exhale through the mouth, 1-3 times) brings stress down in seconds. A few minutes of slow, paced breathing resets you between focus blocks.",
-   "full": "5 minutes of box breathing",
+   "full": "5 minutes of cyclic sighing (double inhale through the nose, long exhale through the mouth)",
    "min": "1 minute (or 3 physiological sighs)",
    "target_minutes": 5,
    "min_minutes": 1,
@@ -246,6 +256,10 @@
     {
      "source": "yt:KHIbgSN2qAU",
      "locator": "02:05"
+    },
+    {
+     "source": "res:balban2023",
+     "locator": "abstract"
     }
    ],
    "challenges": [
@@ -262,7 +276,7 @@
    "group": "day",
    "schedule": "daily",
    "identity": "My attention is mine.",
-   "why": "Willpower loses to environment. The app locks social apps outside one evening window and keeps them locked until your morning routine is done. Paying grit to unlock early is allowed, but it counts as a slip.",
+   "why": "Willpower loses to environment. The app locks social apps outside one evening window and keeps them locked until your morning routine is done. Paying grit to unlock early is allowed, but it counts as a slip. In a randomized trial, capping social apps at about 30 min a day cut loneliness and depression.",
    "full": "No social apps outside the 19:00-19:30 window",
    "citations": [
     {
@@ -296,6 +310,10 @@
     {
      "source": "book:seneca-letters",
      "locator": "¶35"
+    },
+    {
+     "source": "res:hunt2018",
+     "locator": "abstract"
     }
    ],
    "challenges": [
@@ -313,7 +331,7 @@
    "group": "day",
    "schedule": "daily",
    "identity": "I'm free. I don't need it.",
-   "why": "Unaided cold turkey works only about 5% of the time, and most relapses happen in the first week, so plan for that week instead of relying on willpower. Part of the pull is the hand-to-mouth habit, so replace the ritual. Morning urges are strongest because you wake in withdrawal. Talk to a doctor about replacement therapy or medication; the app does not give doses.",
+   "why": "Unaided cold turkey works only about 5% of the time, and most relapses happen in the first week, so plan for that week instead of relying on willpower. In a 697-person trial, quitting abruptly on a set quit day beat cutting down gradually (49% vs 39% quit at 4 weeks). Part of the pull is the hand-to-mouth habit, so replace the ritual. Morning urges are strongest because you wake in withdrawal. Talk to a doctor about replacement therapy or medication; the app does not give doses.",
    "full": "Nicotine-free today (vape, cigarettes, pouches)",
    "citations": [
     {
@@ -343,6 +361,10 @@
     {
      "source": "book:james-habit",
      "locator": "¶52"
+    },
+    {
+     "source": "res:lindson2016",
+     "locator": "abstract"
     }
    ],
    "challenges": [
@@ -403,6 +425,10 @@
     {
      "source": "book:bennett-24-hours",
      "locator": "¶100"
+    },
+    {
+     "source": "res:burns2023",
+     "locator": "abstract"
     }
    ],
    "challenges": [
