@@ -33,8 +33,11 @@ youtube:
   - {id: 1gxKyEuj5RA, habits: [workout, all], note: "monke: how to do hard things even if lazy"}
 
 books:
-  # Already in D:/projects/mind-coach/kb/books (read-only): stoic/character notes.
-  - {path: "D:/projects/mind-coach/kb/books/james", habits: [all], note: "existing mind-coach notes"}
-  - {path: "D:/projects/mind-coach/kb/books/franklin", habits: [all], note: "Franklin's 13 virtues: daily virtue tracking"}
-  # Add owned PDFs (Atomic Habits, Why We Sleep, Dopamine Nation...) to coach/inbox-pdfs/ and run
-  # coach-kb's OCR tool; then write page-cited notes in coach/kb/sources/.
+  # Public domain: scraped by coach/tools/fetch_books.py into coach/raw/books (numbered paragraphs).
+  - {slug: bennett-24-hours, gutenberg: 2274, title: "How to Live on 24 Hours a Day (Arnold Bennett, 1908)", habits: [morning-routine, reset-focus, night-routine, no-social-media]}
+  - {slug: franklin-autobiography, gutenberg: 148, title: "The Autobiography of Benjamin Franklin", habits: [all, night-routine]}
+  - {slug: smiles-self-help, gutenberg: 935, title: "Self-Help (Samuel Smiles, 1859)", habits: [all, workout]}
+  - {slug: james-habit, text: "D:/projects/mind-coach/sources/text/james-habit-principles-ch4.txt", title: "Habit (William James, Principles of Psychology ch. 4, 1890)", habits: [all, no-nicotine]}
+  - {slug: seneca-letters, text: "D:/projects/mind-coach/sources/text/seneca-moral-letters-gummere.txt", title: "Moral Letters to Lucilius (Seneca, tr. Gummere)", habits: [meditation, night-routine, no-social-media]}
+  # Owned PDFs (Atomic Habits, Why We Sleep, Dopamine Nation...): put in coach/inbox-pdfs/, OCR with
+  # coach-kb's tools, then add a {slug, text} entry pointing at the OCR text.

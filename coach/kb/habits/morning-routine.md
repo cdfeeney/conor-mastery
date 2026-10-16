@@ -21,11 +21,14 @@ citations:
   - {source: "yt:RTgJSQtvo88", locator: "10:37"}
   - {source: "yt:FYSNIBmqHj4", locator: "02:34"}
   - {source: "yt:1pbSbW7ABgY", locator: "04:09"}
+  - {source: "book:franklin-autobiography", locator: "¶213"}
+  - {source: "book:bennett-24-hours", locator: "¶13"}
 challenges:
   - "Phone stays in another room until you've been outside."
   - "Get 15 minutes of outdoor light before 9 am, even if cloudy."
   - "Tonight, put a book where your phone usually sits in the morning."
   - "Protein-first breakfast: eggs, Greek yogurt or cottage cheese."
+  - 'Ask yourself "What good shall I do this day?" and write one line.'
 ---
 Morning light: about 5 min on a clear day, 10 with cloud, 20-30 when heavily overcast. Through a window
 does not count (Huberman, RTgJSQtvo88 @ 05:32). Caffeine waits 90-120 min after waking (@ 10:37).

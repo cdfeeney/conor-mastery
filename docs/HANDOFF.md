@@ -7,7 +7,7 @@
 | Monke reverse-engineering | done | `research/MONKE-TEARDOWN.md`. REA run on the shipped web app (`ev_2f36d483…`). 7 screenshots, 26 release notes, 86 reviews |
 | PRD v0.1 | done | `docs/PRD.md` |
 | MasteryCore (logic) | **54/54 tests pass on Windows** (Swift 6.4.1 at `D:/tools/swift`) | `source scripts/swift-env.sh && cd MasteryCore && swift test` |
-| Coach KB | 15 source notes (224 timestamps verified), 9 habit protocols (40 citations verified), seed plan exported | `python coach/tools/check_kb.py`, `export_plan.py` |
+| Coach KB | 15 YouTube notes + 5 public-domain book notes (Gutenberg-scraped, `fetch_books.py`); 312 note citations + 51 habit citations verified; seed plan exported | `python coach/tools/check_kb.py`, `export_plan.py` |
 | SwiftUI app + monitor extension | written; Codex round 1 found 1 compile blocker + 2 CRITICAL / 8 HIGH, all fixed in 557b260. **Round 2 (verify fixes) was killed by low memory before it produced output: re-run `D:/tmp/cm-review/prompt2.md`.** Never compiled. No Mac; CI workflow `ios` is manual-only | `.github/workflows/ios.yml`, `project.yml` |
 | TestFlight | not started; needs owner items A1–A3 | PRD section 9 |
 

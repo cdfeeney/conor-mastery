@@ -15,8 +15,9 @@ Android `com.kitemasters.monkeandroid`, web focus timer at staymonke.com/focus.
 | **REA** `analyze-javascript-application` on the web app | evidence `ev_2f36d483…de2c`, graph of the sync module | `research/monke/rea-web-focus.json` |
 
 REA scope note: REA analyses shipped artifacts. The iOS IPA is FairPlay-encrypted and needs a jailbroken
-device to decrypt, so it was not analysed. The Android APK could be inspected with REA's
-`inspect_android_package` (needs JADX), but only from a third-party mirror, so that step was skipped.
+device to decrypt, so it was not analysed. The Android APK (`com.kitemasters.monkeandroid`) was attempted on
+2026-10-16 with apkeep for static-only REA `inspect_android_package`: APKPure lists no versions (and returns 403),
+and APKMirror has no listing. Google Play download needs the owner's Google account token, which is an owner decision.
 The web app is Monke's own shipped code and was analysed directly. REA limitation recorded: the
 1 inline script in `index.html` (timer logic) is not in the REA graph; I read it by hand instead.
 

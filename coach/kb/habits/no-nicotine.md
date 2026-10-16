@@ -14,11 +14,14 @@ citations:
   - {source: "yt:QpnGsasp9j8", locator: "06:15"}
   - {source: "yt:QpnGsasp9j8", locator: "13:59"}
   - {source: "yt:QpnGsasp9j8", locator: "08:47"}
+  - {source: "book:james-habit", locator: "¶51"}
+  - {source: "book:james-habit", locator: "¶52"}
 challenges:
   - "Have a replacement for your hands and mouth ready before your usual first hit."
   - "Write down your top trigger today and your if-then plan for it."
   - "When the urge hits, do 1 minute of breathing first, then decide."
   - "Book a doctor's appointment to talk about a quit plan."
+  - "Launch strong: throw out every pouch, vape and pack today, and tell one person you quit."
 ---
 A slip is logged honestly and resets the days-clean counter, but it never costs your whole game. Never
 miss twice (mNeXuCYiE0U @ 20:00). Hypnosis-based programs and medication are discussed in the source as

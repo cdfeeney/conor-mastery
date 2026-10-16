@@ -1,7 +1,7 @@
 {
  "format": "conor-mastery-plan",
  "version": 1,
- "generated_at": "2026-10-16T15:03:45-04:00",
+ "generated_at": "2026-10-16T15:19:10-04:00",
  "weekly_focus": "Foundations first: sleep and phone. Lock those in, then body, then focus.",
  "notes": [
   "Never miss twice. One missed day is noise; two is the start of a new habit. (James Clear, yt:mNeXuCYiE0U @ 20:00)",
@@ -47,13 +47,22 @@
     {
      "source": "yt:1pbSbW7ABgY",
      "locator": "04:09"
+    },
+    {
+     "source": "book:franklin-autobiography",
+     "locator": "¶213"
+    },
+    {
+     "source": "book:bennett-24-hours",
+     "locator": "¶13"
     }
    ],
    "challenges": [
     "Phone stays in another room until you've been outside.",
     "Get 15 minutes of outdoor light before 9 am, even if cloudy.",
     "Tonight, put a book where your phone usually sits in the morning.",
-    "Protein-first breakfast: eggs, Greek yogurt or cottage cheese."
+    "Protein-first breakfast: eggs, Greek yogurt or cottage cheese.",
+    "Ask yourself \"What good shall I do this day?\" and write one line."
    ]
   },
   {
@@ -121,6 +130,10 @@
     {
      "source": "yt:KHIbgSN2qAU",
      "locator": "02:39"
+    },
+    {
+     "source": "book:bennett-24-hours",
+     "locator": "¶90"
     }
    ],
    "challenges": [
@@ -190,13 +203,22 @@
     {
      "source": "yt:2VpDCs0tbGA",
      "locator": "03:05"
+    },
+    {
+     "source": "book:bennett-24-hours",
+     "locator": "¶83"
+    },
+    {
+     "source": "book:smiles-self-help",
+     "locator": "¶390"
     }
    ],
    "challenges": [
     "Before you start: phone out of the room, tabs closed, water on the desk.",
     "Use Locked In mode for your focus block today.",
     "Take your break as a walk, no screens.",
-    "Go 5 minutes longer than your last block."
+    "Go 5 minutes longer than your last block.",
+    "When your mind drifts during the block, bring it back and count the returns. Beat yesterday's count."
    ]
   },
   {
@@ -270,6 +292,10 @@
     {
      "source": "yt:3E7hkPZ-HTk",
      "locator": "08:22"
+    },
+    {
+     "source": "book:seneca-letters",
+     "locator": "¶35"
     }
    ],
    "challenges": [
@@ -309,13 +335,22 @@
     {
      "source": "yt:QpnGsasp9j8",
      "locator": "08:47"
+    },
+    {
+     "source": "book:james-habit",
+     "locator": "¶51"
+    },
+    {
+     "source": "book:james-habit",
+     "locator": "¶52"
     }
    ],
    "challenges": [
     "Have a replacement for your hands and mouth ready before your usual first hit.",
     "Write down your top trigger today and your if-then plan for it.",
     "When the urge hits, do 1 minute of breathing first, then decide.",
-    "Book a doctor's appointment to talk about a quit plan."
+    "Book a doctor's appointment to talk about a quit plan.",
+    "Launch strong: throw out every pouch, vape and pack today, and tell one person you quit."
    ]
   },
   {
@@ -359,14 +394,23 @@
     },
     {
      "source": "book:franklin-autobiography",
-     "locator": "virtues ¶10"
+     "locator": "¶202"
+    },
+    {
+     "source": "book:seneca-letters",
+     "locator": "¶1061"
+    },
+    {
+     "source": "book:bennett-24-hours",
+     "locator": "¶100"
     }
    ],
    "challenges": [
     "Set the last-orders alarm 15 minutes before bed and obey it.",
     "Audiobook instead of scrolling in bed tonight.",
     "Write the very first thing you'll do tomorrow before you sleep.",
-    "Lights to lamps only after 10 pm."
+    "Lights to lamps only after 10 pm.",
+    "Ask \"What good have I done today?\" and replay where the day leaked time."
    ]
   }
  ]

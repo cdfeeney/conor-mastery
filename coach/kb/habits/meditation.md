@@ -15,6 +15,7 @@ citations:
   - {source: "yt:2VpDCs0tbGA", locator: "04:06"}
   - {source: "yt:u_DfrP-oaRQ", locator: "02:33"}
   - {source: "yt:KHIbgSN2qAU", locator: "02:39"}
+  - {source: "book:bennett-24-hours", locator: "¶90"}
 challenges:
   - "Sit for 12 minutes today, one more than usual."
   - "Meditate before you look at your phone."

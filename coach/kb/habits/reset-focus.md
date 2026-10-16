@@ -16,11 +16,14 @@ citations:
   - {source: "yt:2VpDCs0tbGA", locator: "02:34"}
   - {source: "yt:2VpDCs0tbGA", locator: "01:33"}
   - {source: "yt:2VpDCs0tbGA", locator: "03:05"}
+  - {source: "book:bennett-24-hours", locator: "¶83"}
+  - {source: "book:smiles-self-help", locator: "¶390"}
 challenges:
   - "Before you start: phone out of the room, tabs closed, water on the desk."
   - "Use Locked In mode for your focus block today."
   - "Take your break as a walk, no screens."
   - "Go 5 minutes longer than your last block."
+  - "When your mind drifts during the block, bring it back and count the returns. Beat yesterday's count."
 ---
 Focus ladder: 20 minutes rising to 60 (monke, Zc2lu3u-0CQ @ 03:35). Blocks of 25-90 minutes with
 screen-free breaks (2VpDCs0tbGA @ 02:34, @ 03:05).

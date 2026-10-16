@@ -16,6 +16,7 @@ citations:
   - {source: "yt:u_DfrP-oaRQ", locator: "03:34"}
   - {source: "yt:3E7hkPZ-HTk", locator: "10:54"}
   - {source: "yt:3E7hkPZ-HTk", locator: "08:22"}
+  - {source: "book:seneca-letters", locator: "¶35"}
 challenges:
   - "Delete one social app from your home screen tonight."
   - "Go the whole day without paying to unlock."

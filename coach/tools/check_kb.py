@@ -16,6 +16,8 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 RAW = ROOT / "raw" / "youtube"
+BOOKS = ROOT / "raw" / "books"
+PARA = re.compile(r"\[¶(\d+)\]")
 SOURCES = ROOT / "kb" / "sources"
 HABITS = ROOT / "kb" / "habits"
 MARK = re.compile(r"\[(\d{1,2}:\d{2})\]")
@@ -28,6 +30,13 @@ def markers(video_id: str) -> set[str] | None:
     return set(re.findall(r"^\[(\d{2}:\d{2})\]", path.read_text(encoding="utf-8"), re.M))
 
 
+def book_paragraphs(slug: str) -> set[str] | None:
+    path = BOOKS / f"{slug}.md"
+    if not path.exists():
+        return None
+    return set(re.findall(r"^\[¶(\d+)\]", path.read_text(encoding="utf-8"), re.M))
+
+
 def normalise(ts: str) -> str:
     m, s = ts.split(":")[-2:]
     return f"{int(m):02d}:{int(s):02d}"
@@ -35,7 +44,16 @@ def normalise(ts: str) -> str:
 
 def check_sources() -> tuple[int, list[str]]:
     count, problems = 0, []
-    for note in sorted(SOURCES.glob("*.md")):
+    for note in sorted(SOURCES.glob("book-*.md")):
+        valid = book_paragraphs(note.stem[len("book-"):])
+        if valid is None:
+            problems.append(f"UNVERIFIABLE {note.name}: no raw book text")
+            continue
+        for n in PARA.findall(note.read_text(encoding="utf-8")):
+            count += 1
+            if n not in valid:
+                problems.append(f"BAD {note.name}: [¶{n}] is not a paragraph in the book")
+    for note in sorted(p for p in SOURCES.glob("*.md") if not p.name.startswith("book-")):
         valid = markers(note.stem)
         if valid is None:
             problems.append(f"UNVERIFIABLE {note.name}: no raw transcript")
@@ -56,6 +74,18 @@ def check_habits() -> tuple[int, list[str]]:
             continue
         for citation in yaml.safe_load(match.group(1)).get("citations", []):
             source = str(citation.get("source", ""))
+            if source.startswith("book:"):
+                count += 1
+                slug = source[5:]
+                found = re.search(r"¶(\d+)", str(citation.get("locator", "")))
+                valid = book_paragraphs(slug)
+                if not (SOURCES / f"book-{slug}.md").exists():
+                    problems.append(f"BAD {path.name}: {source} has no note coach/kb/sources/book-{slug}.md")
+                elif valid is None:
+                    problems.append(f"UNVERIFIABLE {path.name}: {source} has no raw book text")
+                elif not found or found.group(1) not in valid:
+                    problems.append(f"BAD {path.name}: {source} @ {citation.get('locator')} is not a book paragraph")
+                continue
             if not source.startswith("yt:"):
                 continue
             count += 1
