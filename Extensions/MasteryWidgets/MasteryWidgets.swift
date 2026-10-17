@@ -153,5 +153,8 @@ struct TodayWidget: Widget {
 
 @main
 struct MasteryWidgetBundle: WidgetBundle {
-    var body: some Widget { TodayWidget() }
+    var body: some Widget {
+        TodayWidget()
+        FocusLiveActivityWidget()
+    }
 }

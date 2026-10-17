@@ -6,6 +6,13 @@ import SwiftUI
 /// A running session, persisted whole so a session survives iOS closing the app and credits the
 /// day (and habit) it started on.
 struct ActiveFocus: Codable, Equatable {
+    static let storageKey = "focus.active.v1"
+
+    /// The running session saved by FocusView, if any.
+    static func load() -> ActiveFocus? {
+        UserDefaults.standard.data(forKey: storageKey).flatMap { try? JSONDecoder().decode(ActiveFocus.self, from: $0) }
+    }
+
     let startedAt: Date
     let day: DayKey
     let plannedMinutes: Int
@@ -17,7 +24,7 @@ struct ActiveFocus: Codable, Equatable {
 struct FocusView: View {
     @Environment(MasteryStore.self) private var store
     @Environment(ScreenTimeService.self) private var screenTime
-    @AppStorage("focus.active.v1") private var activeData = Data()
+    @AppStorage(ActiveFocus.storageKey) private var activeData = Data()
     @State private var plannedMinutes = 25
     @State private var lockedIn = false
     @State private var countsForReset = true
@@ -69,7 +76,11 @@ struct FocusView: View {
             Theme.night.ignoresSafeArea()
             VStack(spacing: 24) {
                 Text(session.lockedIn ? "Locked in." : "Focusing.").font(.title3).foregroundStyle(.white.opacity(0.8))
-                Text("🧘🔥").font(.system(size: 80)).accessibilityHidden(true)
+                HStack(alignment: .bottom, spacing: 4) {
+                    PixelSprite(ItemArt.hero(store.level.belt), scale: 5)
+                    PixelSprite("fire-pit", scale: 4)
+                }
+                .accessibilityHidden(true)
                 TimelineView(.periodic(from: session.startedAt, by: 1)) { context in
                     let elapsed = context.date.timeIntervalSince(session.startedAt)
                     let left = max(Double(session.plannedMinutes * 60) - elapsed, 0)
@@ -99,6 +110,7 @@ struct FocusView: View {
             habitID: countsForReset && store.state.habit("reset-focus") != nil ? "reset-focus" : nil)
         activeData = (try? JSONEncoder().encode(session)) ?? Data()
         if useLock { screenTime.startLockedIn(minutes: plannedMinutes, store: store) }
+        FocusLiveActivity.start(session, belt: store.level.belt.rawValue)
     }
 
     private func finish(stoppedEarly: Bool) {
@@ -109,6 +121,7 @@ struct FocusView: View {
                                          focusedMinutes: stoppedEarly ? elapsed : session.plannedMinutes,
                                          lockedIn: session.lockedIn, note: session.note, habitID: session.habitID))
         if session.lockedIn { screenTime.endLockedIn(store: store) }
+        FocusLiveActivity.endAll()
         note = ""
     }
 }

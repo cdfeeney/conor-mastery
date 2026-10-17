@@ -41,6 +41,7 @@ targets:
         CFBundleURLTypes:
           - CFBundleURLSchemes: [conormastery]
         LSSupportsOpeningDocumentsInPlace: true
+        NSSupportsLiveActivities: true
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.conorfee.conormastery
@@ -51,7 +52,9 @@ targets:
     platform: iOS
     sources:
       - Extensions/MasteryMonitor
-      - Shared
+      # The monitor only needs the gate; widget and Live Activity types stay out of it.
+      - path: Shared
+        excludes: ["Widget/**"]
     dependencies:
       - package: MasteryCore
     entitlements:

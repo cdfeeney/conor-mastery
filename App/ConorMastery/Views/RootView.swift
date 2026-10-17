@@ -53,7 +53,13 @@ struct RootView: View {
         }
         .onChange(of: store.grit) { _, _ in WidgetPublisher.publish(store) }
         // Widgets open the app on Today.
-        .onOpenURL { url in if url.host == "today" { tab = .today } }
+        .onOpenURL { url in
+            switch url.host {
+            case "today": tab = .today
+            case "focus": tab = .focus
+            default: break
+            }
+        }
         // Juice: a sound and a tap on every reward (sound follows the Settings toggle), a jingle on level-up.
         .onChange(of: store.lastReward?.id) { _, id in
             guard id != nil, let toast = store.lastReward, toast.reward.grit > 0 || toast.drop != nil else { return }
@@ -76,6 +82,7 @@ struct RootView: View {
         store.reload()
         store.syncCoach()
         WidgetPublisher.publish(store)
+        FocusLiveActivity.reconcile(active: ActiveFocus.load())
         screenTime.apply(store: store)
         Task { await notifications.reschedule(store.reminders()) }
     }
