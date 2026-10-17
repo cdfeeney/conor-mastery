@@ -8,12 +8,8 @@ import XCTest
 final class StoreTests: XCTestCase {
     /// Held for the whole test: a freed ModelContainer makes every later context call trap
     /// (the same trap ConorHealth hit; the real app keeps its container in ConorMasteryApp).
+    /// XCTest makes a new instance per test case, so each test gets its own container.
     private var container: ModelContainer?
-
-    override func tearDown() {
-        container = nil
-        super.tearDown()
-    }
 
     private func makeStore() throws -> MasteryStore {
         let made = try ModelContainer(for: Schema(Schema1.models),
