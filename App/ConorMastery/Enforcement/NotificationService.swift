@@ -10,7 +10,9 @@ final class NotificationService {
     private static let prefix = "mastery."
 
     func requestAuthorization() async -> Bool {
-        (try? await center.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
+        // A fresh local (not the stored property) can be sent to the non-isolated async API safely.
+        let requester = UNUserNotificationCenter.current()
+        return (try? await requester.requestAuthorization(options: [.alert, .sound, .badge])) ?? false
     }
 
     func reschedule(_ reminders: [Reminder]) async {
