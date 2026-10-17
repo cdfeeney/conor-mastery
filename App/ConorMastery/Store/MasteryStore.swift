@@ -104,13 +104,21 @@ final class MasteryStore {
                                                             today: today, timeZone: timeZone))
     }
 
+    /// The morning gate opens when its habit is done, or when it isn't required today (edited to weekdays,
+    /// switched off, or dropped by the coach), so apps can never stay locked with nothing to complete.
+    var morningGateMet: Bool {
+        let id = settings.gate.morningHabitID
+        guard let habit = habits.first(where: { $0.id == id }), habit.isRequired(on: today, timeZone: timeZone) else { return true }
+        return index.isDone(id, on: today)
+    }
+
     func gateDecision(now: Date = .now, lockedInActive: Bool = false) -> ShieldDecision {
         let parts = Calendar.current.dateComponents([.hour, .minute], from: now)
         let clock = ClockTime(hour: parts.hour ?? 0, minute: parts.minute ?? 0)
         let unblock = settings.unblockUntil.map { $0 > now } ?? false
         let lockedIn = lockedInActive || (settings.lockedInUntil.map { $0 > now } ?? false)
         return GatePolicy.decide(config: settings.gate, now: clock,
-                                 morningDone: index.isDone(settings.gate.morningHabitID, on: today),
+                                 morningDone: morningGateMet,
                                  lockedInActive: lockedIn, unblockActive: unblock)
     }
 
@@ -165,11 +173,17 @@ final class MasteryStore {
         reload()
     }
 
+    /// Coach habits with your edits, then your own habits: what the app actually tracks.
+    var effectivePlanHabits: [PlanHabit] {
+        HabitEditor.effective(plan: plan.habits, edits: settings.habitEdits, custom: settings.customHabits)
+    }
+
     /// Habits the new plan drops are retired (kept for history) rather than deleted.
     func replace(plan next: MasteryPlan) {
         let newIDs = Set(next.habits.map(\.id))
         var s = settings
-        let dropped = plan.habits.filter { !newIDs.contains($0.id) }
+        let dropped = plan.habits.filter { !newIDs.contains($0.id) }.map { s.habitEdits[$0.id] ?? $0 }
+        s.habitEdits = s.habitEdits.filter { newIDs.contains($0.key) }
         s.retiredHabits = s.retiredHabits.filter { !newIDs.contains($0.habit.id) }
             + dropped.map { RetiredHabit(habit: $0, until: today) }
         settings = s
@@ -182,20 +196,20 @@ final class MasteryStore {
 
     /// Current plan habits (with first-seen / archived ranges) plus retired ones, for honest history.
     func habitDefinitions() -> [HabitDefinition] {
-        let current = plan.habits.map { habit -> HabitDefinition in
-            let def = habit.definition(anchor: settings.startDay)
+        let current = effectivePlanHabits.map { habit -> HabitDefinition in
+            let def = habit.definition(anchor: settings.startDay, scheduleChanges: settings.scheduleChanges[habit.id] ?? [])
             let from = settings.habitFirstSeen[habit.id].flatMap { $0 > settings.startDay ? $0 : nil }
             return def.active(from: from, until: settings.archivedHabits[habit.id])
         }
         let retired = settings.retiredHabits.map {
-            $0.habit.definition(anchor: settings.startDay).active(from: settings.habitFirstSeen[$0.habit.id], until: $0.until)
+            $0.habit.definition(anchor: settings.startDay, scheduleChanges: settings.scheduleChanges[$0.habit.id] ?? []).active(from: settings.habitFirstSeen[$0.habit.id], until: $0.until)
         }
         return current + retired
     }
 
     /// Records the first day each plan habit appeared (once).
     func stampFirstSeen() {
-        let missing = plan.habits.map(\.id).filter { settings.habitFirstSeen[$0] == nil }
+        let missing = effectivePlanHabits.map(\.id).filter { settings.habitFirstSeen[$0] == nil }
         guard !missing.isEmpty else { return }
         var s = settings
         for id in missing { s.habitFirstSeen[id] = today }

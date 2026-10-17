@@ -114,6 +114,11 @@ struct HabitProtocolView: View {
             }
         }
         .navigationTitle(habit.title)
+        .toolbar {
+            if let planHabit = store.effectivePlanHabits.first(where: { $0.id == habit.id }) {
+                NavigationLink("Edit") { HabitEditorView(habit: planHabit) }
+            }
+        }
     }
 
     /// `yt:<id>` + `mm:ss` deep-links to the moment in the video.

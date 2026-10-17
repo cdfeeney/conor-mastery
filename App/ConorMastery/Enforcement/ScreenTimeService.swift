@@ -41,7 +41,7 @@ final class ScreenTimeService {
         SharedGate.save(snapshot: GateSnapshot(
             config: settings.gate,
             active: settings.gate.enabled && hasSelection,
-            morningDoneDay: store.index.isDone(settings.gate.morningHabitID, on: store.today) ? store.today : nil,
+            morningDoneDay: store.morningGateMet ? store.today : nil,
             unblockUntil: settings.unblockUntil,
             lockedInUntil: settings.lockedInUntil))
         SharedGate.applyResolved()

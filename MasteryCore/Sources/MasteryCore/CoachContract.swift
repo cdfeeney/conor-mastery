@@ -74,16 +74,28 @@ public struct PlanHabit: Codable, Sendable, Hashable {
     public let citations: [Citation]
     public let challenges: [String]
 
+    public init(id: String, title: String, kind: HabitKind, difficulty: Difficulty, group: HabitGroup,
+                schedule: String, identity: String, why: String, full: String, min: String? = nil,
+                steps: [String]? = nil, targetMinutes: Int? = nil, minMinutes: Int? = nil,
+                citations: [Citation] = [], challenges: [String] = []) {
+        self.id = id; self.title = title; self.kind = kind; self.difficulty = difficulty; self.group = group
+        self.schedule = schedule; self.identity = identity; self.why = why; self.full = full; self.min = min
+        self.steps = steps; self.targetMinutes = targetMinutes; self.minMinutes = minMinutes
+        self.citations = citations; self.challenges = challenges
+    }
+
     enum CodingKeys: String, CodingKey {
         case id, title, kind, difficulty, group, schedule, identity, why, full, min, steps, citations, challenges
         case targetMinutes = "target_minutes"
         case minMinutes = "min_minutes"
     }
 
-    public func definition(anchor: DayKey) -> HabitDefinition {
+    /// `scheduleChanges` (from the habit editor) keep past days on the schedule they had then.
+    public func definition(anchor: DayKey, scheduleChanges: [ScheduleChange] = []) -> HabitDefinition {
         HabitDefinition(
             id: id, title: title, kind: kind, difficulty: difficulty, group: group,
-            schedule: PlanHabit.parseSchedule(schedule, anchor: anchor), identity: identity, full: full,
+            schedule: HabitEditor.schedule(current: schedule, changes: scheduleChanges, anchor: anchor),
+            identity: identity, full: full,
             min: min, steps: steps ?? [], targetMinutes: targetMinutes, minMinutes: minMinutes,
             why: why, citations: citations, challenges: challenges
         )

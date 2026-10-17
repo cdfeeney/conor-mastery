@@ -82,6 +82,31 @@ final class StoreTests: XCTestCase {
         XCTAssertTrue(store.pinnedLessons.isEmpty)
     }
 
+    func testHabitEditWinsAndResetRestoresCoachVersion() throws {
+        let store = try makeStore()
+        let coach = try XCTUnwrap(store.effectivePlanHabits.first { $0.kind == .build || $0.kind == .avoid })
+        store.saveHabit(coach.edited(title: "My version", full: coach.full, min: nil, group: .night, difficulty: .easy,
+                                     schedule: .perWeek(3), steps: nil, targetMinutes: nil, minMinutes: nil))
+        store.reload()
+        XCTAssertEqual(store.habits.first { $0.id == coach.id }?.title, "My version")
+        store.resetHabit(coach.id)
+        XCTAssertEqual(store.habits.first { $0.id == coach.id }?.title, coach.title)
+    }
+
+    func testCustomHabitAddsThenDeleteKeepsHistory() throws {
+        let store = try makeStore()
+        let mine = HabitEditor.newCustom(title: "Read", kind: .build, group: .night, full: "10 pages",
+                                         existingIDs: Set(store.effectivePlanHabits.map(\.id)))
+        store.addCustomHabit(mine)
+        store.log(.full, habitID: mine.id)
+        XCTAssertNotNil(store.completion(mine.id))
+        store.deleteCustomHabit(mine.id)
+        store.reload()
+        XCTAssertFalse(store.effectivePlanHabits.contains { $0.id == mine.id })
+        XCTAssertTrue(store.settings.retiredHabits.contains { $0.habit.id == mine.id })
+        XCTAssertGreaterThan(store.grit, 0, "grit earned on the deleted habit stays")
+    }
+
     func testChecklistCompletesOnLastStep() throws {
         let store = try makeStore()
         let routine = try XCTUnwrap(store.habits.first { $0.kind == .checklist && !$0.steps.isEmpty })

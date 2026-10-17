@@ -30,6 +30,12 @@ struct AppSettings: Codable, Equatable {
     var lessons: [String: LessonRecord] = [:]
     /// Lessons you made into rules: shown on the habit page and in tonight's check.
     var pinnedRules: [String] = []
+    /// Your edited versions of coach habits, by habit id. They win over the coach's version until reset.
+    var habitEdits: [String: PlanHabit] = [:]
+    /// Habits you added yourself (ids start with "my-").
+    var customHabits: [PlanHabit] = []
+    /// Schedule edits per habit, so past days keep the schedule they had.
+    var scheduleChanges: [String: [ScheduleChange]] = [:]
 
     static func fresh(today: DayKey) -> AppSettings { AppSettings(startDay: today) }
 
@@ -55,6 +61,9 @@ struct AppSettings: Codable, Equatable {
         // Lesson state is the least valuable field: a bad record must never fail (and so reset) all settings.
         lessons = (try? c.decodeIfPresent([String: LessonRecord].self, forKey: .lessons)) ?? [:]
         pinnedRules = (try? c.decodeIfPresent([String].self, forKey: .pinnedRules)) ?? []
+        habitEdits = try c.decodeIfPresent([String: PlanHabit].self, forKey: .habitEdits) ?? [:]
+        customHabits = try c.decodeIfPresent([PlanHabit].self, forKey: .customHabits) ?? []
+        scheduleChanges = try c.decodeIfPresent([String: [ScheduleChange]].self, forKey: .scheduleChanges) ?? [:]
     }
 }
 

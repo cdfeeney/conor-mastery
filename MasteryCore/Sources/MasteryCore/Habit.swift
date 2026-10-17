@@ -30,6 +30,8 @@ public enum Schedule: Codable, Sendable, Hashable {
     case everyNDays(n: Int, anchor: DayKey)
     /// Flexible: never required on a given day; counted against a weekly target.
     case timesPerWeek(Int)
+    /// You changed the schedule on `from`: earlier days keep the old rule, so an edit never rewrites history.
+    indirect case changed(before: Schedule, after: Schedule, from: DayKey)
 
     /// Whether the habit is required on `day` for a Perfect Day.
     public func isRequired(on day: DayKey, timeZone: TimeZone = .current) -> Bool {
@@ -44,6 +46,8 @@ public enum Schedule: Codable, Sendable, Hashable {
             return offset >= 0 && offset % n == 0
         case .timesPerWeek:
             return false
+        case .changed(let before, let after, let from):
+            return day < from ? before.isRequired(on: day, timeZone: timeZone) : after.isRequired(on: day, timeZone: timeZone)
         }
     }
 }

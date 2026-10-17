@@ -141,6 +141,52 @@ extension MasteryStore {
         update(settings: s)
     }
 
+    // MARK: - Habit editor
+
+    /// Save your version of a habit: a custom habit is replaced in place; a coach habit gets an edit.
+    func saveHabit(_ habit: PlanHabit) {
+        var s = settings
+        recordScheduleChange(&s, habitID: habit.id, new: habit.schedule)
+        if let index = s.customHabits.firstIndex(where: { $0.id == habit.id }) {
+            s.customHabits[index] = habit
+        } else {
+            s.habitEdits[habit.id] = habit
+        }
+        update(settings: s)
+    }
+
+    private func recordScheduleChange(_ s: inout AppSettings, habitID: String, new: String) {
+        guard let current = effectivePlanHabits.first(where: { $0.id == habitID })?.schedule else { return }
+        let changes = HabitEditor.recording(s.scheduleChanges[habitID] ?? [], current: current, new: new, today: today)
+        s.scheduleChanges[habitID] = changes.isEmpty ? nil : changes
+    }
+
+    func addCustomHabit(_ habit: PlanHabit) {
+        var s = settings
+        s.customHabits.append(habit)
+        s.habitFirstSeen[habit.id] = today
+        update(settings: s)
+    }
+
+    /// Back to the coach's version of this habit.
+    func resetHabit(_ habitID: String) {
+        var s = settings
+        if let coach = plan.habits.first(where: { $0.id == habitID }) {
+            recordScheduleChange(&s, habitID: habitID, new: coach.schedule)
+        }
+        s.habitEdits[habitID] = nil
+        update(settings: s)
+    }
+
+    /// Your own habit leaves today's list; its past days stay in your history.
+    func deleteCustomHabit(_ habitID: String) {
+        guard let habit = settings.customHabits.first(where: { $0.id == habitID }) else { return }
+        var s = settings
+        s.customHabits.removeAll { $0.id == habitID }
+        s.retiredHabits.append(RetiredHabit(habit: habit, until: today))
+        update(settings: s)
+    }
+
     func togglePinned(_ lessonID: String) {
         var s = settings
         if s.pinnedRules.contains(lessonID) {

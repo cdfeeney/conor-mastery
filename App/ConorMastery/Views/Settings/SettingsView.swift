@@ -31,8 +31,23 @@ struct SettingsView: View {
                     LabeledContent("Best streak", value: "\(store.streak.best) days")
                 }
                 coachSection
-                Section("Habits") {
-                    ForEach(store.plan.habits, id: \.id) { habit in
+                Section {
+                    ForEach(store.effectivePlanHabits, id: \.id) { habit in
+                        NavigationLink { HabitEditorView(habit: habit) } label: {
+                            HStack {
+                                Text(habit.title)
+                                if store.settings.habitEdits[habit.id] != nil { Text("edited").font(.caption2).foregroundStyle(.secondary) }
+                            }
+                        }
+                    }
+                    NavigationLink { NewHabitView() } label: { Label("Add a habit", systemImage: "plus") }
+                } header: {
+                    Text("Edit habits")
+                } footer: {
+                    Text("Your changes win over the coach's plan until you reset them.")
+                }
+                Section("Habits on / off") {
+                    ForEach(store.effectivePlanHabits, id: \.id) { habit in
                         Toggle(habit.title, isOn: Binding(
                             get: { store.settings.archivedHabits[habit.id] == nil },
                             set: { on in
