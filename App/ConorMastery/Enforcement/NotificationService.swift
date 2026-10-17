@@ -14,8 +14,9 @@ final class NotificationService {
     }
 
     func reschedule(_ reminders: [Reminder]) async {
-        let pending = await center.pendingNotificationRequests().map(\.identifier).filter { $0.hasPrefix(Self.prefix) }
-        center.removePendingNotificationRequests(withIdentifiers: pending)
+        // The app schedules only its own reminders, so clearing all pending ones is safe and avoids
+        // sending non-Sendable UNNotificationRequest arrays across actors (Swift 6).
+        center.removeAllPendingNotificationRequests()
         for reminder in reminders {
             let content = UNMutableNotificationContent()
             content.title = reminder.title
@@ -23,7 +24,8 @@ final class NotificationService {
             content.sound = .default
             let trigger = UNCalendarNotificationTrigger(
                 dateMatching: DateComponents(hour: reminder.time.hour, minute: reminder.time.minute), repeats: false)
-            try? await center.add(UNNotificationRequest(identifier: Self.prefix + reminder.id, content: content, trigger: trigger))
+            center.add(UNNotificationRequest(identifier: Self.prefix + reminder.id, content: content, trigger: trigger),
+                       withCompletionHandler: nil)
         }
     }
 }

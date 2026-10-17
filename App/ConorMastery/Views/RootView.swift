@@ -1,3 +1,4 @@
+import MasteryCore
 import SwiftData
 import SwiftUI
 
