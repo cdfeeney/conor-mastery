@@ -1,7 +1,7 @@
 import MasteryCore
 import SwiftUI
 
-/// The daily check-in: habit cards grouped Morning / Day / Night, then tasks.
+/// The daily check-in: today's lesson, habit cards grouped Morning / Day / Night, then tasks.
 struct TodayView: View {
     @Environment(MasteryStore.self) private var store
     @State private var newTask = ""
@@ -12,6 +12,9 @@ struct TodayView: View {
         NavigationStack {
             List {
                 Section { HStack { HUDPill(); Spacer() }.listRowBackground(Color.clear) }
+                if !store.plan.lessons.isEmpty {
+                    Section("Today's lesson") { LessonCard() }
+                }
                 ForEach(HabitGroup.allCases, id: \.self) { group in
                     let habits = store.habits(in: group)
                     if !habits.isEmpty {

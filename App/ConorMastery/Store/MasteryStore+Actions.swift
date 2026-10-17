@@ -126,6 +126,29 @@ extension MasteryStore {
         lastReward = RewardToast(title: "Daily challenge", reward: Reward(grit: challenge.reward, xp: RewardRules.xpPerHabit))
     }
 
+    /// Tonight's check on the daily lesson. "I did it" pays once a day; a miss brings it back in 3 days.
+    func answerLesson(kept: Bool) {
+        guard let lesson, lessonAnswer == nil else { return }
+        if kept {
+            commitLedger(state.ledger.appending(GritTransaction(day: today, amount: RewardRules.lessonGrit, reason: .lesson,
+                                                                ref: "lesson@\(today.rawValue)")))
+            lastReward = RewardToast(title: "Lesson kept", reward: Reward(grit: RewardRules.lessonGrit, xp: 0))
+        }
+        var s = settings
+        s.lessons = LessonPlanner.answering(s.lessons, lessonID: lesson.id, kept: kept, on: today)
+        update(settings: s)
+    }
+
+    func togglePinned(_ lessonID: String) {
+        var s = settings
+        if s.pinnedRules.contains(lessonID) {
+            s.pinnedRules.removeAll { $0 == lessonID }
+        } else {
+            s.pinnedRules.append(lessonID)
+        }
+        update(settings: s)
+    }
+
     func addTask(_ title: String) {
         let trimmed = title.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }

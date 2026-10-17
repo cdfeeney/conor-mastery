@@ -90,16 +90,39 @@ Requires the `com.apple.developer.family-controls` entitlement. Development buil
 - Books: only owned PDFs, through the coach-kb OCR tools. Notes are page-cited, with no bulk copying.
 - `coach/tools/export_plan.py` compiles the protocols into `mastery-plan.v1`, validates them and writes atomically to CoachSync. A copy is bundled into the app as the seed plan.
 
+## 6b. Learn: the coach teaches, not just enforces (owner request 2026-10-17)
+
+The owner wants to learn the tips and follow them as instructions, not only be blocked. Content comes from
+the "Protocol candidates" in the source notes: our own one-line paraphrase of each tip plus its citation
+(105 lessons on 2026-10-17). No source text ships, only the paraphrase and a link. Owned books follow the same rule.
+
+1. **Daily lesson** (Today tab, top): one tip a day for one habit, with a "Watch it" link to the exact moment
+   in the video (or the book/page). New lessons rotate across habits in the weekly-focus order.
+2. **Lesson = challenge**: practise it today. Tonight's check asks "Did you do it?":
+   - **I did it**: +10 grit, once a day. The lesson is kept and won't come back as the daily lesson.
+   - **Not today**: it comes back in 3 days, until you keep it.
+   - Unanswered lessons stay as today's lesson until you answer them.
+3. **Tonight's check** (Coach tab, above the reflection): the same lesson card, so you answer at night.
+4. **Make it a rule**: pin any tip. Rules show on the Coach tab and on that habit's page, so the instructions
+   you chose stay in front of you (e.g. "phone charges outside the bedroom; use the alarm clock").
+5. **Tip library** (Coach tab): every tip grouped by habit, searchable, each marked New / Learning / Kept,
+   with its source link and the pin button. Each habit page also lists its tips.
+
+Logic lives in MasteryCore (`Lessons.swift`, tested). Answers and pins are saved in settings; the lessons
+ride in the plan file (`lessons`, optional), so the coach can add tips without an app update.
+
+Later: a short "Your day" guide and a first-day walkthrough (onboarding gap P7), then quiz-style reviews.
+
 ## 7. Screens
 
 1. **Dojo** (home)
    - The world, with a HUD showing `Belt·Lvl | 🔥streak | grit`.
    - Today's progress card: habits done/total, minutes focused, grit earned.
    - Daily challenge. Buttons for CHECK-IN, FOCUS, Build and Shop.
-2. **Today**: habit cards in groups (Morning / Day / Night). Each card has its identity line, Min chip, 7-dot week strip, reward and swipe actions. Tasks sit below.
+2. **Today**: today's lesson card on top, then habit cards in groups (Morning / Day / Night). Each card has its identity line, Min chip, 7-dot week strip, reward and swipe actions. Tasks sit below.
 3. **Focus**: timer or stopwatch, Locked-In toggle, note and tag, break reminders.
 4. **Sleep**: log sheet (bed, wake, hours, quality), a 14-night chart, consistency and debt.
-5. **Coach**: today's challenge, protocol for each habit with citations, coach notes, and a nightly reflection (journal).
+5. **Coach**: today's challenge, protocol for each habit with citations and its tips, coach notes, your pinned rules, the tip library, tonight's lesson check and a nightly reflection (journal).
 6. **Stats**: consistency per habit, weakest habits, level history.
 7. **Settings**: habits editor, Screen Time setup, CoachSync folder, strict streak.
 

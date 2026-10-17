@@ -35,8 +35,36 @@ TIMESTAMP = re.compile(r"^\d{1,2}:\d{2}(:\d{2})?$")
 REQUIRED = ["id", "title", "kind", "difficulty", "group", "schedule", "identity", "why", "full", "citations", "challenges"]
 
 
+LESSON = re.compile(r"^- ([a-z-]+): (.+?) \[([^\]]+)\]$")
+# Lessons are our own one-line paraphrases from the source notes; anything longer is not a tip.
+MAX_LESSON_CHARS = 220
+
+
 class PlanError(ValueError):
     pass
+
+
+def build_lessons(habit_ids: list[str]) -> list[dict]:
+    """Every "Protocol candidates" bullet in the source notes becomes a lesson for the daily-lesson card
+    and the tip library. Only our paraphrase and its citation ship, never source text."""
+    lessons, seen = [], set()
+    for path in sorted(SOURCES.glob("*.md")):
+        text = path.read_text(encoding="utf-8")
+        source = re.search(r"^source:\s*(\S+)", text, re.M)
+        if not source or "## Protocol candidates" not in text:
+            continue
+        block = text.split("## Protocol candidates", 1)[1].split("\n## ", 1)[0]
+        for line in block.splitlines():
+            m = LESSON.match(line.strip())
+            if not m or m.group(1) not in habit_ids or len(m.group(2)) > MAX_LESSON_CHARS:
+                continue
+            habit, tip, locator = m.groups()
+            lesson_id = f"{source.group(1)}@{locator}#{habit}"
+            if lesson_id in seen:
+                continue
+            seen.add(lesson_id)
+            lessons.append({"id": lesson_id, "habit": habit, "text": tip, "source": source.group(1), "locator": locator})
+    return lessons
 
 
 def front_matter(path: Path) -> dict:
@@ -101,6 +129,7 @@ def build_plan() -> dict:
         "weekly_focus": meta.get("weekly_focus"),
         "notes": meta.get("notes", []),
         "habits": habits,
+        "lessons": build_lessons([h["id"] for h in habits]),
     }
 
 
@@ -122,7 +151,7 @@ def main() -> int:
         return 1
     text = json.dumps(plan, indent=1, ensure_ascii=False) + "\n"
     atomic_write(text, SEED)
-    print(f"seed plan: {len(plan['habits'])} habits -> {SEED}")
+    print(f"seed plan: {len(plan['habits'])} habits, {len(plan['lessons'])} lessons -> {SEED}")
     if args.coachsync:
         target = COACHSYNC / "to-apps" / "conormastery" / "plan.json"
         atomic_write(text, target)

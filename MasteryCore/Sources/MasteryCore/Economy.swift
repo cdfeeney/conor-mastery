@@ -25,6 +25,8 @@ public enum RewardRules {
     public static let lockedInMultiplier = 1.5
     public static let lockedInEarlyStopPenalty = 10
     public static let dailyChallengeGrit = 20
+    /// Trying the daily lesson (answered "I did it" at night).
+    public static let lessonGrit = 10
     public static let taskGrit = 3
     /// Per-habit streak bonus: +1% grit per day of that habit's own streak, capped at +30%.
     public static let habitStreakBonusPerDay = 0.01

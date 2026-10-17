@@ -17,6 +17,14 @@ struct CoachView: View {
                     Section("Coach notes") { ForEach(store.plan.notes, id: \.self) { Text($0) } }
                 }
                 weakestSection
+                Section("Learn") {
+                    NavigationLink { TipLibraryView() } label: {
+                        Label("Tip library · \(store.plan.lessons.count) tips", systemImage: "books.vertical")
+                    }
+                }
+                if !store.pinnedLessons.isEmpty {
+                    Section("Your rules") { RulesList() }
+                }
                 Section("Your habits") {
                     ForEach(store.habits) { habit in
                         NavigationLink { HabitProtocolView(habit: habit) } label: {
@@ -26,6 +34,9 @@ struct CoachView: View {
                             }
                         }
                     }
+                }
+                if store.lesson != nil {
+                    Section("Tonight's check: today's lesson") { LessonCard() }
                 }
                 Section("Tonight's reflection") {
                     TextField("What went well? What got in the way?", text: $reflection, axis: .vertical)
@@ -62,6 +73,7 @@ struct CoachView: View {
 
 struct HabitProtocolView: View {
     let habit: HabitDefinition
+    @Environment(MasteryStore.self) private var store
 
     var body: some View {
         List {
@@ -71,6 +83,20 @@ struct HabitProtocolView: View {
             if let min = habit.min { Section("Minimum (bad days)") { Text(min) } }
             if !habit.steps.isEmpty {
                 Section("Steps") { ForEach(habit.steps, id: \.self) { Text($0) } }
+            }
+            if store.pinnedLessons.contains(where: { $0.habitID == habit.id }) {
+                Section("Your rules") { RulesList(habitID: habit.id) }
+            }
+            let tips = store.plan.lessons.filter { $0.habitID == habit.id }
+            if !tips.isEmpty {
+                Section("Tips · \(tips.count)") {
+                    ForEach(tips) { lesson in
+                        VStack(alignment: .leading, spacing: 4) {
+                            Text(lesson.text)
+                            HStack(spacing: 16) { LessonSourceLink(lesson: lesson); PinButton(lessonID: lesson.id) }
+                        }
+                    }
+                }
             }
             if !habit.citations.isEmpty {
                 Section("Sources") {

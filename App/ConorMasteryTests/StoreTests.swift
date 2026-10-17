@@ -61,6 +61,27 @@ final class StoreTests: XCTestCase {
         XCTAssertEqual(store.world.inventory["bamboo"] ?? 0, 0)
     }
 
+    func testLessonKeptPaysOnceAndStaysTodaysLesson() throws {
+        let store = try makeStore()
+        let lesson = try XCTUnwrap(store.lesson, "seed plan ships lessons")
+        store.answerLesson(kept: true)
+        store.answerLesson(kept: true)
+        XCTAssertEqual(store.grit, RewardRules.lessonGrit)
+        store.reload()
+        XCTAssertEqual(store.lesson?.id, lesson.id)
+        XCTAssertEqual(store.lessonAnswer?.status, .kept)
+    }
+
+    func testPinnedRuleTogglesAndPersists() throws {
+        let store = try makeStore()
+        let lesson = try XCTUnwrap(store.lesson)
+        store.togglePinned(lesson.id)
+        store.reload()
+        XCTAssertEqual(store.pinnedLessons.map(\.id), [lesson.id])
+        store.togglePinned(lesson.id)
+        XCTAssertTrue(store.pinnedLessons.isEmpty)
+    }
+
     func testChecklistCompletesOnLastStep() throws {
         let store = try makeStore()
         let routine = try XCTUnwrap(store.habits.first { $0.kind == .checklist && !$0.steps.isEmpty })

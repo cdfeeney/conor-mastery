@@ -26,6 +26,10 @@ struct AppSettings: Codable, Equatable {
     var restDays: Set<DayKey> = []
     /// Real-life rewards priced in grit.
     var treats: [Treat] = []
+    /// Daily-lesson answers by lesson id (kept, or missed and due for review).
+    var lessons: [String: LessonRecord] = [:]
+    /// Lessons you made into rules: shown on the habit page and in tonight's check.
+    var pinnedRules: [String] = []
 
     static func fresh(today: DayKey) -> AppSettings { AppSettings(startDay: today) }
 
@@ -48,6 +52,8 @@ struct AppSettings: Codable, Equatable {
         habitPlans = try c.decodeIfPresent([String: HabitPlan].self, forKey: .habitPlans) ?? [:]
         restDays = try c.decodeIfPresent(Set<DayKey>.self, forKey: .restDays) ?? []
         treats = try c.decodeIfPresent([Treat].self, forKey: .treats) ?? []
+        lessons = try c.decodeIfPresent([String: LessonRecord].self, forKey: .lessons) ?? [:]
+        pinnedRules = try c.decodeIfPresent([String].self, forKey: .pinnedRules) ?? []
     }
 }
 

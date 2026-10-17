@@ -72,6 +72,18 @@ final class MasteryStore {
     }
     var challengeDone: Bool { settings.challengeDoneDay == today }
 
+    /// Today's coach lesson (stays put all day once answered).
+    var lesson: Lesson? {
+        LessonPlanner.pick(plan.lessons, records: settings.lessons, habitOrder: plan.habits.map(\.id),
+                           today: today, timeZone: timeZone)
+    }
+
+    var lessonAnswer: LessonRecord? {
+        lesson.flatMap { settings.lessons[$0.id] }.flatMap { $0.lastAnswered == today ? $0 : nil }
+    }
+
+    var pinnedLessons: [Lesson] { plan.lessons.filter { settings.pinnedRules.contains($0.id) } }
+
     /// Last 7 days for a habit's dot strip, oldest first.
     func weekStrip(_ habitID: String) -> [Completion?] {
         (0..<7).reversed().map { index.completion(habitID, on: today.adding(days: -$0, timeZone: timeZone)) }

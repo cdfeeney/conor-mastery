@@ -19,14 +19,18 @@ public struct MasteryPlan: Codable, Sendable, Hashable {
     public let weeklyFocus: String?
     public let habits: [PlanHabit]
     public let notes: [String]
+    /// Daily-lesson and tip-library content (optional in the file).
+    public let lessons: [Lesson]
 
-    public init(generatedAt: String, weeklyFocus: String?, habits: [PlanHabit], notes: [String] = []) {
+    public init(generatedAt: String, weeklyFocus: String?, habits: [PlanHabit], notes: [String] = [],
+                lessons: [Lesson] = []) {
         format = MasteryPlan.formatID; version = 1
         self.generatedAt = generatedAt; self.weeklyFocus = weeklyFocus; self.habits = habits; self.notes = notes
+        self.lessons = lessons
     }
 
     enum CodingKeys: String, CodingKey {
-        case format, version, habits, notes
+        case format, version, habits, notes, lessons
         case generatedAt = "generated_at"
         case weeklyFocus = "weekly_focus"
     }
@@ -39,7 +43,7 @@ public struct MasteryPlan: Codable, Sendable, Hashable {
         return self
     }
 
-    /// Notes are optional; tolerate their absence.
+    /// Notes and lessons are optional; tolerate their absence.
     public init(from decoder: Decoder) throws {
         let c = try decoder.container(keyedBy: CodingKeys.self)
         format = try c.decode(String.self, forKey: .format)
@@ -48,6 +52,7 @@ public struct MasteryPlan: Codable, Sendable, Hashable {
         weeklyFocus = try c.decodeIfPresent(String.self, forKey: .weeklyFocus)
         habits = try c.decode([PlanHabit].self, forKey: .habits)
         notes = try c.decodeIfPresent([String].self, forKey: .notes) ?? []
+        lessons = try c.decodeIfPresent([Lesson].self, forKey: .lessons) ?? []
     }
 }
 

@@ -1,7 +1,7 @@
 {
  "format": "conor-mastery-plan",
  "version": 1,
- "generated_at": "2026-10-17T13:58:20-04:00",
+ "generated_at": "2026-10-17T14:17:52-04:00",
  "weekly_focus": "Foundations first: sleep and phone. Lock those in, then body, then focus.",
  "notes": [
   "Habits take about 2 months to feel automatic (median ~66 days, range 18-254), not 21. Expect week 3 to feel hard. (res:lally2010)",
@@ -572,6 +572,743 @@
     "Use a physical alarm clock and charge the phone outside the bedroom tonight.",
     "Before bed, write tomorrow's first action with a time and a place."
    ]
+  }
+ ],
+ "lessons": [
+  {
+   "id": "yt:2W-1vpcCanA@01:00#sleep",
+   "habit": "sleep",
+   "text": "Same bed and wake time daily; no caffeine after 2pm; morning light.",
+   "source": "yt:2W-1vpcCanA",
+   "locator": "01:00"
+  },
+  {
+   "id": "yt:2W-1vpcCanA@03:54#meditation",
+   "habit": "meditation",
+   "text": "10 minutes daily as stress reduction.",
+   "source": "yt:2W-1vpcCanA",
+   "locator": "03:54"
+  },
+  {
+   "id": "yt:5_cvpfQ0e3w@00:00#workout",
+   "habit": "workout",
+   "text": "start with a tiny daily target such as 5 pushups for 30 days rather than a big burst",
+   "source": "yt:5_cvpfQ0e3w",
+   "locator": "00:00"
+  },
+  {
+   "id": "yt:5rc4C1JBdHc@04:23#sleep",
+   "habit": "sleep",
+   "text": "same bed and wake time daily, no short videos in bed",
+   "source": "yt:5rc4C1JBdHc",
+   "locator": "04:23"
+  },
+  {
+   "id": "yt:6-TDjSIroRQ@02:08#reset-focus",
+   "habit": "reset-focus",
+   "text": "Run one 90-minute single-task block with a timer; stop when focus fades.",
+   "source": "yt:6-TDjSIroRQ",
+   "locator": "02:08"
+  },
+  {
+   "id": "yt:6-TDjSIroRQ@02:41#reset-focus",
+   "habit": "reset-focus",
+   "text": "After the block, take a 20-minute screen-free break.",
+   "source": "yt:6-TDjSIroRQ",
+   "locator": "02:41"
+  },
+  {
+   "id": "yt:6-TDjSIroRQ@03:13#sleep",
+   "habit": "sleep",
+   "text": "Protect sleep the night after learning; do not cram late.",
+   "source": "yt:6-TDjSIroRQ",
+   "locator": "03:13"
+  },
+  {
+   "id": "yt:652y-f1YFjU@06:29#no-social-media",
+   "habit": "no-social-media",
+   "text": "when the urge to scroll hits, do one small fun thing instead (game, call, plan with a friend)",
+   "source": "yt:652y-f1YFjU",
+   "locator": "06:29"
+  },
+  {
+   "id": "yt:652y-f1YFjU@07:00#no-social-media",
+   "habit": "no-social-media",
+   "text": "send one message to a friend each day",
+   "source": "yt:652y-f1YFjU",
+   "locator": "07:00"
+  },
+  {
+   "id": "yt:652y-f1YFjU@02:08#no-social-media",
+   "habit": "no-social-media",
+   "text": "unfollow every feed account that does not fit who you want to be in a year",
+   "source": "yt:652y-f1YFjU",
+   "locator": "02:08"
+  },
+  {
+   "id": "yt:6JSNeqNUao0@00:00#reset-focus",
+   "habit": "reset-focus",
+   "text": "close tabs, silence notifications and block sites before a deep-work block",
+   "source": "yt:6JSNeqNUao0",
+   "locator": "00:00"
+  },
+  {
+   "id": "yt:6JSNeqNUao0@00:33#meditation",
+   "habit": "meditation",
+   "text": "sit 60 seconds on the breath and return gently when the mind wanders",
+   "source": "yt:6JSNeqNUao0",
+   "locator": "00:33"
+  },
+  {
+   "id": "yt:6JSNeqNUao0@01:35#morning-routine",
+   "habit": "morning-routine",
+   "text": "journal two questions - biggest bottleneck, and how to fix it",
+   "source": "yt:6JSNeqNUao0",
+   "locator": "01:35"
+  },
+  {
+   "id": "yt:6JSNeqNUao0@02:07#reset-focus",
+   "habit": "reset-focus",
+   "text": "use a timer for work blocks, building 30 to 60 to 90 minutes; rest without stimulation",
+   "source": "yt:6JSNeqNUao0",
+   "locator": "02:07"
+  },
+  {
+   "id": "yt:8vAb5flFfRU@03:10#workout",
+   "habit": "workout",
+   "text": "Starter session: 50 push-ups, 15 pull-ups, 100 squats, then log it.",
+   "source": "yt:8vAb5flFfRU",
+   "locator": "03:10"
+  },
+  {
+   "id": "yt:8vAb5flFfRU@02:05#workout",
+   "habit": "workout",
+   "text": "Sprinkle push-up sets across the day.",
+   "source": "yt:8vAb5flFfRU",
+   "locator": "02:05"
+  },
+  {
+   "id": "yt:95UrFFVrwJU@02:36#reset-focus",
+   "habit": "reset-focus",
+   "text": "Phone in another room, block sites, one task, timer on.",
+   "source": "yt:95UrFFVrwJU",
+   "locator": "02:36"
+  },
+  {
+   "id": "yt:95UrFFVrwJU@02:06#no-social-media",
+   "habit": "no-social-media",
+   "text": "Schedule scrolling only as a reward after a finished block.",
+   "source": "yt:95UrFFVrwJU",
+   "locator": "02:06"
+  },
+  {
+   "id": "yt:9ThamuLyCB8@00:31#reset-focus",
+   "habit": "reset-focus",
+   "text": "Write today's goal, start timer, one 45-90 min block, then a 5-10 min boring break.",
+   "source": "yt:9ThamuLyCB8",
+   "locator": "00:31"
+  },
+  {
+   "id": "yt:9ThamuLyCB8@00:00#meditation",
+   "habit": "meditation",
+   "text": "One minute at the same cue daily.",
+   "source": "yt:9ThamuLyCB8",
+   "locator": "00:00"
+  },
+  {
+   "id": "yt:AZiOykx7cYQ@04:28#workout",
+   "habit": "workout",
+   "text": "log each session and aim to add a rep or a little weight over time",
+   "source": "yt:AZiOykx7cYQ",
+   "locator": "04:28"
+  },
+  {
+   "id": "yt:AZiOykx7cYQ@02:47#workout",
+   "habit": "workout",
+   "text": "hit each muscle group twice a week, finishing sets 2-4 reps from failure",
+   "source": "yt:AZiOykx7cYQ",
+   "locator": "02:47"
+  },
+  {
+   "id": "book:bennett-24-hours@¶13#morning-routine",
+   "habit": "morning-routine",
+   "text": "Wake somewhat earlier (start with a modest shift, not hours) and use the gained time for your own project before the day's obligations.",
+   "source": "book:bennett-24-hours",
+   "locator": "¶13"
+  },
+  {
+   "id": "book:bennett-24-hours@¶83#reset-focus",
+   "habit": "reset-focus",
+   "text": "Pick one subject, hold attention on it, and each time it drifts, return it without scolding; count the returns.",
+   "source": "book:bennett-24-hours",
+   "locator": "¶83"
+  },
+  {
+   "id": "book:bennett-24-hours@¶67#night-routine",
+   "habit": "night-routine",
+   "text": "Fixed evening sessions (about 90 minutes, three times a week), treated as non-negotiable like a match or rehearsal.",
+   "source": "book:bennett-24-hours",
+   "locator": "¶67"
+  },
+  {
+   "id": "book:bennett-24-hours@¶90#meditation",
+   "habit": "meditation",
+   "text": "Daily concentration practice, ideally half an hour, as a warm-up before harder work.",
+   "source": "book:bennett-24-hours",
+   "locator": "¶90"
+  },
+  {
+   "id": "book:bennett-24-hours@¶100#night-routine",
+   "habit": "night-routine",
+   "text": "Brief evening reflection: did my actions match my principles today?",
+   "source": "book:bennett-24-hours",
+   "locator": "¶100"
+  },
+  {
+   "id": "book:bennett-24-hours@¶62#no-social-media",
+   "habit": "no-social-media",
+   "text": "Replace idle commute or gap time with deliberate focus or reflection.",
+   "source": "book:bennett-24-hours",
+   "locator": "¶62"
+  },
+  {
+   "id": "book:franklin-autobiography@¶199#night-routine",
+   "habit": "night-routine",
+   "text": "Each evening, mark any slip against the current focus habit on a simple grid; no marks means a clean day.",
+   "source": "book:franklin-autobiography",
+   "locator": "¶199"
+  },
+  {
+   "id": "book:franklin-autobiography@¶213#morning-routine",
+   "habit": "morning-routine",
+   "text": "Start the day by asking \"What good shall I do this day?\" and set the day's resolution.",
+   "source": "book:franklin-autobiography",
+   "locator": "¶213"
+  },
+  {
+   "id": "book:franklin-autobiography@¶213#night-routine",
+   "habit": "night-routine",
+   "text": "End the day with the question \"What good have I done to-day?\"",
+   "source": "book:franklin-autobiography",
+   "locator": "¶213"
+  },
+  {
+   "id": "book:franklin-autobiography@¶202#reset-focus",
+   "habit": "reset-focus",
+   "text": "Spend a whole week on one habit at a time, then add the next after a clean week.",
+   "source": "book:franklin-autobiography",
+   "locator": "¶202"
+  },
+  {
+   "id": "book:franklin-autobiography@¶214#no-nicotine",
+   "habit": "no-nicotine",
+   "text": "Log any slip daily on the grid and review the pattern weekly.",
+   "source": "book:franklin-autobiography",
+   "locator": "¶214"
+  },
+  {
+   "id": "book:james-habit@¶51#no-nicotine",
+   "habit": "no-nicotine",
+   "text": "On quit day remove supplies, tell people, and arrange conditions that make the old behavior hard.",
+   "source": "book:james-habit",
+   "locator": "¶51"
+  },
+  {
+   "id": "book:james-habit@¶52#no-nicotine",
+   "habit": "no-nicotine",
+   "text": "Treat any \"just this once\" as breaking the chain; plan the restart in advance.",
+   "source": "book:james-habit",
+   "locator": "¶52"
+  },
+  {
+   "id": "book:james-habit@¶57#morning-routine",
+   "habit": "morning-routine",
+   "text": "When a new habit is planned, do it the first time the opportunity arises, not later.",
+   "source": "book:james-habit",
+   "locator": "¶57"
+  },
+  {
+   "id": "book:james-habit@¶56#night-routine",
+   "habit": "night-routine",
+   "text": "Skip fresh daily re-resolving; run the same fixed routine every night.",
+   "source": "book:james-habit",
+   "locator": "¶56"
+  },
+  {
+   "id": "book:james-habit@¶54#reset-focus",
+   "habit": "reset-focus",
+   "text": "Start with an easy win so the first week succeeds.",
+   "source": "book:james-habit",
+   "locator": "¶54"
+  },
+  {
+   "id": "yt:bprHfpHVEA8@00:00#workout",
+   "habit": "workout",
+   "text": "Log one progression metric (weight, reps or rest) every session.",
+   "source": "yt:bprHfpHVEA8",
+   "locator": "00:00"
+  },
+  {
+   "id": "yt:bprHfpHVEA8@02:10#workout",
+   "habit": "workout",
+   "text": "If the habit is shaky, just show up and do an easy workout.",
+   "source": "yt:bprHfpHVEA8",
+   "locator": "02:10"
+  },
+  {
+   "id": "yt:GFge24IUcy8@03:18#sleep",
+   "habit": "sleep",
+   "text": "keep bed and wake times fixed seven days a week",
+   "source": "yt:GFge24IUcy8",
+   "locator": "03:18"
+  },
+  {
+   "id": "yt:GFge24IUcy8@01:38#night-routine",
+   "habit": "night-routine",
+   "text": "skip alcohol and cannabis as sleep aids",
+   "source": "yt:GFge24IUcy8",
+   "locator": "01:38"
+  },
+  {
+   "id": "yt:GFge24IUcy8@03:49#sleep",
+   "habit": "sleep",
+   "text": "after 20 minutes awake, leave bed, read or stretch in dim light, then return",
+   "source": "yt:GFge24IUcy8",
+   "locator": "03:49"
+  },
+  {
+   "id": "yt:GrC_LNa_GV8@07:33#no-social-media",
+   "habit": "no-social-media",
+   "text": "once, take an hour with all tech off, pen and paper, and write what your life looks like in a few years if you keep going as now",
+   "source": "yt:GrC_LNa_GV8",
+   "locator": "07:33"
+  },
+  {
+   "id": "yt:GrC_LNa_GV8@07:02#no-nicotine",
+   "habit": "no-nicotine",
+   "text": "in the same session, list what nicotine costs you and what you lose if it continues",
+   "source": "yt:GrC_LNa_GV8",
+   "locator": "07:02"
+  },
+  {
+   "id": "yt:iqnoX27hef0@06:27#deep-breathing",
+   "habit": "deep-breathing",
+   "text": "a few minutes daily of slow breathing with long exhales, around 5-6 breaths a minute",
+   "source": "yt:iqnoX27hef0",
+   "locator": "06:27"
+  },
+  {
+   "id": "yt:iqnoX27hef0@06:27#morning-routine",
+   "habit": "morning-routine",
+   "text": "get bright light soon after waking",
+   "source": "yt:iqnoX27hef0",
+   "locator": "06:27"
+  },
+  {
+   "id": "yt:iqnoX27hef0@06:27#night-routine",
+   "habit": "night-routine",
+   "text": "cut screens in the evening",
+   "source": "yt:iqnoX27hef0",
+   "locator": "06:27"
+  },
+  {
+   "id": "yt:iqnoX27hef0@02:07#sleep",
+   "habit": "sleep",
+   "text": "same bedtime nightly, aiming for 7-9 hours",
+   "source": "yt:iqnoX27hef0",
+   "locator": "02:07"
+  },
+  {
+   "id": "yt:iso2GnoZs3s@03:11#morning-routine",
+   "habit": "morning-routine",
+   "text": "step outside for 5-15 minutes of daylight within the first part of the morning, before screens or coffee",
+   "source": "yt:iso2GnoZs3s",
+   "locator": "03:11"
+  },
+  {
+   "id": "yt:iso2GnoZs3s@02:07#sleep",
+   "habit": "sleep",
+   "text": "keep bedtime inside a 30-minute window every day",
+   "source": "yt:iso2GnoZs3s",
+   "locator": "02:07"
+  },
+  {
+   "id": "yt:iso2GnoZs3s@04:52#workout",
+   "habit": "workout",
+   "text": "on a slump, do 10 bodyweight squats or a 10-minute walk",
+   "source": "yt:iso2GnoZs3s",
+   "locator": "04:52"
+  },
+  {
+   "id": "yt:Iz_MHsiZ8KE@05:30#no-social-media",
+   "habit": "no-social-media",
+   "text": "leave the phone in your pocket during waiting moments, starting at five minutes and adding two",
+   "source": "yt:Iz_MHsiZ8KE",
+   "locator": "05:30"
+  },
+  {
+   "id": "yt:Iz_MHsiZ8KE@02:13#reset-focus",
+   "habit": "reset-focus",
+   "text": "breaks are walking, foam rolling or breathing, never feeds",
+   "source": "yt:Iz_MHsiZ8KE",
+   "locator": "02:13"
+  },
+  {
+   "id": "yt:Iz_MHsiZ8KE@06:03#reset-focus",
+   "habit": "reset-focus",
+   "text": "single-task with no second screen or snack-scrolling",
+   "source": "yt:Iz_MHsiZ8KE",
+   "locator": "06:03"
+  },
+  {
+   "id": "yt:j-0kuiAlyk8@01:39#no-social-media",
+   "habit": "no-social-media",
+   "text": "put the phone charger in another room and delete tempting apps before bed",
+   "source": "yt:j-0kuiAlyk8",
+   "locator": "01:39"
+  },
+  {
+   "id": "yt:K92PRpg6jmM@01:04#sleep",
+   "habit": "sleep",
+   "text": "protect 7-8 hours nightly",
+   "source": "yt:K92PRpg6jmM",
+   "locator": "01:04"
+  },
+  {
+   "id": "yt:K92PRpg6jmM@03:52#workout",
+   "habit": "workout",
+   "text": "lift a few times a week and walk daily",
+   "source": "yt:K92PRpg6jmM",
+   "locator": "03:52"
+  },
+  {
+   "id": "yt:Lbjf1C7bx-A@05:28#reset-focus",
+   "habit": "reset-focus",
+   "text": "after the focus block, sit 15 minutes with no input (no phone, music or podcast)",
+   "source": "yt:Lbjf1C7bx-A",
+   "locator": "05:28"
+  },
+  {
+   "id": "yt:Lbjf1C7bx-A@05:28#no-social-media",
+   "habit": "no-social-media",
+   "text": "leave the phone at home for the workout and eat one meal a day without a screen",
+   "source": "yt:Lbjf1C7bx-A",
+   "locator": "05:28"
+  },
+  {
+   "id": "yt:LUlIvjBcmlA@03:14#deep-breathing",
+   "habit": "deep-breathing",
+   "text": "5 minutes daily: inhale 4s, hold 4s, exhale 6-8s.",
+   "source": "yt:LUlIvjBcmlA",
+   "locator": "03:14"
+  },
+  {
+   "id": "yt:LUlIvjBcmlA@01:35#workout",
+   "habit": "workout",
+   "text": "Cap hard sessions at 3-4 per week; walk on other days.",
+   "source": "yt:LUlIvjBcmlA",
+   "locator": "01:35"
+  },
+  {
+   "id": "yt:lYzG_oq8L10@00:31#no-social-media",
+   "habit": "no-social-media",
+   "text": "Remove reels/TikTok/Shorts apps entirely, not just limit them.",
+   "source": "yt:lYzG_oq8L10",
+   "locator": "00:31"
+  },
+  {
+   "id": "yt:lYzG_oq8L10@01:31#sleep",
+   "habit": "sleep",
+   "text": "Treat sleep as the base that makes other habits easier.",
+   "source": "yt:lYzG_oq8L10",
+   "locator": "01:31"
+  },
+  {
+   "id": "yt:MW0tWY_tEr0@01:45#no-social-media",
+   "habit": "no-social-media",
+   "text": "replace short feeds with long-form content, then lower stimulation each week or two",
+   "source": "yt:MW0tWY_tEr0",
+   "locator": "01:45"
+  },
+  {
+   "id": "yt:MW0tWY_tEr0@02:50#workout",
+   "habit": "workout",
+   "text": "20-30 minutes of heart-rate-raising cardio, 4-5 days a week",
+   "source": "yt:MW0tWY_tEr0",
+   "locator": "02:50"
+  },
+  {
+   "id": "yt:n1G3wGPVwVw@03:09#reset-focus",
+   "habit": "reset-focus",
+   "text": "before the block, write the exact first step and the one task that matters most",
+   "source": "yt:n1G3wGPVwVw",
+   "locator": "03:09"
+  },
+  {
+   "id": "yt:n1G3wGPVwVw@03:40#reset-focus",
+   "habit": "reset-focus",
+   "text": "if the task feels heavy, halve it or plan the place and setup first",
+   "source": "yt:n1G3wGPVwVw",
+   "locator": "03:40"
+  },
+  {
+   "id": "yt:n1G3wGPVwVw@04:11#reset-focus",
+   "habit": "reset-focus",
+   "text": "keep a 'cooked day' fallback task list prepared",
+   "source": "yt:n1G3wGPVwVw",
+   "locator": "04:11"
+  },
+  {
+   "id": "yt:nuesDJf4EYA@00:31#night-routine",
+   "habit": "night-routine",
+   "text": "write tomorrow's first action with time and place, e.g. gym at 8am",
+   "source": "yt:nuesDJf4EYA",
+   "locator": "00:31"
+  },
+  {
+   "id": "yt:nuesDJf4EYA@01:04#morning-routine",
+   "habit": "morning-routine",
+   "text": "set out gym clothes and put the alarm phone out of reach",
+   "source": "yt:nuesDJf4EYA",
+   "locator": "01:04"
+  },
+  {
+   "id": "yt:nuesDJf4EYA@01:04#workout",
+   "habit": "workout",
+   "text": "commit only to walking to the gym; leave if still unmotivated",
+   "source": "yt:nuesDJf4EYA",
+   "locator": "01:04"
+  },
+  {
+   "id": "yt:nuesDJf4EYA@01:36#no-nicotine",
+   "habit": "no-nicotine",
+   "text": "throw out cigarettes so no resistance is needed",
+   "source": "yt:nuesDJf4EYA",
+   "locator": "01:36"
+  },
+  {
+   "id": "yt:nuesDJf4EYA@01:36#no-social-media",
+   "habit": "no-social-media",
+   "text": "delete the app rather than rely on willpower",
+   "source": "yt:nuesDJf4EYA",
+   "locator": "01:36"
+  },
+  {
+   "id": "yt:O-C8o0pFvNs@05:05#workout",
+   "habit": "workout",
+   "text": "If resistance shows, count 5-4-3-2-1 and start; commit to two minutes only.",
+   "source": "yt:O-C8o0pFvNs",
+   "locator": "05:05"
+  },
+  {
+   "id": "yt:O-C8o0pFvNs@06:12#no-nicotine",
+   "habit": "no-nicotine",
+   "text": "On a Zyn urge, set a 10-minute timer and leave the room or move; repeat if needed.",
+   "source": "yt:O-C8o0pFvNs",
+   "locator": "06:12"
+  },
+  {
+   "id": "yt:O-C8o0pFvNs@06:12#no-social-media",
+   "habit": "no-social-media",
+   "text": "Same 10-minute delay before opening any feed.",
+   "source": "yt:O-C8o0pFvNs",
+   "locator": "06:12"
+  },
+  {
+   "id": "yt:O-C8o0pFvNs@02:49#sleep",
+   "habit": "sleep",
+   "text": "Seven to nine hours, shifting bedtime earlier gradually.",
+   "source": "yt:O-C8o0pFvNs",
+   "locator": "02:49"
+  },
+  {
+   "id": "yt:pNDJr_s69wY@00:35#sleep",
+   "habit": "sleep",
+   "text": "Charge the phone outside the bedroom and use a physical alarm clock.",
+   "source": "yt:pNDJr_s69wY",
+   "locator": "00:35"
+  },
+  {
+   "id": "yt:pNDJr_s69wY@02:18#morning-routine",
+   "habit": "morning-routine",
+   "text": "Write 3 lines in a notebook: stressor, one target for today, one gratitude.",
+   "source": "yt:pNDJr_s69wY",
+   "locator": "02:18"
+  },
+  {
+   "id": "yt:pNDJr_s69wY@00:00#workout",
+   "habit": "workout",
+   "text": "Hang a pull-up bar in the bedroom doorway and do a few pulls daily.",
+   "source": "yt:pNDJr_s69wY",
+   "locator": "00:00"
+  },
+  {
+   "id": "yt:pwzAW1T5j1M@00:31#sleep",
+   "habit": "sleep",
+   "text": "same bed and wake time, dark room",
+   "source": "yt:pwzAW1T5j1M",
+   "locator": "00:31"
+  },
+  {
+   "id": "yt:pwzAW1T5j1M@03:13#no-social-media",
+   "habit": "no-social-media",
+   "text": "treat the feed as something to cut for a 30-day trial",
+   "source": "yt:pwzAW1T5j1M",
+   "locator": "03:13"
+  },
+  {
+   "id": "yt:Qg1nFGl-YZc@02:50#no-nicotine",
+   "habit": "no-nicotine",
+   "text": "when a Zyn urge hits, get up in 5 seconds, change rooms, start a 10-minute timer, do a pre-listed substitute",
+   "source": "yt:Qg1nFGl-YZc",
+   "locator": "02:50"
+  },
+  {
+   "id": "yt:Qg1nFGl-YZc@01:44#night-routine",
+   "habit": "night-routine",
+   "text": "set up the evening environment (phone and laptop away from the trigger) before willpower drops",
+   "source": "yt:Qg1nFGl-YZc",
+   "locator": "01:44"
+  },
+  {
+   "id": "yt:Qg1nFGl-YZc@03:24#no-nicotine",
+   "habit": "no-nicotine",
+   "text": "after a craving passes, log it as a win",
+   "source": "yt:Qg1nFGl-YZc",
+   "locator": "03:24"
+  },
+  {
+   "id": "yt:spvYGKTdWto@00:34#sleep",
+   "habit": "sleep",
+   "text": "same bed and wake time, cold dark room, bed only for sleep",
+   "source": "yt:spvYGKTdWto",
+   "locator": "00:34"
+  },
+  {
+   "id": "yt:teyV8EFTxPc@02:09#no-social-media",
+   "habit": "no-social-media",
+   "text": "delete apps, make the phone greyscale, turn off notifications",
+   "source": "yt:teyV8EFTxPc",
+   "locator": "02:09"
+  },
+  {
+   "id": "yt:teyV8EFTxPc@02:40#no-social-media",
+   "habit": "no-social-media",
+   "text": "when reaching for the phone, walk, read or write",
+   "source": "yt:teyV8EFTxPc",
+   "locator": "02:40"
+  },
+  {
+   "id": "yt:teyV8EFTxPc@03:12#no-social-media",
+   "habit": "no-social-media",
+   "text": "run a 3-day no-shorts-no-reels challenge",
+   "source": "yt:teyV8EFTxPc",
+   "locator": "03:12"
+  },
+  {
+   "id": "yt:vfbh6Xf2Cmg@00:33#no-social-media",
+   "habit": "no-social-media",
+   "text": "put the phone down regularly and sit with boredom",
+   "source": "yt:vfbh6Xf2Cmg",
+   "locator": "00:33"
+  },
+  {
+   "id": "yt:VJ8Qa8ECTq4@01:06#reset-focus",
+   "habit": "reset-focus",
+   "text": "set a 5-minute timer and start the hardest piece; continue if it flows",
+   "source": "yt:VJ8Qa8ECTq4",
+   "locator": "01:06"
+  },
+  {
+   "id": "yt:VJ8Qa8ECTq4@02:06#reset-focus",
+   "habit": "reset-focus",
+   "text": "write 3-5 tiny 'levels' before starting",
+   "source": "yt:VJ8Qa8ECTq4",
+   "locator": "02:06"
+  },
+  {
+   "id": "yt:VJ8Qa8ECTq4@04:48#reset-focus",
+   "habit": "reset-focus",
+   "text": "keep a notebook nearby and dump stray ideas rather than switching tasks",
+   "source": "yt:VJ8Qa8ECTq4",
+   "locator": "04:48"
+  },
+  {
+   "id": "yt:WiIr-RgL4hg@01:38#reset-focus",
+   "habit": "reset-focus",
+   "text": "Before a block, write a 5-step plan in two minutes (timer, block sites, open notes, first line).",
+   "source": "yt:WiIr-RgL4hg",
+   "locator": "01:38"
+  },
+  {
+   "id": "yt:WiIr-RgL4hg@03:18#reset-focus",
+   "habit": "reset-focus",
+   "text": "If stuck, do the plan only and count that as a win.",
+   "source": "yt:WiIr-RgL4hg",
+   "locator": "03:18"
+  },
+  {
+   "id": "yt:xcPX3VkQjAY@00:00#morning-routine",
+   "habit": "morning-routine",
+   "text": "get outdoor sunlight after waking",
+   "source": "yt:xcPX3VkQjAY",
+   "locator": "00:00"
+  },
+  {
+   "id": "yt:xcPX3VkQjAY@01:03#morning-routine",
+   "habit": "morning-routine",
+   "text": "drink water, journal 10 minutes, meditate 10 minutes",
+   "source": "yt:xcPX3VkQjAY",
+   "locator": "01:03"
+  },
+  {
+   "id": "yt:xcPX3VkQjAY@01:40#morning-routine",
+   "habit": "morning-routine",
+   "text": "wake within the same 15 minutes every day",
+   "source": "yt:xcPX3VkQjAY",
+   "locator": "01:40"
+  },
+  {
+   "id": "yt:xcPX3VkQjAY@02:49#reset-focus",
+   "habit": "reset-focus",
+   "text": "write the task, set a 30-minute timer, block distractions, break 5-15 minutes",
+   "source": "yt:xcPX3VkQjAY",
+   "locator": "02:49"
+  },
+  {
+   "id": "yt:xcPX3VkQjAY@04:26#night-routine",
+   "habit": "night-routine",
+   "text": "no food four hours before bed",
+   "source": "yt:xcPX3VkQjAY",
+   "locator": "04:26"
+  },
+  {
+   "id": "yt:xcPX3VkQjAY@04:59#night-routine",
+   "habit": "night-routine",
+   "text": "audiobook instead of screens to wind down",
+   "source": "yt:xcPX3VkQjAY",
+   "locator": "04:59"
+  },
+  {
+   "id": "yt:xcPX3VkQjAY@05:29#sleep",
+   "habit": "sleep",
+   "text": "fixed bedtime that allows eight hours",
+   "source": "yt:xcPX3VkQjAY",
+   "locator": "05:29"
+  },
+  {
+   "id": "yt:yr_aSRZxV_M@02:42#sleep",
+   "habit": "sleep",
+   "text": "Before self-analysis, check sleep, screen time and training are sorted.",
+   "source": "yt:yr_aSRZxV_M",
+   "locator": "02:42"
+  },
+  {
+   "id": "yt:yr_aSRZxV_M@00:00#workout",
+   "habit": "workout",
+   "text": "Ask whether a hard routine serves a real goal or only an image.",
+   "source": "yt:yr_aSRZxV_M",
+   "locator": "00:00"
   }
  ]
 }

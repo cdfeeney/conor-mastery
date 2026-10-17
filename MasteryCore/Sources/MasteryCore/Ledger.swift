@@ -1,7 +1,7 @@
 import Foundation
 
 public enum GritReason: String, Codable, Sendable {
-    case habit, focus, challenge, task, purchase, landExpansion, unblock, penalty, refund, treat, drop
+    case habit, focus, challenge, task, purchase, landExpansion, unblock, penalty, refund, treat, drop, lesson
 }
 
 /// Append-only grit history. The balance is always derived, never stored.
