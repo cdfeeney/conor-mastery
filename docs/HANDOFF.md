@@ -18,6 +18,7 @@
 - **Re-enabling an archived habit** counts it from today only (one date range per habit), which slightly inflates the history before it was archived. This is an accepted limitation.
 - **Art**: world items are emoji placeholders. Original illustrations are a v0.2 item. No Monke assets are used.
 - **Family Controls**: works in development builds only until Apple grants the distribution entitlement (A1). **Requested 2026-10-17** for both bundle IDs (answers in docs/FAMILY-CONTROLS-REQUEST.md); waiting on Apple's email.
+- **Widgets (owner step before TestFlight)**: register `com.conorfee.conormastery.widgets` in Certificates, Identifiers & Profiles with the App Group `group.com.conorfee.conormastery` (no Family Controls needed).
 - **No widgets / Live Activity** yet (v0.2).
 
 ## Rules for the next session
