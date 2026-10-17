@@ -10,10 +10,19 @@ public struct ShopItem: Codable, Sendable, Hashable, Identifiable {
     public let category: ItemCategory
     public let price: Int
     public let minLevel: Int
+    /// Footprint in tiles, anchored at the top-left tile. Upright things (trees, buildings) are one row deep;
+    /// their tall parts overhang the tiles behind them, as in top-down RPGs.
+    public let width: Int
+    public let height: Int
 
-    public init(id: String, name: String, category: ItemCategory, price: Int, minLevel: Int = 1) {
+    public init(id: String, name: String, category: ItemCategory, price: Int, minLevel: Int = 1,
+                width: Int = 1, height: Int = 1) {
         self.id = id; self.name = name; self.category = category; self.price = price; self.minLevel = minLevel
+        self.width = width; self.height = height
     }
+
+    /// Ground covers (gravel, moss) lie under objects, so an object may stand on one.
+    public var isGroundCover: Bool { category == .ground }
 }
 
 /// Original Dojo Garden catalog (no Monke assets).
@@ -22,21 +31,21 @@ public enum Catalog {
         ShopItem(id: "gravel", name: "Raked Gravel", category: .ground, price: 10),
         ShopItem(id: "moss", name: "Moss Patch", category: .ground, price: 10),
         ShopItem(id: "path-stone", name: "Stepping Stone", category: .stone, price: 20),
-        ShopItem(id: "boulder", name: "Boulder", category: .stone, price: 40),
+        ShopItem(id: "boulder", name: "Boulder", category: .stone, price: 40, width: 2),
         ShopItem(id: "bamboo", name: "Bamboo", category: .plants, price: 50),
-        ShopItem(id: "pine", name: "Black Pine", category: .plants, price: 80),
-        ShopItem(id: "bonsai", name: "Bonsai", category: .plants, price: 120, minLevel: 3),
-        ShopItem(id: "maple", name: "Red Maple", category: .plants, price: 150, minLevel: 5),
-        ShopItem(id: "cherry", name: "Cherry Blossom", category: .plants, price: 250, minLevel: 10),
+        ShopItem(id: "pine", name: "Black Pine", category: .plants, price: 80, width: 2),
+        ShopItem(id: "bonsai", name: "Bonsai", category: .plants, price: 120, minLevel: 3, width: 2),
+        ShopItem(id: "maple", name: "Red Maple", category: .plants, price: 150, minLevel: 5, width: 3),
+        ShopItem(id: "cherry", name: "Cherry Blossom", category: .plants, price: 250, minLevel: 10, width: 3),
         ShopItem(id: "lantern", name: "Stone Lantern", category: .light, price: 100),
-        ShopItem(id: "fire-pit", name: "Fire Pit", category: .light, price: 60),
-        ShopItem(id: "pond", name: "Koi Pond", category: .water, price: 300, minLevel: 5),
-        ShopItem(id: "bridge", name: "Arched Bridge", category: .water, price: 350, minLevel: 10),
+        ShopItem(id: "fire-pit", name: "Fire Pit", category: .light, price: 60, width: 2),
+        ShopItem(id: "pond", name: "Koi Pond", category: .water, price: 300, minLevel: 5, width: 3, height: 3),
+        ShopItem(id: "bridge", name: "Arched Bridge", category: .water, price: 350, minLevel: 10, width: 3, height: 3),
         ShopItem(id: "training-post", name: "Training Post", category: .buildings, price: 90),
-        ShopItem(id: "tent", name: "Tent", category: .buildings, price: 120),
-        ShopItem(id: "torii", name: "Torii Gate", category: .buildings, price: 500, minLevel: 15),
-        ShopItem(id: "dojo", name: "Dojo", category: .buildings, price: 900, minLevel: 20),
-        ShopItem(id: "pagoda", name: "Pagoda", category: .buildings, price: 1500, minLevel: 30)
+        ShopItem(id: "tent", name: "Tent", category: .buildings, price: 120, width: 3),
+        ShopItem(id: "torii", name: "Torii Gate", category: .buildings, price: 500, minLevel: 15, width: 3),
+        ShopItem(id: "dojo", name: "Dojo", category: .buildings, price: 900, minLevel: 20, width: 4, height: 2),
+        ShopItem(id: "pagoda", name: "Pagoda", category: .buildings, price: 1500, minLevel: 30, width: 2)
     ]
 
     public static func item(_ id: String) -> ShopItem? { items.first { $0.id == id } }
@@ -54,6 +63,17 @@ public struct Placement: Codable, Sendable, Hashable {
     public init(itemID: String, x: Int, y: Int, flipped: Bool = false) {
         self.itemID = itemID; self.x = x; self.y = y; self.flipped = flipped
     }
+
+    var item: ShopItem? { Catalog.item(itemID) }
+    var isGroundCover: Bool { item?.isGroundCover ?? false }
+
+    /// Tiles covered, from the catalog footprint (unknown items cover one tile).
+    public var width: Int { item?.width ?? 1 }
+    public var height: Int { item?.height ?? 1 }
+
+    func covers(x tx: Int, y ty: Int) -> Bool {
+        (x..<x + width).contains(tx) && (y..<y + height).contains(ty)
+    }
 }
 
 public enum WorldError: Error, Equatable, Sendable {
@@ -70,8 +90,10 @@ public struct WorldState: Codable, Sendable, Hashable {
         self.landSize = landSize; self.inventory = inventory; self.placements = placements
     }
 
+    /// What a tap on this tile hits: the object standing there, else the ground cover under it.
     public func placement(atX x: Int, y: Int) -> Placement? {
-        placements.first { $0.x == x && $0.y == y }
+        let here = placements.filter { $0.covers(x: x, y: y) }
+        return here.first { !$0.isGroundCover } ?? here.first
     }
 
     public func buying(_ itemID: String, level: Int) throws -> WorldState {
@@ -83,8 +105,14 @@ public struct WorldState: Codable, Sendable, Hashable {
     }
 
     public func placing(_ itemID: String, x: Int, y: Int, flipped: Bool = false) throws -> WorldState {
-        guard (0..<landSize).contains(x), (0..<landSize).contains(y) else { throw WorldError.outOfBounds }
-        guard placement(atX: x, y: y) == nil else { throw WorldError.occupied }
+        guard let item = Catalog.item(itemID) else { throw WorldError.unknownItem }
+        guard x >= 0, y >= 0, x + item.width <= landSize, y + item.height <= landSize else { throw WorldError.outOfBounds }
+        let sameLayer = placements.filter { $0.isGroundCover == item.isGroundCover }
+        for tx in x..<x + item.width {
+            for ty in y..<y + item.height where sameLayer.contains(where: { $0.covers(x: tx, y: ty) }) {
+                throw WorldError.occupied
+            }
+        }
         guard let owned = inventory[itemID], owned > 0 else { throw WorldError.notOwned }
         var next = inventory
         next[itemID] = owned - 1

@@ -56,9 +56,9 @@ Preview of the new garden: `art/preview/app-garden.png`.
    The shop and the build palette show the sprites too.
 7. **Juice**: sounds from `Audio/` (coin, power-up, level-up) behind the existing sound toggle, plus particles.
 8. **Credit** pixel-boy in Settings → About (not required by CC0, but right).
-9. **New gap: footprints.** Every item takes one tile, but the pond, dojo, torii, trees and pagoda are 2-4
-   tiles wide, so neighbours overlap. Fix: give each catalog item a footprint (w x h tiles) and block those
-   tiles when placing.
+9. ~~Footprints~~ **Done (core tested, UI uncompiled)**: each catalog item has a width x height in tiles
+   (dojo 4x2, pond and bridge 3x3, trees 2-3 wide). Placing checks every tile; gravel and moss are a ground
+   layer that objects can stand on. With an item selected a tap places it; with none, a tap picks up.
 10. **Habit plants and state art** (section 2): wilted / healthy / blooming plants, falling leaves at low
     energy, fireflies on a Perfect Day, and a strike burst.
 

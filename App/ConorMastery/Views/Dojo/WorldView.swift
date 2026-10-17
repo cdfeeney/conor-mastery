@@ -19,7 +19,7 @@ struct WorldView: View {
                     let height = ItemArt.pixelSize(placement.itemID).height * layout.scale
                     PixelSprite(placement.itemID, scale: layout.scale)
                         .scaleEffect(x: placement.flipped ? -1 : 1, y: 1)
-                        .position(layout.anchor(x: placement.x, y: placement.y, spriteHeight: height))
+                        .position(layout.anchor(placement, spriteHeight: height))
                         .accessibilityLabel(Catalog.item(placement.itemID)?.name ?? placement.itemID)
                 }
                 avatar(layout)
@@ -48,10 +48,10 @@ struct WorldView: View {
         }
     }
 
-    /// Ground covers (gravel, moss) first, then everything else by row so nearer items overlap farther ones.
+    /// Ground covers (gravel, moss) first, then everything else by bottom row so nearer items overlap farther ones.
     private func sortedPlacements(_ world: WorldState) -> [Placement] {
         func key(_ p: Placement) -> (Int, Int, Int) {
-            (Catalog.item(p.itemID)?.category == .ground ? 0 : 1, p.y, p.x)
+            (Catalog.item(p.itemID)?.category == .ground ? 0 : 1, p.y + p.height, p.x)
         }
         return world.placements.sorted { key($0) < key($1) }
     }
@@ -59,19 +59,21 @@ struct WorldView: View {
     /// You stand beside the fire pit (or the first tile), wearing your belt colour.
     private func avatar(_ layout: GardenLayout) -> some View {
         let fire = store.world.placements.first { $0.itemID == "fire-pit" }
-        let spot = layout.anchor(x: fire?.x ?? 0, y: fire?.y ?? 0, spriteHeight: 16 * layout.scale)
-        let offset = fire == nil ? 0 : layout.tile * 0.8
+        let spot = fire.map { layout.anchor($0, spriteHeight: 16 * layout.scale) }
+            ?? layout.anchor(Placement(itemID: "", x: 0, y: 0), spriteHeight: 16 * layout.scale)
+        let offset = fire.map { CGFloat($0.width) * layout.tile * 0.5 + layout.tile * 0.4 } ?? 0
         return PixelSprite(ItemArt.hero(store.level.belt), scale: layout.scale)
             .position(x: spot.x - offset, y: spot.y)
             .accessibilityLabel("You, \(store.level.belt.title)")
     }
 
     private func handleTap(x: Int, y: Int) {
-        if store.world.placement(atX: x, y: y) != nil {
-            store.pickUp(x: x, y: y)
-        } else if let item = selectedItem {
+        // With an item selected a tap places it (a lantern can stand on gravel); with none, it picks up.
+        if let item = selectedItem {
             store.place(item, x: x, y: y)
             if (store.world.inventory[item] ?? 0) == 0 { selectedItem = nil }
+        } else if store.world.placement(atX: x, y: y) != nil {
+            store.pickUp(x: x, y: y)
         }
     }
 }
@@ -84,14 +86,14 @@ struct BuildPalette: View {
     var body: some View {
         let owned = store.world.inventory.filter { $0.value > 0 }.sorted { $0.key < $1.key }
         VStack(alignment: .leading, spacing: 6) {
-            Text(owned.isEmpty ? "Buy items in the shop, then place them here." : "Pick an item, tap a tile. Tap an item to pick it up.")
+            Text(owned.isEmpty ? "Buy items in the shop, then place them here." : "Pick an item, tap a tile. Tap it again to deselect, then tap a placed item to pick it up.")
                 .font(.caption).foregroundStyle(.white.opacity(0.8))
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack {
                     ForEach(owned, id: \.key) { entry in
                         let id = entry.key
                         let count = entry.value
-                        Button { selectedItem = id } label: {
+                        Button { selectedItem = selectedItem == id ? nil : id } label: {
                             VStack(spacing: 2) {
                                 PixelSprite(id, fitting: 36).frame(width: 36, height: 36)
                                 Text("x\(count)").font(.caption2.monospacedDigit())
@@ -136,10 +138,11 @@ private struct GardenLayout {
         CGRect(x: origin.x + CGFloat(x) * tile, y: origin.y + CGFloat(y) * tile, width: tile, height: tile)
     }
 
-    /// Centre point for a sprite whose bottom edge stands on the bottom of tile (x, y).
-    func anchor(x: Int, y: Int, spriteHeight: CGFloat) -> CGPoint {
-        let r = rect(x: x, y: y)
-        return CGPoint(x: r.midX, y: r.maxY - spriteHeight / 2)
+    /// Centre point for a sprite centred on its footprint, standing on the footprint's bottom edge.
+    func anchor(_ placement: Placement, spriteHeight: CGFloat) -> CGPoint {
+        let first = rect(x: placement.x, y: placement.y)
+        let last = rect(x: placement.x + placement.width - 1, y: placement.y + placement.height - 1)
+        return CGPoint(x: (first.minX + last.maxX) / 2, y: last.maxY - spriteHeight / 2)
     }
 
     func tile(at point: CGPoint) -> (x: Int, y: Int)? {
