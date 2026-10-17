@@ -13,7 +13,7 @@ Only books you own. Each one becomes page-cited notes, never stored full text in
 | 3 | **Tiny Habits** | BJ Fogg | 2019 | all, morning/night routine | "Anchor + tiny behaviour + celebrate". Directly shapes our Min versions and routine chaining. |
 | 4 | **Dopamine Nation** | Anna Lembke | 2021 | no-social-media, no-nicotine | Stanford addiction psychiatrist: dopamine fasting, self-binding (which is what the app's Screen Time blocking is). |
 | 5 | **Digital Minimalism** | Cal Newport | 2019 | no-social-media, reset-focus | The 30-day declutter protocol: a ready-made plan for the social-media habit. |
-| 6 | **Allen Carr's Easy Way to Quit Vaping** (or *…Stop Smoking*, match what you use) | Allen Carr | 2020 / 1985 | no-nicotine | The most-used quit method. Pairs with the clinical guidance already in the KB. |
+| 6 | **Allen Carr's Easy Way to Stop Smoking** (2021 "brand new edition", covers vaping and modern nicotine) or **Your Personal Stop Smoking Plan** (billed for "all nicotine products") | Allen Carr | 2021 | no-nicotine | No pouch-specific Allen Carr book exists (checked). The method targets nicotine itself, so it applies to Zyn. Pairs with the clinical guidance already in the KB. |
 | 7 | **Why We Sleep** | Matthew Walker | 2017 | sleep, night-routine | Sleep science. Note: some claims were criticised (e.g. by Alexey Guzey), so the coach cross-checks it against the research layer. |
 | 8 | **Breath** | James Nestor | 2020 | deep-breathing, meditation | Breathing techniques with history and studies. |
 
@@ -28,7 +28,8 @@ Only books you own. Each one becomes page-cited notes, never stored full text in
 | 13 | Actionable Gamification | Yu-kai Chou | game design | The Octalysis framework of 8 motivation drives, for tuning the reward system. |
 | 14 | Indistractable | Nir Eyal | no-social-media, focus | Internal triggers, precommitment. |
 
-## One question for you
+## Nicotine: Zyn pouches (answered 2026-10-16)
 
-**What nicotine do you use (vape, pouches, cigarettes)?** It decides which Allen Carr edition to get and
-which withdrawal notes the coach emphasises.
+Conor uses **Zyn pouches**. The no-nicotine habit now coaches for pouches: clear every can, use a non-nicotine
+oral swap, and note that Zyn is not an approved quit aid. Free, pouch-specific help: the Truth Initiative
+**EX Program** (exprogram.com, built with Mayo Clinic) has a Zyn quit plan.
