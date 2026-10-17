@@ -80,6 +80,9 @@ def paragraphs(segments) -> list[str]:
 
 
 def main() -> int:
+    # Titles contain emoji/odd characters; never let the Windows console encoding kill a long run.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     parser = argparse.ArgumentParser()
     parser.add_argument("--channel", default=MONKE)
     parser.add_argument("--model", default="small.en")

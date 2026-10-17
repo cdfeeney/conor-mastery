@@ -16,6 +16,7 @@ citations:
   - {source: "yt:rBdhqBGqiMc", locator: "02:09"}
   - {source: "yt:KHIbgSN2qAU", locator: "02:05"}
   - {source: "res:balban2023", locator: "abstract"}
+  - {source: "yt:LUlIvjBcmlA", locator: "03:14"}
 challenges:
   - "Do 1 minute of box breathing before you open any app after lunch."
   - "Breathe for 2 minutes before your focus block."

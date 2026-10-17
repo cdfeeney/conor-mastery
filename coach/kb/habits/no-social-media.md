@@ -18,11 +18,13 @@ citations:
   - {source: "yt:3E7hkPZ-HTk", locator: "08:22"}
   - {source: "book:seneca-letters", locator: "¶35"}
   - {source: "res:hunt2018", locator: "abstract"}
+  - {source: "yt:652y-f1YFjU", locator: "02:08"}
 challenges:
   - "Delete one social app from your home screen tonight."
   - "Go the whole day without paying to unlock."
   - "Replace bedtime scrolling with an audiobook or podcast."
   - "Phone downtime: hand the passcode to someone you trust."
+  - 'Unfollow 10 accounts that make you feel worse or pull you into scrolling.'
 ---
 Clear locked his social media out Monday to Friday by adding steps (mNeXuCYiE0U @ 12:50). Quitting
 scrolling cold turkey tends to fail, so step down instead (bt5ue-1wLvc @ 02:01). The quest is complete

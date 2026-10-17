@@ -1,7 +1,7 @@
 {
  "format": "conor-mastery-plan",
  "version": 1,
- "generated_at": "2026-10-16T20:01:53-04:00",
+ "generated_at": "2026-10-16T20:54:30-04:00",
  "weekly_focus": "Foundations first: sleep and phone. Lock those in, then body, then focus.",
  "notes": [
   "Habits take about 2 months to feel automatic (median ~66 days, range 18-254), not 21. Expect week 3 to feel hard. (res:lally2010)",
@@ -61,6 +61,10 @@
     {
      "source": "res:burns2023",
      "locator": "abstract"
+    },
+    {
+     "source": "yt:iso2GnoZs3s",
+     "locator": "03:11"
     }
    ],
    "challenges": [
@@ -106,13 +110,18 @@
     {
      "source": "res:windred2024",
      "locator": "abstract"
+    },
+    {
+     "source": "yt:iso2GnoZs3s",
+     "locator": "02:07"
     }
    ],
    "challenges": [
     "Wake within an hour of your weekday time, even today.",
     "One alarm, no snooze. Feet on the floor when it rings.",
     "No caffeine after 2 pm today.",
-    "Bedroom cool tonight: drop it a few degrees."
+    "Bedroom cool tonight: drop it a few degrees.",
+    "Keep tonight's bedtime inside your usual 30-minute window."
    ]
   },
   {
@@ -221,6 +230,22 @@
     {
      "source": "book:smiles-self-help",
      "locator": "¶390"
+    },
+    {
+     "source": "yt:VJ8Qa8ECTq4",
+     "locator": "01:06"
+    },
+    {
+     "source": "yt:95UrFFVrwJU",
+     "locator": "02:36"
+    },
+    {
+     "source": "yt:n1G3wGPVwVw",
+     "locator": "03:09"
+    },
+    {
+     "source": "yt:WiIr-RgL4hg",
+     "locator": "01:38"
     }
    ],
    "challenges": [
@@ -228,7 +253,9 @@
     "Use Locked In mode for your focus block today.",
     "Take your break as a walk, no screens.",
     "Go 5 minutes longer than your last block.",
-    "When your mind drifts during the block, bring it back and count the returns. Beat yesterday's count."
+    "When your mind drifts during the block, bring it back and count the returns. Beat yesterday's count.",
+    "Can't start? Run a 5-minute timer on it and decide after. Split the block into 3-5 tiny levels first.",
+    "Make breaks boring (window, push-ups); scrolling is the reward after the block, never during."
    ]
   },
   {
@@ -260,6 +287,10 @@
     {
      "source": "res:balban2023",
      "locator": "abstract"
+    },
+    {
+     "source": "yt:LUlIvjBcmlA",
+     "locator": "03:14"
     }
    ],
    "challenges": [
@@ -314,13 +345,18 @@
     {
      "source": "res:hunt2018",
      "locator": "abstract"
+    },
+    {
+     "source": "yt:652y-f1YFjU",
+     "locator": "02:08"
     }
    ],
    "challenges": [
     "Delete one social app from your home screen tonight.",
     "Go the whole day without paying to unlock.",
     "Replace bedtime scrolling with an audiobook or podcast.",
-    "Phone downtime: hand the passcode to someone you trust."
+    "Phone downtime: hand the passcode to someone you trust.",
+    "Unfollow 10 accounts that make you feel worse or pull you into scrolling."
    ]
   },
   {
@@ -381,6 +417,14 @@
     {
      "source": "res:ex-pouches",
      "locator": "guide"
+    },
+    {
+     "source": "yt:Qg1nFGl-YZc",
+     "locator": "02:50"
+    },
+    {
+     "source": "yt:O-C8o0pFvNs",
+     "locator": "06:12"
     }
    ],
    "challenges": [
@@ -388,7 +432,8 @@
     "Write down your top trigger today and your if-then plan for it.",
     "When the urge hits, do 1 minute of breathing first, then decide.",
     "Book a doctor's appointment to talk about a quit plan.",
-    "Launch strong: throw out every can of Zyn today (car, desk, bag, jacket) and tell one person you quit."
+    "Launch strong: throw out every can of Zyn today (car, desk, bag, jacket) and tell one person you quit.",
+    "Urge protocol: stand up and leave the room within 5 seconds, set a 10-minute timer, do your listed swap. Log every survived urge as a win."
    ]
   },
   {
@@ -445,6 +490,10 @@
     {
      "source": "res:burns2023",
      "locator": "abstract"
+    },
+    {
+     "source": "yt:pNDJr_s69wY",
+     "locator": "00:35"
     }
    ],
    "challenges": [
@@ -452,7 +501,8 @@
     "Audiobook instead of scrolling in bed tonight.",
     "Write the very first thing you'll do tomorrow before you sleep.",
     "Lights to lamps only after 10 pm.",
-    "Ask \"What good have I done today?\" and replay where the day leaked time."
+    "Ask \"What good have I done today?\" and replay where the day leaked time.",
+    "Use a physical alarm clock and charge the phone outside the bedroom tonight."
    ]
   }
  ]

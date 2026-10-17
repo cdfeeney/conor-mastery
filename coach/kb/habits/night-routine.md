@@ -25,12 +25,14 @@ citations:
   - {source: "book:seneca-letters", locator: "¶1061"}
   - {source: "book:bennett-24-hours", locator: "¶100"}
   - {source: "res:burns2023", locator: "abstract"}
+  - {source: "yt:pNDJr_s69wY", locator: "00:35"}
 challenges:
   - "Set the last-orders alarm 15 minutes before bed and obey it."
   - "Audiobook instead of scrolling in bed tonight."
   - "Write the very first thing you'll do tomorrow before you sleep."
   - "Lights to lamps only after 10 pm."
   - 'Ask "What good have I done today?" and replay where the day leaked time.'
+  - 'Use a physical alarm clock and charge the phone outside the bedroom tonight.'
 ---
 Walker's "last orders" alarm (lRp5AC9W_F8 @ 06:46). Bright overhead light and screens from 10 pm to 4 am
 disrupt sleep (RTgJSQtvo88 @ 21:44). Night-before written intention (1gxKyEuj5RA @ 02:03).

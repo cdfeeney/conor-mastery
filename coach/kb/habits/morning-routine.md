@@ -24,6 +24,7 @@ citations:
   - {source: "book:franklin-autobiography", locator: "¶213"}
   - {source: "book:bennett-24-hours", locator: "¶13"}
   - {source: "res:burns2023", locator: "abstract"}
+  - {source: "yt:iso2GnoZs3s", locator: "03:11"}
 challenges:
   - "Phone stays in another room until you've been outside."
   - "Get 15 minutes of outdoor light before 9 am, even if cloudy."
