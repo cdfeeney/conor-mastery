@@ -221,7 +221,9 @@ final class MasteryStore {
     func habitDefinitions() -> [HabitDefinition] {
         let current = effectivePlanHabits.map { habit -> HabitDefinition in
             let def = habit.definition(anchor: settings.startDay, scheduleChanges: settings.scheduleChanges[habit.id] ?? [])
-            let from = settings.habitFirstSeen[habit.id].flatMap { $0 > settings.startDay ? $0 : nil }
+            // A habit starts on install day or the day it first appeared, whichever is later; never before,
+            // or the coach and challenges would score the days before you installed as misses.
+            let from = max(settings.habitFirstSeen[habit.id] ?? settings.startDay, settings.startDay)
             return def.active(from: from, until: settings.archivedHabits[habit.id])
         }
         let retired = settings.retiredHabits.map {
