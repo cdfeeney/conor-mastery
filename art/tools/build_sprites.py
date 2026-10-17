@@ -4,6 +4,10 @@ Every item id in MasteryCore's Catalog maps to (sheet, x, y, w, h) on the pack's
   art/sprites/<id>.png        individual sprites (1x, transparent)
   art/sprites/belt-<c>.png    the player character recoloured per belt (palette swap of the pack's Monk)
   art/preview/garden-mock.png a 4x sample garden in three states (bare, growing, thriving)
+  App/Resources/Assets.xcassets/Sprites/  every sprite as a 1x imageset (the app draws them with no smoothing)
+
+The pack has no stone lantern or pagoda, so `lantern` and `pagoda` are drawn here from primitives in
+the pack's palette.
 
 Usage: python art/tools/build_sprites.py
 """
@@ -12,13 +16,14 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parents[2]
 PACK = ROOT / "art" / "vendor" / "ninja-adventure" / "Ninja Adventure - Asset Pack"
 TILES = PACK / "Backgrounds" / "Tilesets"
 OUT = ROOT / "art" / "sprites"
 PREVIEW = ROOT / "art" / "preview"
+CATALOG = ROOT / "App" / "Resources" / "Assets.xcassets" / "Sprites"
 
 # id -> (sheet, x, y, w, h). Coordinates are in source pixels on the pack's 16 px grid.
 SPRITES: dict[str, tuple[str, int, int, int, int]] = {
@@ -45,7 +50,22 @@ SPRITES: dict[str, tuple[str, int, int, int, int]] = {
     "training-post": ("TilesetElement.png", 1, 81, 14, 30),
     "potted-plant": ("TilesetElement.png", 0, 120, 15, 24),
     "bridge": ("TilesetHouse.png", 144, 240, 48, 48),
+    "path-stone": ("TilesetNature.png", 288, 144, 16, 16),
+    "gravel": ("TilesetFloor.png", 16, 304, 16, 16),
+    "moss": ("TilesetFloor.png", 192, 192, 16, 16),
+    # Ground: one plain grass tile plus detail variants, mixed by position so the lawn doesn't look tiled.
+    "ground-grass-0": ("TilesetFloor.png", 0, 192, 16, 16),
+    "ground-grass-1": ("TilesetFloor.png", 16, 192, 16, 16),
+    "ground-grass-2": ("TilesetFloor.png", 32, 192, 16, 16),
+    "ground-grass-3": ("TilesetFloor.png", 48, 192, 16, 16),
 }
+
+# Pack-style palette for the two drawn pieces.
+OUTLINE = (24, 20, 37, 255)
+STONE = {"dark": (92, 100, 96, 255), "mid": (136, 146, 136, 255), "light": (182, 190, 172, 255)}
+GLOW, GLOW_CORE = (255, 196, 92, 255), (255, 240, 184, 255)
+ROOF, ROOF_DARK = (196, 78, 58, 255), (132, 48, 44, 255)
+WALL, GOLD = (232, 212, 170, 255), (230, 186, 80, 255)
 
 # The Monk's headband pixels (dark, light). Recoloured per belt so the headband shows your rank.
 HEADBAND = ((52, 90, 82), (86, 134, 76))
@@ -109,6 +129,60 @@ def belt_sheet(colour: tuple[int, int, int]) -> Image.Image:
     return sheet
 
 
+def draw_lantern() -> Image.Image:
+    """A 16x28 stone toro: finial, roof, lit firebox, platform, post, base."""
+    img = Image.new("RGBA", (16, 28))
+    d = ImageDraw.Draw(img)
+    d.rectangle([6, 0, 9, 3], fill=STONE["light"], outline=OUTLINE)
+    d.polygon([(5, 3), (10, 3), (15, 7), (0, 7)], fill=STONE["mid"], outline=OUTLINE)
+    d.line([(1, 8), (14, 8)], fill=STONE["dark"])
+    d.rectangle([3, 9, 12, 15], fill=STONE["dark"], outline=OUTLINE)
+    d.rectangle([5, 10, 10, 14], fill=GLOW)
+    d.rectangle([6, 11, 9, 13], fill=GLOW_CORE)
+    d.rectangle([2, 16, 13, 17], fill=STONE["mid"], outline=OUTLINE)
+    d.rectangle([5, 18, 10, 24], fill=STONE["mid"], outline=OUTLINE)
+    d.line([(6, 19), (6, 23)], fill=STONE["light"])
+    d.rectangle([3, 25, 12, 27], fill=STONE["mid"], outline=OUTLINE)
+    return img
+
+
+def draw_pagoda() -> Image.Image:
+    """A 32x48 three-tier pagoda: stone base, cream walls, red roofs, gold spire."""
+    img = Image.new("RGBA", (32, 48))
+    d = ImageDraw.Draw(img)
+    d.rectangle([4, 44, 27, 47], fill=STONE["mid"], outline=OUTLINE)
+    tiers = [  # (wall box, window/door box, roof polygon), bottom to top
+        ([7, 34, 24, 43], [13, 37, 18, 43], [(4, 28), (27, 28), (31, 34), (0, 34)]),
+        ([9, 22, 22, 28], [14, 23, 17, 26], [(6, 17), (25, 17), (29, 22), (2, 22)]),
+        ([11, 12, 20, 17], [14, 13, 17, 15], [(9, 7), (22, 7), (26, 12), (5, 12)]),
+    ]
+    for wall, opening, roof in tiers:
+        d.rectangle(wall, fill=WALL, outline=OUTLINE)
+        d.rectangle(opening, fill=OUTLINE)
+        d.polygon(roof, fill=ROOF, outline=OUTLINE)
+        d.line([(roof[3][0] + 2, roof[3][1] - 1), (roof[2][0] - 2, roof[2][1] - 1)], fill=ROOF_DARK)
+    d.rectangle([14, 0, 17, 7], fill=GOLD, outline=OUTLINE)
+    d.line([(13, 3), (18, 3)], fill=OUTLINE)
+    return img
+
+
+def export_catalog(sprites: dict[str, Image.Image]) -> None:
+    """Write each sprite as a single-scale imageset. Stale imagesets are removed so renames don't linger."""
+    import json
+    import shutil
+    if CATALOG.exists():
+        shutil.rmtree(CATALOG)
+    CATALOG.mkdir(parents=True)
+    info = {"author": "xcode", "version": 1}
+    (CATALOG / "Contents.json").write_text(json.dumps({"info": info}, indent=2))
+    for key, img in sorted(sprites.items()):
+        folder = CATALOG / f"{key}.imageset"
+        folder.mkdir()
+        img.save(folder / f"{key}.png")
+        contents = {"images": [{"filename": f"{key}.png", "idiom": "universal"}], "info": info}
+        (folder / "Contents.json").write_text(json.dumps(contents, indent=2))
+
+
 def grass_ground(cols: int, rows: int) -> Image.Image:
     """Flat two-tone grass so the mock reads without autotiling."""
     ground = Image.new("RGBA", (cols * 16, rows * 16))
@@ -135,6 +209,8 @@ def main() -> int:
     PREVIEW.mkdir(parents=True, exist_ok=True)
     sprites = {key: crop(*spec) for key, spec in SPRITES.items()}
     sprites["pond"] = knock_out_edges(sprites["pond"])
+    sprites["lantern"] = draw_lantern()
+    sprites["pagoda"] = draw_pagoda()
     for key, img in sprites.items():
         img.save(OUT / f"{key}.png")
     koi = Image.open(PACK / "Actor" / "Animal" / "Fish" / "SpriteSheetRed.png").convert("RGBA").crop((0, 0, 16, 16))
@@ -148,6 +224,9 @@ def main() -> int:
         sheet = belt_sheet(colour)
         sheet.save(OUT / f"belt-{name}.png")  # full animation sheet per belt
         belts.append(sheet.crop((0, 0, 16, 16)))
+    app_sprites = {k: v for k, v in sprites.items() if k != "hero"}
+    app_sprites.update({f"hero-{name}": frame for name, frame in zip(BELTS, belts)})
+    export_catalog(app_sprites)
     row = Image.new("RGBA", (len(belts) * 20, 16), (24, 28, 44, 255))
     for i, frame in enumerate(belts):
         row.alpha_composite(frame, (i * 20 + 2, 0))
@@ -158,7 +237,8 @@ def main() -> int:
     thriving = [("dojo", 48, 0), ("dojo-sign", 64, 40), ("torii", 112, 70), ("cherry", 0, 4), ("maple", 116, 0),
                 ("bamboo", 8, 64), ("bonsai", 40, 84), ("pink-bush", 132, 92), ("statue", 2, 96), ("hero", 76, 74),
                 ("sunflower", 96, 104), ("red-flower", 60, 108), ("grass-tuft", 140, 60), ("pond", 100, 44), ("koi", 116, 60),
-                ("fire-pit", 62, 96), ("training-post", 30, 56)]
+                ("fire-pit", 62, 96), ("training-post", 30, 56),
+                ("lantern", 140, 96), ("pagoda", 0, 40), ("path-stone", 84, 112), ("path-stone", 96, 118)]
     frames = [scene(s, sprites) for s in (bare, growing, thriving)]
     gap = 8
     strip = Image.new("RGBA", (sum(f.width for f in frames) + gap * 2, frames[0].height), (24, 28, 44, 255))

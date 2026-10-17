@@ -1,5 +1,6 @@
 import MasteryCore
 import SwiftUI
+import UIKit
 
 enum Theme {
     static let accent = Color(red: 0.89, green: 0.34, blue: 0.18)   // vermilion
@@ -8,8 +9,7 @@ enum Theme {
     static let ink = Color(red: 0.09, green: 0.10, blue: 0.14)
     static let paper = Color(red: 0.98, green: 0.96, blue: 0.90)
     static let night = Color(red: 0.11, green: 0.14, blue: 0.25)
-    static let grass = Color(red: 0.43, green: 0.62, blue: 0.36)
-    static let grassDark = Color(red: 0.35, green: 0.53, blue: 0.30)
+    static let water = Color(red: 0.36, green: 0.60, blue: 0.78)
 
     static func color(_ belt: Belt) -> Color {
         switch belt {
@@ -74,29 +74,38 @@ struct GameButton: View {
     }
 }
 
+/// Pixel sprites from Assets.xcassets/Sprites, built by art/tools/build_sprites.py (Ninja Adventure, CC0;
+/// the lantern and pagoda are drawn in-house). Never Monke assets.
 enum ItemArt {
-    /// Placeholder art (emoji) until original illustrations exist. Never Monke assets.
-    static func glyph(_ id: String) -> String {
-        switch id {
-        case "gravel": return "🪨"
-        case "moss": return "🌿"
-        case "path-stone": return "⚪️"
-        case "boulder": return "🪨"
-        case "bamboo": return "🎋"
-        case "pine": return "🌲"
-        case "bonsai": return "🪴"
-        case "maple": return "🍁"
-        case "cherry": return "🌸"
-        case "lantern": return "🏮"
-        case "fire-pit": return "🔥"
-        case "pond": return "🐟"
-        case "bridge": return "🌉"
-        case "training-post": return "🥋"
-        case "tent": return "⛺️"
-        case "torii": return "⛩️"
-        case "dojo": return "🏯"
-        case "pagoda": return "🗼"
-        default: return "❔"
-        }
+    /// Native pixel size, so sprites scale by whole numbers and stay crisp.
+    static func pixelSize(_ id: String) -> CGSize {
+        UIImage(named: id)?.size ?? CGSize(width: 16, height: 16)
+    }
+
+    static func hero(_ belt: Belt) -> String { "hero-\(belt.rawValue)" }
+}
+
+/// One sprite drawn nearest-neighbour at a whole-number scale.
+struct PixelSprite: View {
+    let id: String
+    let scale: CGFloat
+
+    init(_ id: String, scale: CGFloat) {
+        self.id = id
+        self.scale = scale
+    }
+
+    /// The largest whole-number scale that fits the sprite inside a `side` x `side` box.
+    init(_ id: String, fitting side: CGFloat) {
+        let size = ItemArt.pixelSize(id)
+        self.init(id, scale: max(1, (side / max(size.width, size.height)).rounded(.down)))
+    }
+
+    var body: some View {
+        let size = ItemArt.pixelSize(id)
+        Image(id)
+            .resizable()
+            .interpolation(.none)
+            .frame(width: size.width * scale, height: size.height * scale)
     }
 }

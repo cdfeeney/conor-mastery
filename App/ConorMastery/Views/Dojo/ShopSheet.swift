@@ -97,7 +97,7 @@ struct ShopSheet: View {
         let locked = store.level.level < item.minLevel
         let owned = store.world.inventory[item.id] ?? 0
         return VStack(spacing: 8) {
-            Text(ItemArt.glyph(item.id)).font(.system(size: 52)).opacity(locked ? 0.35 : 1)
+            PixelSprite(item.id, fitting: 64).frame(width: 64, height: 64).opacity(locked ? 0.35 : 1)
             Text(item.name).font(.subheadline.weight(.semibold))
             if owned > 0 { Text("\(owned) unplaced").font(.caption2).foregroundStyle(.secondary) }
             Button { store.buy(item) } label: {

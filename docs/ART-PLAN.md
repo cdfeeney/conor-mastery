@@ -9,22 +9,22 @@ included, 1,915 PNGs). 21 garden sprites are already cut out by `art/tools/build
 | Catalog item (MasteryCore) | Pack sprite | Source | Status |
 |---|---|---|---|
 | Fire Pit (starter) | stone fire ring with logs | tileset_camp.png 161,50 | **done** (animated flame: FX later) |
-| Raked Gravel / Moss | floor tiles | TilesetFloor / TilesetFloorDetail | to crop (ground layer) |
-| Stepping Stone | small rocks | TilesetNature (rock row) | to crop |
+| Raked Gravel / Moss | floor tiles | TilesetFloor 16,304 / 192,192 | **done** |
+| Stepping Stone | small grey rock | TilesetNature 288,144 | **done** |
 | Boulder | grey boulder | TilesetNature 256,128 | **done** |
 | Bamboo | bamboo stalk | TilesetNature 176,128 | **done** |
 | Black Pine | pine | TilesetNature 32,0 | **done** |
 | Bonsai | twisted tree | TilesetNature 96,0 | **done** |
 | Red Maple | autumn tree | TilesetNature 144,288 | **done** |
 | Cherry Blossom | pink tree | TilesetNature 0,288 | **done** |
-| Stone Lantern | stone statue / column | TilesetHouse (stone set) | to crop or **draw** (no true tōrō in pack) |
+| Stone Lantern | drawn in-house (16x28 tōrō, lit firebox) | build_sprites.py `draw_lantern` | **done** |
 | Koi Pond | grass-edged pond + red/white/yellow fish | TilesetWater 0,96 + Actor/Animal/Fish | **done** (pond edge needs autotile cleanup) |
 | Arched Bridge | wooden planks | TilesetHouse 144,240 | cropped, needs a proper bridge shape |
 | Training Post | wooden post figure | TilesetElement 1,81 | **done** |
 | Tent | tent | TilesetHouse 0,112 | **done** |
 | Torii Gate | red torii | TilesetHouse 0,80 | **done** |
 | Dojo | red-roof hall + "DOJO" sign | TilesetHouse 192,0 + 64,64 | **done** |
-| Pagoda | none | n/a | **draw** (stack 3 roofs from TilesetHouse) |
+| Pagoda | drawn in-house (32x48, three tiers) | build_sprites.py `draw_pagoda` | **done** |
 | Statue (new) | meditating stone figure | TilesetHouse 48,240 | **done** |
 | Flowers / tufts (decor, drops) | sunflower, red flower, tufts | TilesetNature | **done** |
 
@@ -42,17 +42,25 @@ included, 1,915 PNGs). 21 garden sprites are already cut out by `art/tools/build
 
 ## 3. Build steps (in order)
 
-1. ~~Cut the remaining sprites~~ fire pit, training post, potted plant and bridge planks are **done**. Still left: gravel/moss ground, stepping stone.
-2. **Ground**: replace the flat two-tone grass with the pack's grass autotile (`TilesetFloor`), and fix the pond
-   edge (render it with the water autotile instead of a single tile).
-3. **Draw 2 missing pieces** (16 px grid, pack palette only): stone lantern and pagoda (stacked roofs).
-4. ~~Belt hero~~ **Done**: `belt-<colour>.png` × 8 (full animation sheets); the headband and sash take the belt colour. Preview: `art/preview/belts.png`.
-5. **Asset catalog**: export every sprite at 1x into `App/Resources/Assets.xcassets/Sprites/` and render it in
-   SwiftUI with `.interpolation(.none)` at an integer scale (4x = 64 pt tiles).
-6. **Swap the renderer**: `WorldView` moves from isometric emoji to a **top-down** sprite grid (the pack's view),
-   and `ItemArt.glyph` becomes `ItemArt.sprite`.
+Status 2026-10-17: steps 1, 3, 4, 5 and 6 are **done but not compiled yet** (needs a Mac build run).
+Preview of the new garden: `art/preview/app-garden.png`.
+
+1. ~~Cut the remaining sprites~~ **Done**: every catalog item has a sprite.
+2. **Ground (partly done)**: grass is now the pack's tile with 3 detail variants mixed in by position. Still
+   left: grass edges where land meets water, and a proper pond edge.
+3. ~~Draw 2 missing pieces~~ **Done**: stone lantern and pagoda.
+4. ~~Belt hero~~ **Done**: the hero wears your belt colour (`hero-<belt>` in the asset catalog).
+5. ~~Asset catalog~~ **Done**: `build_sprites.py` writes `App/Resources/Assets.xcassets/Sprites/` (42 imagesets).
+   `PixelSprite` draws them with no smoothing at whole-number scales.
+6. ~~Swap the renderer~~ **Done**: `WorldView` is a top-down square grid (16 px tiles, scale 1-5x to fit).
+   The shop and the build palette show the sprites too.
 7. **Juice**: sounds from `Audio/` (coin, power-up, level-up) behind the existing sound toggle, plus particles.
 8. **Credit** pixel-boy in Settings → About (not required by CC0, but right).
+9. **New gap: footprints.** Every item takes one tile, but the pond, dojo, torii, trees and pagoda are 2-4
+   tiles wide, so neighbours overlap. Fix: give each catalog item a footprint (w x h tiles) and block those
+   tiles when placing.
+10. **Habit plants and state art** (section 2): wilted / healthy / blooming plants, falling leaves at low
+    energy, fireflies on a Perfect Day, and a strike burst.
 
 ## 4. Other pixel packs: should we grab more?
 

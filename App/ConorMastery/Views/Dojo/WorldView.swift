@@ -1,41 +1,32 @@
 import MasteryCore
 import SwiftUI
 
-/// Isometric garden. Land grows from 3x3 to 9x9; items sit on tiles; in build mode a tap places
-/// the selected item or picks one up.
+/// Top-down pixel garden (Ninja Adventure's view). Land grows from 3x3 to 9x9; items stand on tiles,
+/// drawn back to front by row; in build mode a tap places the selected item or picks one up.
 struct WorldView: View {
     let building: Bool
     @Binding var selectedItem: String?
     @Environment(MasteryStore.self) private var store
 
-    private let tileWidth: CGFloat = 64
-    private var tileHeight: CGFloat { tileWidth / 2 }
-
     var body: some View {
         GeometryReader { geo in
             let world = store.world
-            let origin = origin(in: geo.size, landSize: world.landSize)
+            let layout = GardenLayout(size: geo.size, landSize: world.landSize)
             ZStack(alignment: .topLeading) {
-                Canvas { context, _ in
-                    drawWater(context, size: geo.size)
-                    for x in 0..<world.landSize {
-                        for y in 0..<world.landSize {
-                            drawTile(context, x: x, y: y, origin: origin, occupied: world.placement(atX: x, y: y) != nil)
-                        }
-                    }
-                }
+                Theme.water
+                ground(layout)
                 ForEach(sortedPlacements(world), id: \.self) { placement in
-                    Text(ItemArt.glyph(placement.itemID))
-                        .font(.system(size: tileWidth * 0.62))
+                    let height = ItemArt.pixelSize(placement.itemID).height * layout.scale
+                    PixelSprite(placement.itemID, scale: layout.scale)
                         .scaleEffect(x: placement.flipped ? -1 : 1, y: 1)
-                        .position(itemPoint(x: placement.x, y: placement.y, origin: origin))
+                        .position(layout.anchor(x: placement.x, y: placement.y, spriteHeight: height))
                         .accessibilityLabel(Catalog.item(placement.itemID)?.name ?? placement.itemID)
                 }
-                avatar(origin: origin)
+                avatar(layout)
             }
             .contentShape(Rectangle())
             .gesture(SpatialTapGesture().onEnded { value in
-                guard building, let tile = tile(at: value.location, origin: origin, landSize: world.landSize) else { return }
+                guard building, let tile = layout.tile(at: value.location) else { return }
                 handleTap(x: tile.x, y: tile.y)
             })
         }
@@ -43,65 +34,35 @@ struct WorldView: View {
         .accessibilityLabel("Your dojo garden, \(store.world.placements.count) items")
     }
 
-    // MARK: - Geometry
-
-    private func origin(in size: CGSize, landSize: Int) -> CGPoint {
-        let mapHeight = CGFloat(landSize) * tileHeight
-        return CGPoint(x: size.width / 2, y: size.height * 0.58 - mapHeight / 2)
+    /// Grass tiles, with a few detail variants mixed in by position so the lawn doesn't look stamped.
+    private func ground(_ layout: GardenLayout) -> some View {
+        ForEach(0..<(layout.landSize * layout.landSize), id: \.self) { index in
+            let x = index % layout.landSize
+            let y = index / layout.landSize
+            let rect = layout.rect(x: x, y: y)
+            let variant = (x * 7 + y * 13) % 9
+            PixelSprite("ground-grass-\(variant < 3 ? variant + 1 : 0)", scale: layout.scale)
+                .overlay { if building { Rectangle().stroke(Theme.ink.opacity(0.3), lineWidth: 1) } }
+                .position(x: rect.midX, y: rect.midY)
+                .accessibilityHidden(true)
+        }
     }
 
-    private func tileCenter(x: Int, y: Int, origin: CGPoint) -> CGPoint {
-        CGPoint(x: origin.x + CGFloat(x - y) * tileWidth / 2,
-                y: origin.y + CGFloat(x + y) * tileHeight / 2 + tileHeight / 2)
-    }
-
-    private func itemPoint(x: Int, y: Int, origin: CGPoint) -> CGPoint {
-        let center = tileCenter(x: x, y: y, origin: origin)
-        return CGPoint(x: center.x, y: center.y - tileHeight * 0.45)
-    }
-
-    private func tile(at point: CGPoint, origin: CGPoint, landSize: Int) -> (x: Int, y: Int)? {
-        let px = (point.x - origin.x) / (tileWidth / 2)
-        let py = (point.y - origin.y) / (tileHeight / 2)
-        let x = Int(floor((px + py) / 2))
-        let y = Int(floor((py - px) / 2))
-        guard (0..<landSize).contains(x), (0..<landSize).contains(y) else { return nil }
-        return (x, y)
-    }
-
-    /// Back-to-front so nearer items overlap farther ones.
+    /// Ground covers (gravel, moss) first, then everything else by row so nearer items overlap farther ones.
     private func sortedPlacements(_ world: WorldState) -> [Placement] {
-        world.placements.sorted { ($0.x + $0.y, $0.x) < ($1.x + $1.y, $1.x) }
+        func key(_ p: Placement) -> (Int, Int, Int) {
+            (Catalog.item(p.itemID)?.category == .ground ? 0 : 1, p.y, p.x)
+        }
+        return world.placements.sorted { key($0) < key($1) }
     }
 
-    // MARK: - Drawing
-
-    private func drawWater(_ context: GraphicsContext, size: CGSize) {
-        context.fill(Path(CGRect(origin: .zero, size: size)), with: .color(Color(red: 0.16, green: 0.36, blue: 0.62).opacity(0.35)))
-    }
-
-    private func drawTile(_ context: GraphicsContext, x: Int, y: Int, origin: CGPoint, occupied: Bool) {
-        let c = tileCenter(x: x, y: y, origin: origin)
-        var diamond = Path()
-        diamond.move(to: CGPoint(x: c.x, y: c.y - tileHeight / 2))
-        diamond.addLine(to: CGPoint(x: c.x + tileWidth / 2, y: c.y))
-        diamond.addLine(to: CGPoint(x: c.x, y: c.y + tileHeight / 2))
-        diamond.addLine(to: CGPoint(x: c.x - tileWidth / 2, y: c.y))
-        diamond.closeSubpath()
-        let base = (x + y).isMultiple(of: 2) ? Theme.grass : Theme.grassDark
-        context.fill(diamond, with: .color(base))
-        context.stroke(diamond, with: .color(Theme.ink.opacity(building ? 0.5 : 0.2)), lineWidth: building ? 1 : 0.5)
-    }
-
-    private func avatar(origin: CGPoint) -> some View {
+    /// You stand beside the fire pit (or the first tile), wearing your belt colour.
+    private func avatar(_ layout: GardenLayout) -> some View {
         let fire = store.world.placements.first { $0.itemID == "fire-pit" }
-        let spot = fire.map { itemPoint(x: $0.x, y: $0.y, origin: origin) } ?? itemPoint(x: 0, y: 0, origin: origin)
-        return Text("🧘")
-            .font(.system(size: tileWidth * 0.55))
-            .overlay(alignment: .bottom) {
-                Capsule().fill(Theme.color(store.level.belt)).frame(width: 22, height: 4).offset(y: 2)
-            }
-            .position(x: spot.x - tileWidth * 0.42, y: spot.y + 2)
+        let spot = layout.anchor(x: fire?.x ?? 0, y: fire?.y ?? 0, spriteHeight: 16 * layout.scale)
+        let offset = fire == nil ? 0 : layout.tile * 0.8
+        return PixelSprite(ItemArt.hero(store.level.belt), scale: layout.scale)
+            .position(x: spot.x - offset, y: spot.y)
             .accessibilityLabel("You, \(store.level.belt.title)")
     }
 
@@ -132,7 +93,7 @@ struct BuildPalette: View {
                         let count = entry.value
                         Button { selectedItem = id } label: {
                             VStack(spacing: 2) {
-                                Text(ItemArt.glyph(id)).font(.title)
+                                PixelSprite(id, fitting: 36).frame(width: 36, height: 36)
                                 Text("x\(count)").font(.caption2.monospacedDigit())
                             }
                             .padding(8)
@@ -147,5 +108,44 @@ struct BuildPalette: View {
         }
         .padding(12)
         .background(Theme.ink.opacity(0.85), in: RoundedRectangle(cornerRadius: 16))
+    }
+}
+
+/// Square grid geometry. Tiles are 16 px sprites at the largest whole-number scale that fits (max 5x),
+/// so every pixel stays square.
+private struct GardenLayout {
+    static let pixelsPerTile: CGFloat = 16
+    static let maxScale: CGFloat = 5
+
+    let landSize: Int
+    let scale: CGFloat
+    let tile: CGFloat
+    let origin: CGPoint
+
+    init(size: CGSize, landSize: Int) {
+        self.landSize = landSize
+        let fit = min(size.width * 0.92, size.height * 0.8) / (CGFloat(landSize) * Self.pixelsPerTile)
+        scale = min(max(1, fit.rounded(.down)), Self.maxScale)
+        tile = Self.pixelsPerTile * scale
+        let side = tile * CGFloat(landSize)
+        // Sit a little low: tall sprites on the back row reach above the land.
+        origin = CGPoint(x: ((size.width - side) / 2).rounded(), y: (size.height * 0.6 - side / 2).rounded())
+    }
+
+    func rect(x: Int, y: Int) -> CGRect {
+        CGRect(x: origin.x + CGFloat(x) * tile, y: origin.y + CGFloat(y) * tile, width: tile, height: tile)
+    }
+
+    /// Centre point for a sprite whose bottom edge stands on the bottom of tile (x, y).
+    func anchor(x: Int, y: Int, spriteHeight: CGFloat) -> CGPoint {
+        let r = rect(x: x, y: y)
+        return CGPoint(x: r.midX, y: r.maxY - spriteHeight / 2)
+    }
+
+    func tile(at point: CGPoint) -> (x: Int, y: Int)? {
+        let x = Int(floor((point.x - origin.x) / tile))
+        let y = Int(floor((point.y - origin.y) / tile))
+        guard (0..<landSize).contains(x), (0..<landSize).contains(y) else { return nil }
+        return (x, y)
     }
 }
