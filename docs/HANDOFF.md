@@ -17,7 +17,7 @@
 - **Transcripts**: 6 videos still failed with HTTP 429 (STAffeSFBVk, dXC38rZMrTU, D34KyceGhPE, 652y-f1YFjU, 8e3RC1L5V_Y, xcPX3VkQjAY). Every habit already has citations. Re-run `fetch_youtube.py` later to deepen the notes.
 - **Re-enabling an archived habit** counts it from today only (one date range per habit), which slightly inflates the history before it was archived. This is an accepted limitation.
 - **Art**: world items are emoji placeholders. Original illustrations are a v0.2 item. No Monke assets are used.
-- **Family Controls**: works in development builds only until Apple grants the distribution entitlement (A1).
+- **Family Controls**: works in development builds only until Apple grants the distribution entitlement (A1). **Requested 2026-10-17** for both bundle IDs (answers in docs/FAMILY-CONTROLS-REQUEST.md); waiting on Apple's email.
 - **No widgets / Live Activity** yet (v0.2).
 
 ## Rules for the next session
