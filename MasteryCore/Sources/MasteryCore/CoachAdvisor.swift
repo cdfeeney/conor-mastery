@@ -15,8 +15,7 @@ public struct CoachAdvice: Hashable, Sendable {
 /// - Habits under 50% get a "do the Min" note; avoid-habits that slipped 2+ times this week get called out.
 /// - Sleep notes from your log: short average, or bedtimes spread over an hour.
 /// - Everything at 80%+: a "raise the bar" note.
-/// ponytail: "times a week" habits are never required on a day, so they sit outside these rates; add a weekly
-/// evaluator when the editor offers that schedule again.
+/// "Times a week" habits are rated on full Monday weeks (see `WeeklyTargets.consistency`).
 public enum CoachAdvisor {
     public static let targetRate = 0.8
     public static let strugglingRate = 0.5

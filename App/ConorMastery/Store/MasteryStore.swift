@@ -62,6 +62,11 @@ final class MasteryStore {
         index.completion(habitID, on: day ?? today)
     }
 
+    /// This week's count for an "N times a week" habit; nil for daily ones.
+    func weeklyProgress(_ habit: HabitDefinition) -> WeeklyProgress? {
+        WeeklyTargets.progress(habit, index: index, on: today, timeZone: timeZone)
+    }
+
     var requiredToday: [HabitDefinition] { habits.filter { $0.isRequired(on: today, timeZone: timeZone) } }
     var doneTodayCount: Int { requiredToday.filter { index.isDone($0.id, on: today) }.count }
     var focusMinutesToday: Int { FocusEngine.minutes(on: today, sessions: focus) }

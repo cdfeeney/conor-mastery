@@ -57,6 +57,11 @@ struct HabitCard: View {
             if habit.kind == .avoid {
                 Text("\(store.cleanDays(habit.id))d clean").font(.caption.weight(.semibold)).foregroundStyle(Theme.jade)
             }
+            if let week = store.weeklyProgress(habit) {
+                Text("\(week.done)/\(week.target) this week")
+                    .font(.caption.weight(.semibold).monospacedDigit())
+                    .foregroundStyle(week.isMet ? Theme.jade : week.isAtRisk ? Theme.accent : .secondary)
+            }
             if completion?.source == .conorhealth {
                 Label("ConorHealth", systemImage: "link").font(.caption2).foregroundStyle(.secondary)
             }

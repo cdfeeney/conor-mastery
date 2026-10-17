@@ -46,10 +46,12 @@ public enum ReminderPlanner {
                             timeZone: TimeZone = .current) -> [Reminder] {
         let due = habits.filter { $0.isRequired(on: day, timeZone: timeZone) }
         let open = due.filter { !index.isDone($0.id, on: day) && index.completion($0.id, on: day)?.level != .slipped }
+        // Weekly-target habits get their cue until the week's target is met; they don't threaten the streak.
+        let weeklyOpen = habits.filter { WeeklyTargets.isOpen($0, index: index, on: day, timeZone: timeZone) }
         var out: [Reminder] = []
 
         // 1. A cue for each open habit that has a planned time still ahead today.
-        for habit in open {
+        for habit in open + weeklyOpen {
             guard let plan = plans[habit.id], let time = plan.time, time > now else { continue }
             out.append(Reminder(id: "cue.\(habit.id)", kind: .habitCue, time: time,
                                 title: habit.title, body: [plan.cue, habit.identity].compactMap { $0 }.joined(separator: ". ")))

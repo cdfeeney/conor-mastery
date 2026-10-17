@@ -113,6 +113,20 @@ final class StoreTests: XCTestCase {
         XCTAssertEqual(store.weeklyFocus, store.plan.weeklyFocus)
     }
 
+    func testWeeklyHabitCountsTowardItsTargetNotTheDailyList() throws {
+        let store = try makeStore()
+        let draft = HabitEditor.newCustom(title: "Gym", kind: .build, group: .day, full: "Lift",
+                                          existingIDs: Set(store.effectivePlanHabits.map(\.id)))
+        let gym = draft.edited(title: "Gym", full: "Lift", min: nil, group: .day, difficulty: .medium,
+                               schedule: .perWeek(3), steps: nil, targetMinutes: nil, minMinutes: nil)
+        store.addCustomHabit(gym)
+        let habit = try XCTUnwrap(store.habits.first { $0.id == gym.id })
+        XCTAssertFalse(store.requiredToday.contains { $0.id == gym.id })
+        store.log(.full, habitID: gym.id)
+        XCTAssertEqual(store.weeklyProgress(habit)?.done, 1)
+        XCTAssertEqual(store.weeklyProgress(habit)?.target, 3)
+    }
+
     func testChecklistCompletesOnLastStep() throws {
         let store = try makeStore()
         let routine = try XCTUnwrap(store.habits.first { $0.kind == .checklist && !$0.steps.isEmpty })

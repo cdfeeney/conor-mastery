@@ -22,9 +22,10 @@ public enum ConsistencyReport {
         let days = DayKey.range(today.adding(days: -window, timeZone: timeZone),
                                 through: today.adding(days: -1, timeZone: timeZone), timeZone: timeZone)
         return habits.filter { $0.isActive(on: today) }.map { habit in
+            let weekly = WeeklyTargets.consistency(habit, index: index, days: days, timeZone: timeZone)
             let required = days.filter { habit.isRequired(on: $0, timeZone: timeZone) }
             let done = required.filter { index.isDone(habit.id, on: $0) }.count
-            return HabitConsistency(habitID: habit.id, required: required.count, done: done)
+            return HabitConsistency(habitID: habit.id, required: required.count + weekly.required, done: done + weekly.done)
         }
     }
 

@@ -149,8 +149,7 @@ struct ScheduleEditor: View {
         Picker("Repeat", selection: mode) {
             Text("Every day").tag(Mode.daily)
             Text("Chosen days").tag(Mode.weekdays)
-            // ponytail: "times a week" has no weekly check yet, so only coach plans that already use it show it.
-            if case .perWeek = schedule { Text("Times a week").tag(Mode.perWeek) }
+            Text("Times a week").tag(Mode.perWeek)
         }
         switch schedule {
         case .daily:
