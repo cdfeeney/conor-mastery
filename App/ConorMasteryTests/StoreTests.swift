@@ -124,7 +124,9 @@ final class StoreTests: XCTestCase {
         XCTAssertFalse(store.requiredToday.contains { $0.id == gym.id })
         store.log(.full, habitID: gym.id)
         XCTAssertEqual(store.weeklyProgress(habit)?.done, 1)
-        XCTAssertEqual(store.weeklyProgress(habit)?.target, 3)
+        // Added today, so this first week's target is capped by the days left (e.g. 2 on a Saturday).
+        let progress = try XCTUnwrap(store.weeklyProgress(habit))
+        XCTAssertEqual(progress.target, min(3, progress.daysLeft))
     }
 
     func testChecklistCompletesOnLastStep() throws {
