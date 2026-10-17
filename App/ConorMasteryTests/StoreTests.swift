@@ -129,6 +129,22 @@ final class StoreTests: XCTestCase {
         XCTAssertEqual(progress.target, min(3, progress.daysLeft))
     }
 
+    func testWidgetSnapshotShowsTodayWithOpenHabitsFirst() throws {
+        let store = try makeStore()
+        let habit = try XCTUnwrap(store.requiredToday.first { $0.kind == .build || $0.kind == .avoid })
+        store.log(.full, habitID: habit.id)
+        let snapshot = WidgetPublisher.makeSnapshot(store)
+        XCTAssertEqual(snapshot.day, store.today.rawValue)
+        XCTAssertEqual(snapshot.done, 1)
+        XCTAssertEqual(snapshot.required, store.requiredToday.count)
+        XCTAssertEqual(snapshot.items.last?.title, habit.title)
+        XCTAssertFalse(snapshot.items.first?.isDone ?? true)
+        let tomorrow = snapshot.asOf("2999-01-01")
+        XCTAssertTrue(tomorrow.isNewDay)
+        XCTAssertTrue(tomorrow.items.isEmpty)
+        XCTAssertEqual(tomorrow.streak, snapshot.streak)
+    }
+
     func testChecklistCompletesOnLastStep() throws {
         let store = try makeStore()
         let routine = try XCTUnwrap(store.habits.first { $0.kind == .checklist && !$0.steps.isEmpty })

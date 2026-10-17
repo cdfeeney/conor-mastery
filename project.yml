@@ -26,6 +26,7 @@ targets:
     dependencies:
       - package: MasteryCore
       - target: MasteryMonitor
+      - target: MasteryWidgets
     entitlements:
       path: App/ConorMastery.entitlements
       properties:
@@ -68,6 +69,28 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.conorfee.conormastery.monitor
+  MasteryWidgets:
+    type: app-extension
+    platform: iOS
+    sources:
+      - Extensions/MasteryWidgets
+      - Shared/Widget
+      # Sprites for the hero (belt colours); the app icon set in it is ignored by the extension.
+      - path: App/Resources/Assets.xcassets
+        buildPhase: resources
+    entitlements:
+      path: Extensions/MasteryWidgets/MasteryWidgets.entitlements
+      properties:
+        com.apple.security.application-groups: [group.com.conorfee.conormastery]
+    info:
+      path: Extensions/MasteryWidgets/Info.plist
+      properties:
+        CFBundleDisplayName: Mastery Widgets
+        NSExtension:
+          NSExtensionPointIdentifier: com.apple.widgetkit-extension
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.conorfee.conormastery.widgets
   ConorMasteryTests:
     type: bundle.unit-test
     platform: iOS

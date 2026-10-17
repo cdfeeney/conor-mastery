@@ -43,10 +43,17 @@ struct RootView: View {
         .onChange(of: scenePhase) { _, phase in if phase == .active { refresh() } }
         // Any habit change can open or close the morning gate.
         .onChange(of: store.state.completions.count) { _, _ in
+            WidgetPublisher.publish(store)
             screenTime.apply(store: store)
             Task { await notifications.reschedule(store.reminders()) }
         }
-        .onChange(of: store.settings) { _, _ in Task { await notifications.reschedule(store.reminders()) } }
+        .onChange(of: store.settings) { _, _ in
+            WidgetPublisher.publish(store)
+            Task { await notifications.reschedule(store.reminders()) }
+        }
+        .onChange(of: store.grit) { _, _ in WidgetPublisher.publish(store) }
+        // Widgets open the app on Today.
+        .onOpenURL { url in if url.host == "today" { tab = .today } }
         // Juice: a sound and a tap on every reward (sound follows the Settings toggle), a jingle on level-up.
         .onChange(of: store.lastReward?.id) { _, id in
             guard id != nil, let toast = store.lastReward, toast.reward.grit > 0 || toast.drop != nil else { return }
@@ -68,6 +75,7 @@ struct RootView: View {
     private func refresh() {
         store.reload()
         store.syncCoach()
+        WidgetPublisher.publish(store)
         screenTime.apply(store: store)
         Task { await notifications.reschedule(store.reminders()) }
     }
