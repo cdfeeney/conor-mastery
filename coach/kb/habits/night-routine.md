@@ -26,6 +26,8 @@ citations:
   - {source: "book:bennett-24-hours", locator: "¶100"}
   - {source: "res:burns2023", locator: "abstract"}
   - {source: "yt:pNDJr_s69wY", locator: "00:35"}
+  - {source: "yt:nuesDJf4EYA", locator: "00:31"}
+  - {source: "yt:xcPX3VkQjAY", locator: "04:26"}
 challenges:
   - "Set the last-orders alarm 15 minutes before bed and obey it."
   - "Audiobook instead of scrolling in bed tonight."
@@ -33,6 +35,7 @@ challenges:
   - "Lights to lamps only after 10 pm."
   - 'Ask "What good have I done today?" and replay where the day leaked time.'
   - 'Use a physical alarm clock and charge the phone outside the bedroom tonight.'
+  - 'Before bed, write tomorrow''s first action with a time and a place.'
 ---
 Walker's "last orders" alarm (lRp5AC9W_F8 @ 06:46). Bright overhead light and screens from 10 pm to 4 am
 disrupt sleep (RTgJSQtvo88 @ 21:44). Night-before written intention (1gxKyEuj5RA @ 02:03).

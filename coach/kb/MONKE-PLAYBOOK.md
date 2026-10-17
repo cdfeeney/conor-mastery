@@ -1,10 +1,9 @@
 # Monke playbook (from the monke YouTube channel)
 
-Status 2026-10-16: **37 of 64** channel videos transcribed locally (Whisper on the GPU) and turned into
-cited notes in `coach/kb/sources/`. The run stopped when the PC ran low on memory, and the last 27 are pending
-the owner's go-ahead (`python coach/tools/transcribe_channel.py` resumes). Evidence grade for the whole
-channel: **anecdote/opinion** (simplified, unsourced science). Use the habits and tactics, and check the science
-against `research/RESEARCH.md`.
+Status 2026-10-17: **all 64** channel videos transcribed locally (Whisper on the GPU) and turned into cited
+notes in `coach/kb/sources/`. Six shorts were music-only (no speech), so their notes are empty. Evidence grade
+for the whole channel: **anecdote/opinion** (simplified, unsourced science). Use the habits and tactics, and
+check the science against `research/RESEARCH.md`.
 
 ## The tips that made it into Conor's habits
 
@@ -20,6 +19,15 @@ against `research/RESEARCH.md`.
 | sleep | Bedtime inside the same 30-minute window every day. | iso2GnoZs3s @ 02:07 |
 | night-routine | Physical alarm clock, phone charges outside the bedroom. | pNDJr_s69wY @ 00:35 |
 | deep-breathing | Slow pattern with a long exhale (4 in, 4 hold, 6-8 out). | LUlIvjBcmlA @ 03:14 |
+| sleep | Awake 20+ minutes? Get up, calm activity in dim light, back to bed when sleepy. Cold, dark room; bed only for sleep. | GFge24IUcy8 @ 03:49, spvYGKTdWto @ 00:34 |
+| sleep | Same bed and wake time every day, weekends too; weekend lie-ins don't repay weekday debt. | GFge24IUcy8 @ 03:18, 01:06 |
+| night-routine | Write tomorrow's first action with a time and place. Stop eating ~4 h before bed. | nuesDJf4EYA @ 00:31, xcPX3VkQjAY @ 04:26 |
+| morning-routine | Gym clothes laid out, alarm across the room; wake within the same 15-minute window. | nuesDJf4EYA @ 01:04, xcPX3VkQjAY @ 01:40 |
+| meditation | Start with 60 seconds of eyes-closed breath focus; build to 10 minutes. | 6JSNeqNUao0 @ 00:33, xcPX3VkQjAY @ 01:03 |
+| reset-focus | Close tabs, mute, block first. Ladder the blocks: 30, 60, then 90 minutes, with boring rests. | 6JSNeqNUao0 @ 00:00, 02:07 |
+| no-social-media | Delete the apps instead of limiting them; greyscale; 3-day no-shorts challenge. | teyV8EFTxPc @ 02:09, 03:12 |
+| workout | The only commitment is walking to the gym. Start tiny (5 push-ups a day for 30 days). | nuesDJf4EYA @ 01:04, 5_cvpfQ0e3w @ 00:00 |
+| no-nicotine (Zyn) | Throw out every tin so there is nothing to resist (willpower runs out). | nuesDJf4EYA @ 01:36 |
 
 ## Monke's game ideas (input for the reward system)
 
@@ -30,5 +38,6 @@ against `research/RESEARCH.md`.
 ## Low priority / off-topic for Conor
 
 Skincare, attraction, communication and "aura" videos, and testosterone hype (iqnoX27hef0, pwzAW1T5j1M,
-K92PRpg6jmM, 2W-1vpcCanA, 5rc4C1JBdHc). Kept as notes but not used in the habits. Hormone and supplement
+K92PRpg6jmM, 2W-1vpcCanA, 5rc4C1JBdHc, and from the new batch: height, porn/NoFap, testosterone, purpose and
+"NPC" videos). Kept as notes but not used in the habits. Hormone and supplement
 claims: talk to a doctor.

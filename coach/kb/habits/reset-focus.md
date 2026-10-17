@@ -22,6 +22,8 @@ citations:
   - {source: "yt:95UrFFVrwJU", locator: "02:36"}
   - {source: "yt:n1G3wGPVwVw", locator: "03:09"}
   - {source: "yt:WiIr-RgL4hg", locator: "01:38"}
+  - {source: "yt:6JSNeqNUao0", locator: "00:00"}
+  - {source: "yt:6JSNeqNUao0", locator: "02:07"}
 challenges:
   - "Before you start: phone out of the room, tabs closed, water on the desk."
   - "Use Locked In mode for your focus block today."
@@ -30,6 +32,7 @@ challenges:
   - "When your mind drifts during the block, bring it back and count the returns. Beat yesterday's count."
   - 'Can''t start? Run a 5-minute timer on it and decide after. Split the block into 3-5 tiny levels first.'
   - 'Make breaks boring (window, push-ups); scrolling is the reward after the block, never during.'
+  - 'Close tabs and mute notifications first, then climb the ladder: 30, then 60, then 90-minute blocks.'
 ---
 Focus ladder: 20 minutes rising to 60 (monke, Zc2lu3u-0CQ @ 03:35). Blocks of 25-90 minutes with
 screen-free breaks (2VpDCs0tbGA @ 02:34, @ 03:05).

@@ -16,11 +16,13 @@ citations:
   - {source: "yt:u_DfrP-oaRQ", locator: "02:33"}
   - {source: "yt:KHIbgSN2qAU", locator: "02:39"}
   - {source: "book:bennett-24-hours", locator: "¶90"}
+  - {source: "yt:6JSNeqNUao0", locator: "00:33"}
 challenges:
   - "Sit for 12 minutes today, one more than usual."
   - "Meditate before you look at your phone."
   - "When your mind wanders, count it. Just notice the number."
   - "Swap today's sit for a 10-minute NSDR body scan, lying down."
+  - 'Just 60 seconds: eyes closed, follow the breath, come back each time you drift.'
 ---
 The working-memory benefit is the creator's claim, unsourced (2VpDCs0tbGA @ 04:06). Starting at 2
 minutes follows the "start tiny" rule (u_DfrP-oaRQ @ 02:33).

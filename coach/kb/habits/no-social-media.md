@@ -19,12 +19,15 @@ citations:
   - {source: "book:seneca-letters", locator: "¶35"}
   - {source: "res:hunt2018", locator: "abstract"}
   - {source: "yt:652y-f1YFjU", locator: "02:08"}
+  - {source: "yt:teyV8EFTxPc", locator: "02:09"}
+  - {source: "yt:teyV8EFTxPc", locator: "03:12"}
 challenges:
   - "Delete one social app from your home screen tonight."
   - "Go the whole day without paying to unlock."
   - "Replace bedtime scrolling with an audiobook or podcast."
   - "Phone downtime: hand the passcode to someone you trust."
   - 'Unfollow 10 accounts that make you feel worse or pull you into scrolling.'
+  - '3-day no-shorts challenge: delete the short-video apps, turn greyscale on.'
 ---
 Clear locked his social media out Monday to Friday by adding steps (mNeXuCYiE0U @ 12:50). Quitting
 scrolling cold turkey tends to fail, so step down instead (bt5ue-1wLvc @ 02:01). The quest is complete

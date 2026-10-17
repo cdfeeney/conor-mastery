@@ -23,6 +23,7 @@ citations:
   - {source: "res:ex-pouches", locator: "guide"}
   - {source: "yt:Qg1nFGl-YZc", locator: "02:50"}
   - {source: "yt:O-C8o0pFvNs", locator: "06:12"}
+  - {source: "yt:nuesDJf4EYA", locator: "01:36"}
 challenges:
   - "Keep a non-nicotine swap in the spot you keep your can (sugar-free gum or mints) for the moment you'd reach for a pouch."
   - "Write down your top trigger today and your if-then plan for it."
@@ -30,6 +31,7 @@ challenges:
   - "Book a doctor's appointment to talk about a quit plan."
   - "Launch strong: throw out every can of Zyn today (car, desk, bag, jacket) and tell one person you quit."
   - 'Urge protocol: stand up and leave the room within 5 seconds, set a 10-minute timer, do your listed swap. Log every survived urge as a win.'
+  - 'Throw out every pouch tin in the house, car and bag, so there is nothing to resist.'
 ---
 A slip is logged honestly and resets the days-clean counter, but it never costs your whole game. Never
 miss twice (mNeXuCYiE0U @ 20:00). Hypnosis-based programs and medication are discussed in the source as

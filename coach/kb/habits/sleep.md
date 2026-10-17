@@ -17,12 +17,16 @@ citations:
   - {source: "yt:Zc2lu3u-0CQ", locator: "02:04"}
   - {source: "res:windred2024", locator: "abstract"}
   - {source: "yt:iso2GnoZs3s", locator: "02:07"}
+  - {source: "yt:GFge24IUcy8", locator: "03:18"}
+  - {source: "yt:GFge24IUcy8", locator: "03:49"}
+  - {source: "yt:spvYGKTdWto", locator: "00:34"}
 challenges:
   - "Wake within an hour of your weekday time, even today."
   - "One alarm, no snooze. Feet on the floor when it rings."
   - "No caffeine after 2 pm today."
   - "Bedroom cool tonight: drop it a few degrees."
   - 'Keep tonight''s bedtime inside your usual 30-minute window.'
+  - 'Awake more than 20 minutes? Get up, do something calm in dim light, go back when sleepy.'
 ---
 Walker: no snooze, one alarm (lRp5AC9W_F8 @ 07:18). Alcohol sedates rather than produces real sleep
 and fragments it (@ 00:33). Caffeine cutoff: Huberman says ~4 pm (RTgJSQtvo88 @ 11:07), and monke says 2 pm
