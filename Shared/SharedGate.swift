@@ -1,13 +1,13 @@
-import DeviceActivity
+@preconcurrency import DeviceActivity
 import FamilyControls
 import Foundation
-import ManagedSettings
+@preconcurrency import ManagedSettings
 import MasteryCore
 
 /// Compiled into the app AND the DeviceActivity monitor extension; both reach the same App Group.
 enum SharedGate {
     static let appGroup = "group.com.conorfee.conormastery"
-    static let storeName = ManagedSettingsStore.Name("mastery")
+    static var storeName: ManagedSettingsStore.Name { ManagedSettingsStore.Name("mastery") }
 
     private static let selectionKey = "gate.selection.v1"
     private static let snapshotKey = "gate.snapshot.v1"
@@ -65,12 +65,12 @@ enum SharedGate {
 
 extension DeviceActivityName {
     /// Wind-down start (default 21:30) to 23:59: shields go up.
-    static let windDown = DeviceActivityName("mastery.windDown")
+    static var windDown: DeviceActivityName { DeviceActivityName("mastery.windDown") }
     /// Daily allowed social windows (one activity per window): re-resolve at start and end.
     static func socialWindow(_ index: Int) -> DeviceActivityName { DeviceActivityName("mastery.socialWindow.\(index)") }
     static let maxSocialWindows = 3
     /// One-off paid unblock; shields return when it ends.
-    static let unblock = DeviceActivityName("mastery.unblock")
+    static var unblock: DeviceActivityName { DeviceActivityName("mastery.unblock") }
     /// Locked-in focus session; shields drop when it ends.
-    static let lockedIn = DeviceActivityName("mastery.lockedIn")
+    static var lockedIn: DeviceActivityName { DeviceActivityName("mastery.lockedIn") }
 }

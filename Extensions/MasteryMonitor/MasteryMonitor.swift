@@ -1,4 +1,4 @@
-import DeviceActivity
+@preconcurrency import DeviceActivity
 import Foundation
 
 /// Runs while the app is closed. Every interval start or end re-runs the same shared resolver

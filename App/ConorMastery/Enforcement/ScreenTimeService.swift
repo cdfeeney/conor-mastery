@@ -1,4 +1,4 @@
-import DeviceActivity
+@preconcurrency import DeviceActivity
 import FamilyControls
 import Foundation
 import MasteryCore
