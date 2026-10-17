@@ -59,9 +59,10 @@ def build_lessons(habit_ids: list[str]) -> list[dict]:
             if not m or m.group(1) not in habit_ids or len(m.group(2)) > MAX_LESSON_CHARS:
                 continue
             habit, tip, locator = m.groups()
-            lesson_id = f"{source.group(1)}@{locator}#{habit}"
-            if lesson_id in seen:
-                continue
+            base_id = f"{source.group(1)}@{locator}#{habit}"
+            lesson_id, n = base_id, 2
+            while lesson_id in seen:  # two tips at the same moment for the same habit
+                lesson_id, n = f"{base_id}-{n}", n + 1
             seen.add(lesson_id)
             lessons.append({"id": lesson_id, "habit": habit, "text": tip, "source": source.group(1), "locator": locator})
     return lessons

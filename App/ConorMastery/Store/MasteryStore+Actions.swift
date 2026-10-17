@@ -129,9 +129,11 @@ extension MasteryStore {
     /// Tonight's check on the daily lesson. "I did it" pays once a day; a miss brings it back in 3 days.
     func answerLesson(kept: Bool) {
         guard let lesson, lessonAnswer == nil else { return }
-        if kept {
+        // One payout a day, checked on the ledger: a plan change mid-day can swap today's lesson.
+        let ref = "lesson@\(today.rawValue)"
+        if kept, !state.ledger.transactions.contains(where: { $0.ref == ref }) {
             commitLedger(state.ledger.appending(GritTransaction(day: today, amount: RewardRules.lessonGrit, reason: .lesson,
-                                                                ref: "lesson@\(today.rawValue)")))
+                                                                ref: ref)))
             lastReward = RewardToast(title: "Lesson kept", reward: Reward(grit: RewardRules.lessonGrit, xp: 0))
         }
         var s = settings

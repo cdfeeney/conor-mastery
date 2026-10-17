@@ -14,6 +14,7 @@ struct WorldView: View {
             let layout = GardenLayout(size: geo.size, landSize: world.landSize)
             ZStack(alignment: .topLeading) {
                 Theme.water
+                landEdge(layout)
                 ground(layout)
                 ForEach(sortedPlacements(world), id: \.self) { placement in
                     let height = ItemArt.pixelSize(placement.itemID).height * layout.scale
@@ -32,6 +33,17 @@ struct WorldView: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Your dojo garden, \(store.world.placements.count) items")
+    }
+
+    /// A strip of earth under the land's bottom edge, so the garden reads as raised ground over water.
+    private func landEdge(_ layout: GardenLayout) -> some View {
+        let land = layout.rect(x: 0, y: 0).union(layout.rect(x: layout.landSize - 1, y: layout.landSize - 1))
+        let depth = 4 * layout.scale
+        return Rectangle().fill(Theme.earth)
+            .overlay(alignment: .bottom) { Rectangle().fill(Theme.ink.opacity(0.35)).frame(height: layout.scale) }
+            .frame(width: land.width, height: land.height + depth)
+            .position(x: land.midX, y: land.midY + depth / 2)
+            .accessibilityHidden(true)
     }
 
     /// Grass tiles, with a few detail variants mixed in by position so the lawn doesn't look stamped.

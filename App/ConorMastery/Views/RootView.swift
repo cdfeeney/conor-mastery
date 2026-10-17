@@ -9,6 +9,7 @@ struct RootView: View {
     @State private var screenTime = ScreenTimeService()
     private let notifications = NotificationService()
     @State private var tab: AppTab = .dojo
+    @AppStorage("onboarding.yourDay.seen.v1") private var hasSeenYourDay = false
     @Environment(\.scenePhase) private var scenePhase
 
     init(context: ModelContext) {
@@ -27,6 +28,9 @@ struct RootView: View {
         .environment(store)
         .environment(screenTime)
         .overlay(alignment: .top) { RewardToastView() .environment(store) }
+        .sheet(isPresented: Binding(get: { !hasSeenYourDay && !store.habits.isEmpty }, set: { if !$0 { hasSeenYourDay = true } })) {
+            YourDayView().environment(store)
+        }
         .alert("Heads up", isPresented: errorBinding) {
             Button("OK", role: .cancel) { store.errorMessage = nil }
         } message: {
@@ -43,6 +47,17 @@ struct RootView: View {
             Task { await notifications.reschedule(store.reminders()) }
         }
         .onChange(of: store.settings) { _, _ in Task { await notifications.reschedule(store.reminders()) } }
+        // Juice: a sound and a tap on every reward (sound follows the Settings toggle), a jingle on level-up.
+        .onChange(of: store.lastReward?.id) { _, id in
+            guard id != nil, let toast = store.lastReward, toast.reward.grit > 0 || toast.drop != nil else { return }
+            if store.settings.soundOn { SoundPlayer.play(toast.drop == nil ? .coin : .powerup) }
+        }
+        .onChange(of: store.level.level) { old, new in
+            if new > old, store.settings.soundOn { SoundPlayer.play(.levelup) }
+        }
+        .sensoryFeedback(.success, trigger: store.lastReward?.id) { _, new in
+            new != nil && ((store.lastReward?.reward.grit ?? 0) > 0 || store.lastReward?.drop != nil)
+        }
         .task { if await notifications.requestAuthorization() { await notifications.reschedule(store.reminders()) } }
     }
 

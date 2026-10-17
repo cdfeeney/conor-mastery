@@ -25,7 +25,7 @@ struct DojoView: View {
                     if let challenge = store.challenge { ChallengeCard(challenge: challenge) }
                 }
                 Spacer()
-                if building { BuildPalette(selectedItem: $selectedItem) }
+                if building { BuildPalette(selectedItem: $selectedItem) } else { HabitPlantsRow(tab: $tab) }
                 bottomBar
             }
             .padding(.horizontal)
@@ -146,5 +146,36 @@ struct EnergyBar: View {
         .background(Theme.ink.opacity(0.85), in: Capsule())
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(isRestDay ? "Rest day" : "Energy \(energy.value) of \(EnergyRules.max)")
+    }
+}
+
+/// One plant per habit: a tuft when healthy, a sunflower when blooming, a grey drooping tuft when wilting.
+/// Tap to go check in.
+struct HabitPlantsRow: View {
+    @Binding var tab: AppTab
+    @Environment(MasteryStore.self) private var store
+
+    var body: some View {
+        Button { tab = .today } label: {
+            HStack(spacing: 6) {
+                ForEach(store.habits) { habit in plant(habit) }
+            }
+            .padding(.horizontal, 12).padding(.vertical, 8)
+            .background(Theme.ink.opacity(0.55), in: Capsule())
+        }
+        .buttonStyle(.plain)
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel("Habit plants")
+        .accessibilityHint("Opens Today")
+    }
+
+    private func plant(_ habit: HabitDefinition) -> some View {
+        let tier = store.tier(habit.id)
+        let isWilted = tier == .wilted
+        return PixelSprite(tier == .blooming ? "sunflower" : "grass-tuft", scale: 2)
+            .saturation(isWilted ? 0.15 : 1)
+            .brightness(isWilted ? -0.15 : 0)
+            .offset(y: isWilted ? 2 : 0)
+            .accessibilityLabel("\(habit.title), \(isWilted ? "wilting" : tier == .blooming ? "blooming" : "healthy")")
     }
 }

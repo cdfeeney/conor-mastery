@@ -26,6 +26,7 @@ struct SettingsView: View {
                 }
                 Section("Streak") {
                     Toggle("Strict streak (no Second Winds)", isOn: setting(\.strictStreak))
+                    Toggle("Reward sounds", isOn: setting(\.soundOn))
                     LabeledContent("Second Winds", value: "\(store.streak.secondWinds)")
                     LabeledContent("Best streak", value: "\(store.streak.best) days")
                 }

@@ -1,7 +1,7 @@
 {
  "format": "conor-mastery-plan",
  "version": 1,
- "generated_at": "2026-10-17T14:17:52-04:00",
+ "generated_at": "2026-10-17T14:30:36-04:00",
  "weekly_focus": "Foundations first: sleep and phone. Lock those in, then body, then focus.",
  "notes": [
   "Habits take about 2 months to feel automatic (median ~66 days, range 18-254), not 21. Expect week 3 to feel hard. (res:lally2010)",
@@ -695,6 +695,13 @@
    "locator": "02:36"
   },
   {
+   "id": "yt:95UrFFVrwJU@02:36#reset-focus-2",
+   "habit": "reset-focus",
+   "text": "Break = stare out window or pushups, not feeds.",
+   "source": "yt:95UrFFVrwJU",
+   "locator": "02:36"
+  },
+  {
    "id": "yt:95UrFFVrwJU@02:06#no-social-media",
    "habit": "no-social-media",
    "text": "Schedule scrolling only as a reward after a finished block.",
@@ -859,6 +866,13 @@
    "id": "yt:GFge24IUcy8@03:18#sleep",
    "habit": "sleep",
    "text": "keep bed and wake times fixed seven days a week",
+   "source": "yt:GFge24IUcy8",
+   "locator": "03:18"
+  },
+  {
+   "id": "yt:GFge24IUcy8@03:18#sleep-2",
+   "habit": "sleep",
+   "text": "schedule bedtime so 7-9 hours fit before the alarm",
    "source": "yt:GFge24IUcy8",
    "locator": "03:18"
   },

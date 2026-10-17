@@ -18,6 +18,7 @@ struct CoachView: View {
                 }
                 weakestSection
                 Section("Learn") {
+                    NavigationLink { YourDayView() } label: { Label("Your day: the whole plan", systemImage: "sun.horizon") }
                     NavigationLink { TipLibraryView() } label: {
                         Label("Tip library · \(store.plan.lessons.count) tips", systemImage: "books.vertical")
                     }

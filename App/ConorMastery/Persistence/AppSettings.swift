@@ -52,8 +52,9 @@ struct AppSettings: Codable, Equatable {
         habitPlans = try c.decodeIfPresent([String: HabitPlan].self, forKey: .habitPlans) ?? [:]
         restDays = try c.decodeIfPresent(Set<DayKey>.self, forKey: .restDays) ?? []
         treats = try c.decodeIfPresent([Treat].self, forKey: .treats) ?? []
-        lessons = try c.decodeIfPresent([String: LessonRecord].self, forKey: .lessons) ?? [:]
-        pinnedRules = try c.decodeIfPresent([String].self, forKey: .pinnedRules) ?? []
+        // Lesson state is the least valuable field: a bad record must never fail (and so reset) all settings.
+        lessons = (try? c.decodeIfPresent([String: LessonRecord].self, forKey: .lessons)) ?? [:]
+        pinnedRules = (try? c.decodeIfPresent([String].self, forKey: .pinnedRules)) ?? []
     }
 }
 

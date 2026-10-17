@@ -10,6 +10,7 @@ enum Theme {
     static let paper = Color(red: 0.98, green: 0.96, blue: 0.90)
     static let night = Color(red: 0.11, green: 0.14, blue: 0.25)
     static let water = Color(red: 0.36, green: 0.60, blue: 0.78)
+    static let earth = Color(red: 0.55, green: 0.38, blue: 0.24)
 
     static func color(_ belt: Belt) -> Color {
         switch belt {
