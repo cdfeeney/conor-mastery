@@ -6,10 +6,20 @@ import XCTest
 /// Store-level checks against an in-memory SwiftData container: actions persist and reload intact.
 @MainActor
 final class StoreTests: XCTestCase {
+    /// Held for the whole test: a freed ModelContainer makes every later context call trap
+    /// (the same trap ConorHealth hit; the real app keeps its container in ConorMasteryApp).
+    private var container: ModelContainer?
+
+    override func tearDown() {
+        container = nil
+        super.tearDown()
+    }
+
     private func makeStore() throws -> MasteryStore {
-        let container = try ModelContainer(for: Schema(Schema1.models),
-                                           configurations: ModelConfiguration(isStoredInMemoryOnly: true))
-        return MasteryStore(context: container.mainContext)
+        let made = try ModelContainer(for: Schema(Schema1.models),
+                                      configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+        container = made
+        return MasteryStore(context: made.mainContext)
     }
 
     func testSeedPlanShipsAllNineHabits() throws {
