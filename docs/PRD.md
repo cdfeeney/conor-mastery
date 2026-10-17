@@ -113,6 +113,21 @@ ride in the plan file (`lessons`, optional), so the coach can add tips without a
 
 Later: a short "Your day" guide and a first-day walkthrough (onboarding gap P7), then quiz-style reviews.
 
+## 6c. Adaptive coach (2026-10-17)
+
+The coach adapts on the phone, from your own last 14 days, so it works without the PC (`CoachAdvisor`, tested):
+- **Weekly focus**: the first habit in foundation order (sleep → phone → morning/night routines → nicotine →
+  workout → meditation → breathing → focus) that's under 80%. It replaces the plan's static focus line once
+  any habit has 3+ required days of history.
+- **Notes** (max 4, Coach tab "Coach says"):
+  - Habits under 50%: do the Min on hard days.
+  - Avoid-habits that slipped 2+ times this week: pin a tip as a rule.
+  - Sleep: averaging under 7 h, or bedtimes spread over an hour.
+  - Everything at 80%+: raise the bar.
+- **Lessons** come for the focus habit first, then the weakest.
+
+The PC coach still writes the plan and its content; the app still writes `daily-log.json` for it to read.
+
 ## 7. Screens
 
 1. **Dojo** (home)

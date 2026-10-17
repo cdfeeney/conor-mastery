@@ -12,7 +12,7 @@ struct YourDayView: View {
             List {
                 Section {
                     Text("Every habit has a Full version for normal days and a Min version for bad days. Min still keeps your streak.")
-                    if let focus = store.plan.weeklyFocus { Label(focus, systemImage: "scope").font(.subheadline.weight(.semibold)) }
+                    if let focus = store.weeklyFocus { Label(focus, systemImage: "scope").font(.subheadline.weight(.semibold)) }
                 }
                 ForEach(HabitGroup.allCases, id: \.self) { group in
                     let habits = store.habits(in: group)

@@ -10,8 +10,13 @@ struct CoachView: View {
     var body: some View {
         NavigationStack {
             List {
-                if let focus = store.plan.weeklyFocus {
+                if let focus = store.weeklyFocus {
                     Section("This week") { Text(focus).font(.headline) }
+                }
+                if let advice = store.advice, !advice.notes.isEmpty {
+                    Section("Coach says (from your last 14 days)") {
+                        ForEach(advice.notes, id: \.self) { Label($0, systemImage: "bubble.left") }
+                    }
                 }
                 if !store.plan.notes.isEmpty {
                     Section("Coach notes") { ForEach(store.plan.notes, id: \.self) { Text($0) } }

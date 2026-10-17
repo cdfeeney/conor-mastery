@@ -36,6 +36,8 @@ struct AppSettings: Codable, Equatable {
     var customHabits: [PlanHabit] = []
     /// Schedule edits per habit, so past days keep the schedule they had.
     var scheduleChanges: [String: [ScheduleChange]] = [:]
+    /// The lesson picked for a day, so a mid-day sync can't swap the card you already saw.
+    var todayLesson: TodayLesson?
 
     static func fresh(today: DayKey) -> AppSettings { AppSettings(startDay: today) }
 
@@ -64,7 +66,13 @@ struct AppSettings: Codable, Equatable {
         habitEdits = try c.decodeIfPresent([String: PlanHabit].self, forKey: .habitEdits) ?? [:]
         customHabits = try c.decodeIfPresent([PlanHabit].self, forKey: .customHabits) ?? []
         scheduleChanges = try c.decodeIfPresent([String: [ScheduleChange]].self, forKey: .scheduleChanges) ?? [:]
+        todayLesson = try? c.decodeIfPresent(TodayLesson.self, forKey: .todayLesson)
     }
+}
+
+struct TodayLesson: Codable, Equatable {
+    let day: DayKey
+    let lessonID: String
 }
 
 struct RetiredHabit: Codable, Equatable {

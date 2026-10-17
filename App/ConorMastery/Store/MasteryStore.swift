@@ -72,9 +72,26 @@ final class MasteryStore {
     }
     var challengeDone: Bool { settings.challengeDoneDay == today }
 
-    /// Today's coach lesson (stays put all day once answered).
+    /// The adaptive coach's read of your last 14 days (nil until there's enough history).
+    var advice: CoachAdvice? {
+        CoachAdvisor.advise(habits: habits, completions: state.completions, sleep: sleep, today: today, timeZone: timeZone)
+    }
+
+    /// The week's focus line: the adaptive coach's once there's history, else the plan's.
+    var weeklyFocus: String? { advice?.focusLine ?? plan.weeklyFocus }
+
+    /// Today's coach lesson: the one fixed for today, else a fresh pick (focus habit first).
     var lesson: Lesson? {
-        LessonPlanner.pick(plan.lessons, records: settings.lessons, habitOrder: plan.habits.map(\.id),
+        if let fixed = settings.todayLesson, fixed.day == today,
+           let lesson = plan.lessons.first(where: { $0.id == fixed.lessonID }) {
+            return lesson
+        }
+        return pickedLesson
+    }
+
+    private var pickedLesson: Lesson? {
+        LessonPlanner.pick(plan.lessons, records: settings.lessons,
+                           habitOrder: advice?.lessonOrder ?? effectivePlanHabits.map(\.id),
                            today: today, timeZone: timeZone)
     }
 
@@ -139,6 +156,7 @@ final class MasteryStore {
         reflections = Dictionary(fetch(SortDescriptor(\ReflectionRecord.day)).compactMap { r in
             DayKey(r.day).map { ($0, r.text) }
         }, uniquingKeysWith: { _, last in last })
+        fixTodayLesson()
     }
 
     func fetch<T: PersistentModel>(_ sort: SortDescriptor<T>) -> [T] {
@@ -205,6 +223,16 @@ final class MasteryStore {
             $0.habit.definition(anchor: settings.startDay, scheduleChanges: settings.scheduleChanges[$0.habit.id] ?? []).active(from: settings.habitFirstSeen[$0.habit.id], until: $0.until)
         }
         return current + retired
+    }
+
+    /// Fix today's lesson the first time the day loads.
+    func fixTodayLesson() {
+        guard settings.todayLesson?.day != today, let lesson = pickedLesson else { return }
+        var s = settings
+        s.todayLesson = TodayLesson(day: today, lessonID: lesson.id)
+        settings = s
+        saveBlob(s, key: BlobKey.settings)
+        save()
     }
 
     /// Records the first day each plan habit appeared (once).

@@ -107,6 +107,12 @@ final class StoreTests: XCTestCase {
         XCTAssertGreaterThan(store.grit, 0, "grit earned on the deleted habit stays")
     }
 
+    func testFreshInstallUsesThePlansFocusUntilThereIsHistory() throws {
+        let store = try makeStore()
+        XCTAssertNil(store.advice)
+        XCTAssertEqual(store.weeklyFocus, store.plan.weeklyFocus)
+    }
+
     func testChecklistCompletesOnLastStep() throws {
         let store = try makeStore()
         let routine = try XCTUnwrap(store.habits.first { $0.kind == .checklist && !$0.steps.isEmpty })
