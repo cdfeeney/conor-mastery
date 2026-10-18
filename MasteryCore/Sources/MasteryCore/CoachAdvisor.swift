@@ -40,7 +40,7 @@ public enum CoachAdvisor {
             guard let habit = byID[row.habitID] else { continue }
             let fallback = "plan a time and place with the clock button on its card"
             let tip = habit.min.map { "on hard days do the Min (\($0)): it still keeps your streak" } ?? fallback
-            notes.append("\(habit.title): \(row.done) of \(row.required) days. \(tip.prefix(1).uppercased() + tip.dropFirst()).")
+            notes.append("\(habit.title): \(row.done) of the last \(row.required) days. \(tip.prefix(1).uppercased() + tip.dropFirst()).")
         }
         notes += slipNotes(habits: habits, completions: completions, today: today, timeZone: timeZone)
         notes += sleepNotes(sleep, today: today, timeZone: timeZone)
@@ -50,9 +50,9 @@ public enum CoachAdvisor {
 
         let focusLine: String
         if let focus, let habit = byID[focus.habitID] {
-            focusLine = "This week: \(habit.title). You did it \(focus.done) of \(focus.required) days; aim for \(Int(targetRate * 100))%."
+            focusLine = "Focus: \(habit.title). Done \(focus.done) of the last \(focus.required) days; aim for \(Int(targetRate * 100))%."
         } else {
-            focusLine = "This week: keep everything going."
+            focusLine = "Focus: keep everything going."
         }
         let weakestFirst = ordered.sorted { $0.rate < $1.rate }.map(\.habitID)
         let lessonOrder = ([focus?.habitID].compactMap { $0 } + weakestFirst + habits.map(\.id)).uniqued()

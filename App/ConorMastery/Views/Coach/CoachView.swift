@@ -14,7 +14,7 @@ struct CoachView: View {
                     Section("This week") { Text(focus).font(.headline) }
                 }
                 if let advice = store.advice, !advice.notes.isEmpty {
-                    Section("Coach says (from your last 14 days)") {
+                    Section("Coach says") {
                         ForEach(advice.notes, id: \.self) { Label($0, systemImage: "bubble.left") }
                     }
                 }
@@ -55,7 +55,7 @@ struct CoachView: View {
                         .accessibilityIdentifier("coach-save-reflection")
                 }
                 Section {
-                    Text(store.plan.generatedAt.isEmpty ? "Plan: bundled starter" : "Plan from coach: \(store.plan.generatedAt)")
+                    Text(planLine)
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }
@@ -65,10 +65,18 @@ struct CoachView: View {
         }
     }
 
+    /// "Plan from coach · Oct 18, 3:43 PM", never the raw ISO timestamp.
+    private var planLine: String {
+        let raw = store.plan.generatedAt
+        guard !raw.isEmpty else { return "Plan: bundled starter" }
+        guard let date = ISO8601DateFormatter().date(from: raw) else { return "Plan from coach" }
+        return "Plan from coach · \(date.formatted(date: .abbreviated, time: .shortened))"
+    }
+
     @ViewBuilder private var weakestSection: some View {
         let weakest = store.consistency.prefix(3).filter { $0.rate < 1 }
         if !weakest.isEmpty {
-            Section("Needs work (last 14 days)") {
+            Section("Needs work (days done / days due)") {
                 ForEach(weakest, id: \.habitID) { row in
                     HStack {
                         Text(store.state.habit(row.habitID)?.title ?? row.habitID)

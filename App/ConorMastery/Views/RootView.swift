@@ -43,7 +43,7 @@ struct RootView: View {
         .environment(screenTime)
         .overlay(alignment: .top) { RewardToastView() .environment(store) }
         .sheet(isPresented: Binding(get: { !hasSeenYourDay && !store.habits.isEmpty && !isTestRun }, set: { if !$0 { hasSeenYourDay = true } })) {
-            YourDayView().environment(store)
+            NavigationStack { YourDayView() }.environment(store)
         }
         .alert("Heads up", isPresented: errorBinding) {
             Button("OK", role: .cancel) { store.errorMessage = nil }

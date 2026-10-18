@@ -11,7 +11,6 @@ struct TodayView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section { HStack { HUDPill(); Spacer() }.listRowBackground(Color.clear) }
                 if !store.plan.lessons.isEmpty {
                     Section("Today's lesson") { LessonCard() }
                 }

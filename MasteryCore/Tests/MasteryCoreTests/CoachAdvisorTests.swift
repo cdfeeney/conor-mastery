@@ -25,13 +25,15 @@ import Testing
         // Workout is weakest, but sleep comes first in the foundation order and is under 80%.
         let advice = advise(doneDays("workout", 2) + doneDays("sleep", 9) + doneDays("no-social-media", 14))
         #expect(advice?.focusHabitID == "sleep")
-        #expect(advice?.focusLine.contains("9 of 14") == true)
+        // Names its own window: "this week" over a 14-day count read as wrong (gate run 39168758317).
+        #expect(advice?.focusLine == "Focus: sleep. Done 9 of the last 14 days; aim for 80%.")
         #expect(advice?.lessonOrder.first == "sleep")
     }
 
     @Test func strugglingHabitGetsTheMinNote() {
         let advice = advise(doneDays("workout", 3) + doneDays("sleep", 14) + doneDays("no-social-media", 14))
         #expect(advice?.notes.contains { $0.contains("workout") && $0.contains("a little workout") } == true)
+        #expect(advice?.notes.contains { $0.hasPrefix("workout: 3 of the last 14 days.") } == true)
     }
 
     @Test func everythingStrongMeansLevelUp() {

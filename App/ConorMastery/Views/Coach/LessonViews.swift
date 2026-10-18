@@ -45,7 +45,8 @@ struct LessonSourceLink: View {
 
     var body: some View {
         if let url = lesson.videoURL {
-            Link(destination: url) { Label("Watch it (\(lesson.locator))", systemImage: "play.rectangle") }
+            // A tip from the first second of a video has no useful time to show ("Watch it (00:00)").
+            Link(destination: url) { Label(lesson.locator == "00:00" ? "Watch it" : "Watch it (\(lesson.locator))", systemImage: "play.rectangle") }
                 .font(.caption)
         } else {
             Label("\(SourceName.readable(lesson.source)) · \(lesson.locator)", systemImage: "book").font(.caption).foregroundStyle(.secondary)

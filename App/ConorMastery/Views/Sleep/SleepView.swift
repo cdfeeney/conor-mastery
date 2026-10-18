@@ -16,27 +16,43 @@ struct SleepView: View {
                 }
                 if let stats = store.sleepStats { statsSection(stats) }
                 if !store.sleep.isEmpty { chartSection }
-                Section("Nights") {
+                if store.sleep.isEmpty {
                     // In the list, not an overlay: an overlay sat on top of "Log last night" on day one.
-                    if store.sleep.isEmpty {
+                    Section("Nights") {
                         ContentUnavailableView("No nights logged", systemImage: "moon.zzz",
                                                description: Text("Log bedtime, wake time and how long you slept."))
                     }
-                    ForEach(store.sleep.reversed(), id: \.wakeDay) { entry in
-                        HStack {
-                            Text(entry.wakeDay.date().formatted(.dateTime.weekday(.abbreviated).month().day()))
-                            Spacer()
-                            Text("\(entry.bedtime.text) → \(entry.wakeTime.text)").foregroundStyle(.secondary)
-                            Text(String(format: "%.1fh", entry.effectiveHours)).monospacedDigit()
-                                .foregroundStyle(store.settings.sleepTarget.isOnTarget(entry) ? Theme.jade : .primary)
-                        }
-                        .font(.subheadline)
-                    }
+                }
+                // One section per month, newest first: months of nights in one list had no landmarks.
+                ForEach(nightsByMonth, id: \.title) { month in
+                    Section(month.title) { ForEach(month.nights, id: \.wakeDay) { nightRow($0) } }
                 }
             }
             .navigationTitle("Sleep")
             .sheet(isPresented: $showLog) { SleepLogSheet() }
         }
+    }
+
+    private struct Month { let title: String; var nights: [SleepEntry] }
+
+    private var nightsByMonth: [Month] {
+        var months: [Month] = []
+        for entry in store.sleep.reversed() {
+            let title = entry.wakeDay.date().formatted(.dateTime.month(.wide).year())
+            if months.last?.title == title { months[months.count - 1].nights.append(entry) } else { months.append(Month(title: title, nights: [entry])) }
+        }
+        return months
+    }
+
+    private func nightRow(_ entry: SleepEntry) -> some View {
+        HStack {
+            Text(entry.wakeDay.date().formatted(.dateTime.weekday(.abbreviated).month().day()))
+            Spacer()
+            Text("\(entry.bedtime.text) → \(entry.wakeTime.text)").foregroundStyle(.secondary)
+            Text(String(format: "%.1fh", entry.effectiveHours)).monospacedDigit()
+                .foregroundStyle(store.settings.sleepTarget.isOnTarget(entry) ? Theme.jade : .primary)
+        }
+        .font(.subheadline)
     }
 
     private func statsSection(_ stats: SleepStats) -> some View {
