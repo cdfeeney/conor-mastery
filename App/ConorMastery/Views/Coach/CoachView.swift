@@ -19,7 +19,7 @@ struct CoachView: View {
                     }
                 }
                 if !store.plan.notes.isEmpty {
-                    Section("Coach notes") { ForEach(store.plan.notes, id: \.self) { Text($0) } }
+                    Section("Coach notes") { ForEach(store.plan.notes, id: \.self) { Text(SourceName.prose($0)) } }
                 }
                 weakestSection
                 Section("Learn") {
@@ -114,9 +114,9 @@ struct HabitProtocolView: View {
                         if let url = Self.url(citation) {
                             Link("\(citation.source) @ \(citation.locator)", destination: url)
                         } else if citation.source.hasPrefix("res:") {
-                            Label("Study: \(citation.source.dropFirst(4))", systemImage: "flask")
+                            Label("Study: \(SourceName.readable(citation.source))", systemImage: "flask")
                         } else {
-                            Text("\(citation.source) · \(citation.locator)")
+                            Text("\(SourceName.readable(citation.source)) · \(citation.locator)")
                         }
                     }
                 }

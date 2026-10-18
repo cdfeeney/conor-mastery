@@ -13,7 +13,7 @@ evidence: "anecdote/opinion (creator channel, unsourced science)"
 - Work in timed blocks (30, then 60, then 90 minutes) and rest with boring, low-dopamine breaks [02:07]
 ## Protocol candidates
 - reset-focus: close tabs, silence notifications and block sites before a deep-work block [00:00]
-- meditation: sit 60 seconds on the breath and return gently when the mind wanders [00:33]
+- meditation: sit 1 minute on the breath and return gently when the mind wanders [00:33]
 - morning-routine: journal two questions - biggest bottleneck, and how to fix it [01:35]
 - reset-focus: use a timer for work blocks, building 30 to 60 to 90 minutes; rest without stimulation [02:07]
 ## Game-design notes

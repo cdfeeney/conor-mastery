@@ -1,4 +1,3 @@
-import Charts
 import MasteryCore
 import SwiftUI
 
@@ -43,25 +42,41 @@ struct SleepView: View {
     private func statsSection(_ stats: SleepStats) -> some View {
         Section("Last 7 nights") {
             LabeledContent("Average", value: String(format: "%.1f h", stats.averageHours))
+            // Say what "on target" means: a 7.9 h night after a 23:40 bedtime is off target, and red bars
+            // with no reason read as a bug.
+            let target = store.settings.sleepTarget
             LabeledContent("On target", value: "\(stats.onTargetNights)/\(stats.nights)")
+            Text("On target = in bed by \(target.bedtime.text) (±\(target.toleranceMinutes) min) and \(String(format: "%.1f", target.hours)) h or more.")
+                .font(.caption).foregroundStyle(.secondary)
             LabeledContent("Bedtime spread", value: "±\(Int(stats.bedtimeSpreadMinutes)) min")
             LabeledContent("Wake spread", value: "±\(Int(stats.wakeSpreadMinutes)) min")
             LabeledContent(stats.debtHours >= 0 ? "Sleep debt" : "Ahead", value: String(format: "%.1f h", abs(stats.debtHours)))
         }
     }
 
+    /// Plain bars, not Swift Charts: the first Charts render cost 1.5-5 s per process on the gate's simulator
+    /// (run 39158232302: saving the first night took 7.7 s), and 14 bars need no chart engine.
     private var chartSection: some View {
         let target = store.settings.sleepTarget.hours
+        let nights = Array(store.sleep.suffix(14))
+        let top = max(target, nights.map(\.effectiveHours).max() ?? target, 1)
+        let height: CGFloat = 150
         return Section("Hours (14 nights)") {
-            Chart {
-                ForEach(store.sleep.suffix(14), id: \.wakeDay) { entry in
-                    BarMark(x: .value("Night", entry.wakeDay.date(), unit: .day), y: .value("Hours", entry.effectiveHours))
-                        .foregroundStyle(store.settings.sleepTarget.isOnTarget(entry) ? Theme.jade : Theme.accent.opacity(0.7))
+            HStack(alignment: .bottom, spacing: 4) {
+                ForEach(nights, id: \.wakeDay) { entry in
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(store.settings.sleepTarget.isOnTarget(entry) ? Theme.jade : Theme.accent.opacity(0.7))
+                        .frame(maxWidth: .infinity)
+                        .frame(height: height * entry.effectiveHours / top)
                 }
-                RuleMark(y: .value("Target", target)).lineStyle(StrokeStyle(dash: [4])).foregroundStyle(.secondary)
             }
-            .frame(height: 180)
-            .accessibilityLabel("Sleep hours for the last 14 nights, target \(target) hours")
+            .frame(height: height, alignment: .bottom)
+            .overlay(alignment: .bottom) {
+                Rectangle().fill(.secondary).frame(height: 1).offset(y: -height * target / top)
+            }
+            .padding(.vertical, 6)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel("Sleep hours for the last \(nights.count) nights, target \(String(format: "%.1f", target)) hours")
         }
     }
 }

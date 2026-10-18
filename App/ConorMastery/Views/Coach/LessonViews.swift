@@ -48,8 +48,29 @@ struct LessonSourceLink: View {
             Link(destination: url) { Label("Watch it (\(lesson.locator))", systemImage: "play.rectangle") }
                 .font(.caption)
         } else {
-            Label("\(lesson.source) · \(lesson.locator)", systemImage: "book").font(.caption).foregroundStyle(.secondary)
+            Label("\(SourceName.readable(lesson.source)) · \(lesson.locator)", systemImage: "book").font(.caption).foregroundStyle(.secondary)
         }
+    }
+}
+
+/// Citation keys are for the KB, not for people: "res:lally2010" reads "Lally 2010", "book:franklin-autobiography"
+/// reads "Franklin Autobiography", "yt:<id> @ 06:38" reads "video at 06:38" (gate run 39158232302).
+enum SourceName {
+    static func readable(_ key: String) -> String {
+        if key.hasPrefix("yt:") { return "Video" }
+        if key.hasPrefix("book:") {
+            return key.dropFirst(5).split(separator: "-").map { $0.prefix(1).uppercased() + $0.dropFirst() }.joined(separator: " ")
+        }
+        guard key.hasPrefix("res:") else { return key }
+        let body = key.dropFirst(4)
+        guard let split = body.firstIndex(where: \.isNumber) else { return String(body).capitalized }
+        return "\(body[..<split].capitalized) \(body[split...])"
+    }
+
+    /// Prose that carries citation keys, as the coach notes do.
+    static func prose(_ text: String) -> String {
+        text.replacing(#/yt:[A-Za-z0-9_-]+ @ /#, with: "video at ")
+            .replacing(#/(?:res|book):[a-z0-9-]+/#) { readable(String($0.output)) }
     }
 }
 

@@ -1,7 +1,7 @@
 {
  "format": "conor-mastery-plan",
  "version": 1,
- "generated_at": "2026-10-17T14:30:36-04:00",
+ "generated_at": "2026-10-18T15:43:03-04:00",
  "weekly_focus": "Foundations first: sleep and phone. Lock those in, then body, then focus.",
  "notes": [
   "Habits take about 2 months to feel automatic (median ~66 days, range 18-254), not 21. Expect week 3 to feel hard. (res:lally2010)",
@@ -655,7 +655,7 @@
   {
    "id": "yt:6JSNeqNUao0@00:33#meditation",
    "habit": "meditation",
-   "text": "sit 60 seconds on the breath and return gently when the mind wanders",
+   "text": "sit 1 minute on the breath and return gently when the mind wanders",
    "source": "yt:6JSNeqNUao0",
    "locator": "00:33"
   },

@@ -90,7 +90,9 @@ public enum CoachAdvisor {
         // Minutes after noon, so 23:00 and 01:00 sit two hours apart, not 22.
         let bedtimes = recent.map { ($0.bedtime.minutes - 720 + 1440) % 1440 }
         if let low = bedtimes.min(), let high = bedtimes.max(), high - low > 60 {
-            notes.append("Bedtimes vary by \(high - low) minutes. Keep them inside a 30-minute window.")
+            // Clock times, not a minutes figure: the Sleep screen already shows a ±spread over 7 nights.
+            let earliest = ClockTime(minutes: (low + 720) % 1440).text, latest = ClockTime(minutes: (high + 720) % 1440).text
+            notes.append("Bedtimes ranged from \(earliest) to \(latest) over the last \(window) nights. Keep them inside a 30-minute window.")
         }
         return notes
     }

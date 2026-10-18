@@ -54,7 +54,10 @@ import Testing
         }
         let notes = advise(doneDays("workout", 14) + doneDays("sleep", 14) + doneDays("no-social-media", 14), sleep: entries)?.notes ?? []
         #expect(notes.contains { $0.contains("Averaging") })
-        #expect(notes.contains { $0.contains("Bedtimes vary") })
+        // Clock times, not a "spread" number: the Sleep screen shows its own ±spread over 7 nights, and two different
+        // spread figures on two screens read as a contradiction (gate run 39158232302: 105 min vs ±35 min).
+        #expect(notes.contains { $0.contains("Bedtimes ranged from 23:00 to 01:00 over the last 14 nights") })
+        #expect(!notes.contains { $0.contains("vary by") })
     }
 
     @Test func duplicateHabitIDsDoNotCrash() {
