@@ -19,10 +19,10 @@
    "name": "dojo",
    "steps": [
     {
-     "waitFor": "tab-Dojo"
+     "waitFor": "mountain.2.fill"
     },
     {
-     "tap": "tab-Dojo",
+     "tap": "mountain.2.fill",
      "expectChange": false
     },
     {
@@ -65,7 +65,7 @@
    "name": "today",
    "steps": [
     {
-     "tap": "tab-Today"
+     "tap": "checklist"
     },
     {
      "scrollToBottom": true,
@@ -89,7 +89,7 @@
    "name": "sleep",
    "steps": [
     {
-     "tap": "tab-Sleep"
+     "tap": "moon.zzz.fill"
     },
     {
      "scrollToBottom": true,
@@ -113,7 +113,7 @@
    "name": "focus",
    "steps": [
     {
-     "tap": "tab-Focus"
+     "tap": "scope"
     },
     {
      "scrollToBottom": true,
@@ -125,7 +125,7 @@
    "name": "coach",
    "steps": [
     {
-     "tap": "tab-Coach"
+     "tap": "book.closed.fill"
     },
     {
      "scrollToBottom": true,

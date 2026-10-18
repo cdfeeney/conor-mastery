@@ -30,6 +30,7 @@ struct RootView: View {
     }
 
     var body: some View {
+        // iOS 26 names each tab bar button after its symbol; the release-gate tour taps them by these names.
         TabView(selection: $tab) {
             Tab("Dojo", systemImage: "mountain.2.fill", value: .dojo) { DojoView(tab: $tab) }
             Tab("Today", systemImage: "checklist", value: .today) { TodayView() }
@@ -38,7 +39,6 @@ struct RootView: View {
             Tab("Coach", systemImage: "book.closed.fill", value: .coach) { CoachView() }
         }
         .tint(Theme.accent)
-        .background(TabBarIdentifiers())
         .environment(store)
         .environment(screenTime)
         .overlay(alignment: .top) { RewardToastView() .environment(store) }
