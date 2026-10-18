@@ -24,9 +24,11 @@ struct CoachView: View {
                 weakestSection
                 Section("Learn") {
                     NavigationLink { YourDayView() } label: { Label("Your day: the whole plan", systemImage: "sun.horizon") }
+                        .accessibilityIdentifier("coach-your-day")
                     NavigationLink { TipLibraryView() } label: {
                         Label("Tip library · \(store.plan.lessons.count) tips", systemImage: "books.vertical")
                     }
+                    .accessibilityIdentifier("coach-tip-library")
                 }
                 if !store.pinnedLessons.isEmpty {
                     Section("Your rules") { RulesList() }
@@ -39,6 +41,7 @@ struct CoachView: View {
                                 Text(habit.identity).font(.caption).foregroundStyle(.secondary)
                             }
                         }
+                        .accessibilityIdentifier("coach-habit-\(habit.id)")
                     }
                 }
                 if store.lesson != nil {
@@ -49,6 +52,7 @@ struct CoachView: View {
                         .lineLimit(3...8)
                     Button("Save reflection") { store.saveReflection(reflection) }
                         .disabled(reflection.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+                        .accessibilityIdentifier("coach-save-reflection")
                 }
                 Section {
                     Text(store.plan.generatedAt.isEmpty ? "Plan: bundled starter" : "Plan from coach: \(store.plan.generatedAt)")

@@ -15,7 +15,7 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 screenTimeSection
-                gateSection
+                if ScreenTimeService.isAvailable { gateSection }
                 sleepSection
                 Section {
                     Toggle("Today is a rest day", isOn: Binding(get: { store.isRestDay }, set: { _ in store.toggleRestDay() }))
@@ -65,7 +65,7 @@ struct SettingsView: View {
                 }
             }
             .navigationTitle("Settings")
-            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() } } }
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() }.accessibilityIdentifier("settings-done") } }
             .familyActivityPicker(isPresented: $showPicker, selection: $screenTime.selection)
             .onChange(of: screenTime.selection) { _, _ in
                 screenTime.saveSelection()
@@ -79,7 +79,9 @@ struct SettingsView: View {
 
     private var screenTimeSection: some View {
         Section {
-            if screenTime.isAuthorized {
+            if !ScreenTimeService.isAvailable {
+                Text(ScreenTimeService.unavailableMessage).font(.subheadline).foregroundStyle(.secondary)
+            } else if screenTime.isAuthorized {
                 Button(screenTime.hasSelection ? "Change blocked apps" : "Choose apps to block") { showPicker = true }
             } else {
                 Button("Allow Screen Time") { Task { await screenTime.requestAuthorization() } }

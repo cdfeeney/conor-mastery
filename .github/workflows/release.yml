@@ -1,0 +1,81 @@
+name: release
+
+# Manual only. Tests -> release gate (screenshot tour, rules, blind reader) -> signed TestFlight upload.
+# The upload runs only when the gate's verdict is PASS (cdfeeney/app-release-gate); no input can approve it.
+# The repo is private except during an owner-approved run; the gate and the upload refuse to run while private.
+on:
+  workflow_dispatch:
+    inputs:
+      upload_testflight:
+        description: Upload to internal TestFlight if tests and the release gate pass
+        type: boolean
+        default: false
+      approved_sha:
+        description: Exact commit the owner approved for upload
+        type: string
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  tests:
+    uses: ./.github/workflows/ios.yml
+
+  gate:
+    name: Release gate
+    if: ${{ github.event.repository.private == false }}
+    # Pinned (workflow and kit files) so an approved SHA always meets the same gate; Tour.swift is that commit's copy.
+    # 71116ae = kit main 49753f3 + the optional `prepare` input. Re-pin and re-copy Tour.swift when the kit moves.
+    # secrets: inherit passes repository secrets only (the reader's CLAUDE_CODE_OAUTH_TOKEN); signing secrets live in
+    # the testflight environment, which only the upload job can open.
+    uses: cdfeeney/app-release-gate/.github/workflows/gate.yml@71116ae36834543714704fc92235e44ac1a5eca0
+    with:
+      kit_ref: 71116ae36834543714704fc92235e44ac1a5eca0
+      container: -project ConorMastery.xcodeproj
+      scheme: ConorMastery
+      ui_test_target: ConorMasteryUITests
+      gate_dir: ConorMasteryUITests/Gate
+      developer_dir: /Applications/Xcode_26.3.app/Contents/Developer
+      prepare: brew install xcodegen && xcodegen generate
+    secrets: inherit
+
+  testflight:
+    name: Sign and upload internal TestFlight build
+    needs: [tests, gate]
+    if: ${{ inputs.upload_testflight && github.event.repository.private == false && github.ref == 'refs/heads/main' && inputs.approved_sha == github.sha && needs.tests.result == 'success' && needs.gate.result == 'success' && needs.gate.outputs.verdict == 'PASS' }}
+    runs-on: macos-15
+    timeout-minutes: 30
+    environment: testflight
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.3.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Generate the project
+        run: brew install xcodegen && xcodegen generate
+      # Apple has not granted Family Controls for distribution yet, so the App Store profiles lack it:
+      # sign without it and tell the app (MASTERY_SCREEN_TIME=NO) so Settings says blocking is pending.
+      - name: Drop Family Controls from the entitlements
+        run: |
+          for f in App/ConorMastery.entitlements Extensions/MasteryMonitor/MasteryMonitor.entitlements; do
+            /usr/libexec/PlistBuddy -c "Delete :com.apple.developer.family-controls" "$f"
+            ! grep -q family-controls "$f"
+          done
+      - name: Sign and upload to Apple
+        shell: bash
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+          ASC_PRIVATE_KEY: ${{ secrets.ASC_PRIVATE_KEY }}
+          BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
+          P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
+          PROFILE_APP_BASE64: ${{ secrets.PROFILE_APP_BASE64 }}
+          PROFILE_WIDGETS_BASE64: ${{ secrets.PROFILE_WIDGETS_BASE64 }}
+          PROFILE_MONITOR_BASE64: ${{ secrets.PROFILE_MONITOR_BASE64 }}
+        run: bash scripts/testflight.sh

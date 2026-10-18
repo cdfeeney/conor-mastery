@@ -12,11 +12,17 @@ struct SleepView: View {
             List {
                 Section {
                     Button { showLog = true } label: { Label("Log last night", systemImage: "plus.circle.fill") }
+                        .accessibilityIdentifier("sleep-log")
                         .font(.headline)
                 }
                 if let stats = store.sleepStats { statsSection(stats) }
                 if !store.sleep.isEmpty { chartSection }
                 Section("Nights") {
+                    // In the list, not an overlay: an overlay sat on top of "Log last night" on day one.
+                    if store.sleep.isEmpty {
+                        ContentUnavailableView("No nights logged", systemImage: "moon.zzz",
+                                               description: Text("Log bedtime, wake time and how long you slept."))
+                    }
                     ForEach(store.sleep.reversed(), id: \.wakeDay) { entry in
                         HStack {
                             Text(entry.wakeDay.date().formatted(.dateTime.weekday(.abbreviated).month().day()))
@@ -31,12 +37,6 @@ struct SleepView: View {
             }
             .navigationTitle("Sleep")
             .sheet(isPresented: $showLog) { SleepLogSheet() }
-            .overlay {
-                if store.sleep.isEmpty {
-                    ContentUnavailableView("No nights logged", systemImage: "moon.zzz",
-                                           description: Text("Log bedtime, wake time and how long you slept."))
-                }
-            }
         }
     }
 
@@ -99,8 +99,8 @@ struct SleepLogSheet: View {
             }
             .navigationTitle("Log sleep")
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-                ToolbarItem(placement: .confirmationAction) { Button("Save") { store.logSleep(draft); dismiss() } }
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() }.accessibilityIdentifier("sleep-cancel") }
+                ToolbarItem(placement: .confirmationAction) { Button("Save") { store.logSleep(draft); dismiss() }.accessibilityIdentifier("sleep-save") }
             }
             .onAppear(perform: prefill)
         }

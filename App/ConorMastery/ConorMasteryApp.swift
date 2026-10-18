@@ -6,6 +6,14 @@ struct ConorMasteryApp: App {
     private let container: ModelContainer
 
     init() {
+        #if DEBUG
+        if TestLaunch.isActive {
+            container = try! ModelContainer(for: Schema(Schema1.models),
+                                            configurations: ModelConfiguration(isStoredInMemoryOnly: true))
+            TestLaunch.prepare(container.mainContext)
+            return
+        }
+        #endif
         do {
             container = try ModelContainer(for: Schema(Schema1.models))
         } catch {

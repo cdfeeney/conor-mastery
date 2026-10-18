@@ -1,0 +1,154 @@
+{
+ "launchArguments": [
+  "--test-store",
+  "{uuid}"
+ ],
+ "fixtureEnvKey": "MASTERY_TEST_FIXTURE",
+ "fixtures": [
+  {
+   "name": "day1",
+   "file": "fixtures/day1.json"
+  },
+  {
+   "name": "week2",
+   "file": "fixtures/week2.json"
+  }
+ ],
+ "flows": [
+  {
+   "name": "dojo",
+   "steps": [
+    {
+     "waitFor": "tab-Dojo"
+    },
+    {
+     "tap": "tab-Dojo",
+     "expectChange": false
+    },
+    {
+     "scrollToBottom": true,
+     "shot": "dojo"
+    }
+   ]
+  },
+  {
+   "name": "shop",
+   "steps": [
+    {
+     "tap": "dojo-shop"
+    },
+    {
+     "scrollToBottom": true,
+     "shot": "shop"
+    },
+    {
+     "tap": "shop-done"
+    }
+   ]
+  },
+  {
+   "name": "settings",
+   "steps": [
+    {
+     "tap": "dojo-settings"
+    },
+    {
+     "scrollToBottom": true,
+     "shot": "settings"
+    },
+    {
+     "tap": "settings-done"
+    }
+   ]
+  },
+  {
+   "name": "today",
+   "steps": [
+    {
+     "tap": "tab-Today"
+    },
+    {
+     "scrollToBottom": true,
+     "shot": "today"
+    },
+    {
+     "tap": "habit-action-workout"
+    },
+    {
+     "shot": "after-workout-done"
+    },
+    {
+     "tap": "lesson-kept"
+    },
+    {
+     "shot": "after-lesson-kept"
+    }
+   ]
+  },
+  {
+   "name": "sleep",
+   "steps": [
+    {
+     "tap": "tab-Sleep"
+    },
+    {
+     "scrollToBottom": true,
+     "shot": "sleep"
+    },
+    {
+     "tap": "sleep-log"
+    },
+    {
+     "shot": "sleep-log"
+    },
+    {
+     "tap": "sleep-save"
+    },
+    {
+     "shot": "after-sleep-save"
+    }
+   ]
+  },
+  {
+   "name": "focus",
+   "steps": [
+    {
+     "tap": "tab-Focus"
+    },
+    {
+     "scrollToBottom": true,
+     "shot": "focus"
+    }
+   ]
+  },
+  {
+   "name": "coach",
+   "steps": [
+    {
+     "tap": "tab-Coach"
+    },
+    {
+     "scrollToBottom": true,
+     "shot": "coach"
+    },
+    {
+     "tap": "coach-your-day"
+    },
+    {
+     "scrollToBottom": true,
+     "shot": "your-day"
+    },
+    {
+     "tap": "your-day-done"
+    },
+    {
+     "tap": "coach-tip-library"
+    },
+    {
+     "scrollToBottom": true,
+     "shot": "tips"
+    }
+   ]
+  }
+ ]
+}

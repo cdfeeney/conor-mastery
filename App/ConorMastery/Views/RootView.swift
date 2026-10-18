@@ -13,7 +13,20 @@ struct RootView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     init(context: ModelContext) {
-        _store = State(initialValue: MasteryStore(context: context))
+        let store = MasteryStore(context: context)
+        #if DEBUG
+        TestLaunch.seed(store)
+        #endif
+        _store = State(initialValue: store)
+    }
+
+    /// The release-gate tour opens Your day from Coach and never answers system permission prompts.
+    private var isTestRun: Bool {
+        #if DEBUG
+        return TestLaunch.isActive
+        #else
+        return false
+        #endif
     }
 
     var body: some View {
@@ -25,10 +38,11 @@ struct RootView: View {
             Tab("Coach", systemImage: "book.closed.fill", value: .coach) { CoachView() }
         }
         .tint(Theme.accent)
+        .background(TabBarIdentifiers())
         .environment(store)
         .environment(screenTime)
         .overlay(alignment: .top) { RewardToastView() .environment(store) }
-        .sheet(isPresented: Binding(get: { !hasSeenYourDay && !store.habits.isEmpty }, set: { if !$0 { hasSeenYourDay = true } })) {
+        .sheet(isPresented: Binding(get: { !hasSeenYourDay && !store.habits.isEmpty && !isTestRun }, set: { if !$0 { hasSeenYourDay = true } })) {
             YourDayView().environment(store)
         }
         .alert("Heads up", isPresented: errorBinding) {
@@ -71,7 +85,7 @@ struct RootView: View {
         .sensoryFeedback(.success, trigger: store.lastReward?.id) { _, new in
             new != nil && ((store.lastReward?.reward.grit ?? 0) > 0 || store.lastReward?.drop != nil)
         }
-        .task { if await notifications.requestAuthorization() { await notifications.reschedule(store.reminders()) } }
+        .task { if !isTestRun, await notifications.requestAuthorization() { await notifications.reschedule(store.reminders()) } }
     }
 
     private var errorBinding: Binding<Bool> {

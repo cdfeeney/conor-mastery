@@ -1,0 +1,20 @@
+{
+ "countPatterns": [],
+ "pinnedBars": [],
+ "minutesThreshold": 60,
+ "durationAllow": [],
+ "instructionPatterns": [],
+ "forbiddenText": [
+  "Optional\\(",
+  "\\bnil\\b",
+  "\\bNaN\\b",
+  "\\bundefined\\b",
+  "Seed plan missing",
+  "\\{\\{",
+  "\\bTODO\\b",
+  "Lorem"
+ ],
+ "forbiddenIdentifiers": [],
+ "maxTapMillis": 3000,
+ "_maxTapMillis": "same simulator budget as ConorHealth's first gate; lower it once real timings are known"
+}

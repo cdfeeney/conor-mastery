@@ -31,8 +31,10 @@ struct LessonCard: View {
             HStack {
                 Button("I did it  +\(RewardRules.lessonGrit)") { store.answerLesson(kept: true) }
                     .buttonStyle(.borderedProminent).tint(Theme.ink)
+                    .accessibilityIdentifier("lesson-kept")
                 Button("Not today") { store.answerLesson(kept: false) }
                     .buttonStyle(.bordered)
+                    .accessibilityIdentifier("lesson-not-today")
             }
         }
     }

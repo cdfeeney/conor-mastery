@@ -9,6 +9,11 @@ import Observation
 /// boundary while the app is closed.
 @MainActor @Observable
 final class ScreenTimeService {
+    /// False in builds signed without the Family Controls entitlement (TestFlight until Apple grants distribution):
+    /// Info.plist `MasteryScreenTime` is NO there, and the app says so instead of offering a prompt that fails.
+    static let isAvailable = (Bundle.main.object(forInfoDictionaryKey: "MasteryScreenTime") as? String) != "NO"
+    static let unavailableMessage = "App blocking turns on once Apple approves Screen Time for this app. Everything else works."
+
     private(set) var isAuthorized = AuthorizationCenter.shared.authorizationStatus == .approved
     var selection = SharedGate.loadSelection()
     var lastError: String?
@@ -20,9 +25,10 @@ final class ScreenTimeService {
         !selection.applicationTokens.isEmpty || !selection.categoryTokens.isEmpty || !selection.webDomainTokens.isEmpty
     }
 
-    var canEnforce: Bool { isAuthorized && hasSelection }
+    var canEnforce: Bool { Self.isAvailable && isAuthorized && hasSelection }
 
     func requestAuthorization() async {
+        guard Self.isAvailable else { return }
         do {
             try await AuthorizationCenter.shared.requestAuthorization(for: .individual)
             isAuthorized = AuthorizationCenter.shared.authorizationStatus == .approved
@@ -36,7 +42,7 @@ final class ScreenTimeService {
     /// Write the snapshot, resolve shields now, and (re)register the daily schedules.
     /// Call on launch, on foreground and after any habit or settings change.
     func apply(store: MasteryStore) {
-        guard isAuthorized else { return }
+        guard Self.isAvailable, isAuthorized else { return }
         let settings = store.settings
         SharedGate.save(snapshot: GateSnapshot(
             config: settings.gate,

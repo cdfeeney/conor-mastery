@@ -23,6 +23,7 @@ struct HabitCard: View {
             }
             .buttonStyle(.plain)
             .foregroundStyle(store.settings.habitPlans[habit.id] == nil ? Theme.accent : .secondary)
+            .accessibilityIdentifier("habit-plan-\(habit.id)")
             if let min = habit.min { Text("Min: \(min)").font(.caption).foregroundStyle(.secondary) }
             if habit.kind == .checklist && (expanded || level == nil) { checklist }
             HStack {
@@ -47,6 +48,7 @@ struct HabitCard: View {
             if completion != nil { Button("Undo") { store.clear(habitID: habit.id) }.tint(.blue) }
         }
         .accessibilityElement(children: .contain)
+        .accessibilityIdentifier("habit-\(habit.id)")
         .sheet(isPresented: $editingPlan) { HabitPlanSheet(habit: habit) }
     }
 
@@ -85,7 +87,11 @@ struct HabitCard: View {
             .accessibilityLabel(level.map { "Status \($0.rawValue)" } ?? "Not logged")
     }
 
-    @ViewBuilder private var actions: some View {
+    private var actions: some View {
+        actionButton.accessibilityIdentifier("habit-action-\(habit.id)")
+    }
+
+    @ViewBuilder private var actionButton: some View {
         switch habit.kind {
         case .avoid:
             Button(level == .full ? "Clean ✓" : "Clean today") { store.log(.full, habitID: habit.id) }
@@ -119,12 +125,13 @@ struct HabitCard: View {
     private var checklist: some View {
         let ticked = Set(completion?.stepsDone ?? store.draftSteps(habit.id))
         return VStack(alignment: .leading, spacing: 6) {
-            ForEach(habit.steps, id: \.self) { step in
+            ForEach(Array(habit.steps.enumerated()), id: \.element) { i, step in
                 Button { store.toggleStep(step, habit: habit) } label: {
                     Label(step, systemImage: ticked.contains(step) ? "checkmark.square.fill" : "square")
                         .foregroundStyle(ticked.contains(step) ? Theme.jade : .primary)
                 }
                 .buttonStyle(.plain)
+                .accessibilityIdentifier("habit-step-\(habit.id)-\(i)")
             }
         }
         .font(.subheadline)

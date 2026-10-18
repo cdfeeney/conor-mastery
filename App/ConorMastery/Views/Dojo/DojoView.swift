@@ -43,6 +43,7 @@ struct DojoView: View {
                 Image(systemName: "gearshape.fill").font(.title2).foregroundStyle(.white)
             }
             .accessibilityLabel("Settings")
+            .accessibilityIdentifier("dojo-settings")
         }
         .padding(.top, 4)
     }
@@ -53,13 +54,17 @@ struct DojoView: View {
                 building.toggle()
                 selectedItem = nil
             }
+            .accessibilityIdentifier("dojo-build")
             Spacer()
             VStack(spacing: 10) {
                 GameButton(title: "CHECK-IN", color: Theme.accent) { tab = .today }
+                    .accessibilityIdentifier("dojo-checkin")
                 GameButton(title: "FOCUS", color: Color(red: 0.36, green: 0.75, blue: 0.95)) { tab = .focus }
+                    .accessibilityIdentifier("dojo-focus")
             }
             Spacer()
             circleButton("cart.fill", label: "Shop") { showShop = true }
+                .accessibilityIdentifier("dojo-shop")
         }
     }
 
@@ -117,6 +122,7 @@ struct ChallengeCard: View {
                 Button(store.challengeDone ? "Done" : "Mark complete") { store.completeChallenge() }
                     .buttonStyle(.borderedProminent).tint(Theme.jade)
                     .disabled(store.challengeDone)
+                    .accessibilityIdentifier("challenge-complete")
             }
         }
         .padding(14)

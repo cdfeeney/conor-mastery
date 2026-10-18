@@ -11,6 +11,11 @@ settings:
     SWIFT_VERSION: "6.0"
     MARKETING_VERSION: "0.1.0"
     CURRENT_PROJECT_VERSION: "1"
+  # Release = the TestFlight build: manual signing with the App Store profiles (made 2026-10-18).
+  configs:
+    Release:
+      CODE_SIGN_STYLE: Manual
+      CODE_SIGN_IDENTITY: Apple Distribution
 packages:
   MasteryCore:
     path: MasteryCore
@@ -42,11 +47,18 @@ targets:
           - CFBundleURLSchemes: [conormastery]
         LSSupportsOpeningDocumentsInPlace: true
         NSSupportsLiveActivities: true
+        ITSAppUsesNonExemptEncryption: false
+        # NO in the TestFlight build signed without Family Controls (release.yml); see ScreenTimeService.isAvailable.
+        MasteryScreenTime: $(MASTERY_SCREEN_TIME)
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.conorfee.conormastery
+        MASTERY_SCREEN_TIME: "YES"
         TARGETED_DEVICE_FAMILY: "1"
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+      configs:
+        Release:
+          PROVISIONING_PROFILE_SPECIFIER: Conor Mastery AppStore
   MasteryMonitor:
     type: app-extension
     platform: iOS
@@ -72,6 +84,9 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.conorfee.conormastery.monitor
+      configs:
+        Release:
+          PROVISIONING_PROFILE_SPECIFIER: Conor Mastery Monitor AppStore
   MasteryWidgets:
     type: app-extension
     platform: iOS
@@ -94,16 +109,31 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: com.conorfee.conormastery.widgets
+      configs:
+        Release:
+          PROVISIONING_PROFILE_SPECIFIER: Conor Mastery Widgets AppStore
   ConorMasteryTests:
     type: bundle.unit-test
     platform: iOS
     sources: [App/ConorMasteryTests]
     dependencies:
       - target: ConorMastery
+  # Release-gate tour: the kit's Tour.swift, copied unchanged (the gate checks it). Gate/ holds the manifest.
+  ConorMasteryUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources:
+      - path: ConorMasteryUITests
+        excludes: ["Gate/**"]
+    dependencies:
+      - target: ConorMastery
+    settings:
+      base:
+        TEST_TARGET_NAME: ConorMastery
 schemes:
   ConorMastery:
     build:
       targets:
         ConorMastery: all
     test:
-      targets: [ConorMasteryTests]
+      targets: [ConorMasteryTests, ConorMasteryUITests]

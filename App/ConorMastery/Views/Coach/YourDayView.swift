@@ -26,7 +26,7 @@ struct YourDayView: View {
                 }
             }
             .navigationTitle("Your day")
-            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Got it") { dismiss() } } }
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Got it") { dismiss() }.accessibilityIdentifier("your-day-done") } }
         }
     }
 

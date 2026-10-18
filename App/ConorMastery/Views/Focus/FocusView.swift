@@ -55,7 +55,8 @@ struct FocusView: View {
                 }
                 .disabled(!screenTime.canEnforce)
                 if !screenTime.canEnforce {
-                    Text("Set up Screen Time in Settings to use Locked in.").font(.caption).foregroundStyle(.secondary)
+                    Text(ScreenTimeService.isAvailable ? "Set up Screen Time in Settings to use Locked in." : ScreenTimeService.unavailableMessage)
+                        .font(.caption).foregroundStyle(.secondary)
                 }
                 if store.state.habit("reset-focus") != nil { Toggle("Counts for Reset focus", isOn: $countsForReset) }
                 TextField("What are you working on?", text: $note)
@@ -63,6 +64,7 @@ struct FocusView: View {
             Section {
                 Button { start() } label: { Label("Start", systemImage: "play.fill").frame(maxWidth: .infinity) }
                     .buttonStyle(.borderedProminent).tint(Theme.accent).controlSize(.large)
+                    .accessibilityIdentifier("focus-start")
             }
             Section("Today") {
                 LabeledContent("Focused", value: "\(store.focusMinutesToday) min")
