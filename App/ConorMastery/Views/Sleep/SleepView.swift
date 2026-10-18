@@ -77,7 +77,7 @@ struct SleepView: View {
         let nights = Array(store.sleep.suffix(14))
         let top = max(target, nights.map(\.effectiveHours).max() ?? target, 1)
         let height: CGFloat = 150
-        return Section("Hours (14 nights)") {
+        return Section(nights.count == 1 ? "Hours (1 night so far)" : "Hours (last \(nights.count) nights)") {
             HStack(alignment: .bottom, spacing: 4) {
                 ForEach(nights, id: \.wakeDay) { entry in
                     RoundedRectangle(cornerRadius: 2)

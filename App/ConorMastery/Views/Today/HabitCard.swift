@@ -6,9 +6,9 @@ struct HabitCard: View {
     let habit: HabitDefinition
     let onTimer: () -> Void
     let onSleep: () -> Void
+    let onPlan: () -> Void
     @Environment(MasteryStore.self) private var store
     @State private var expanded = false
-    @State private var editingPlan = false
 
     private var completion: Completion? { store.completion(habit.id) }
     private var level: CompletionLevel? { completion?.level }
@@ -17,7 +17,7 @@ struct HabitCard: View {
         VStack(alignment: .leading, spacing: 8) {
             header
             Text(habit.identity).font(.subheadline.italic()).foregroundStyle(.secondary)
-            Button { editingPlan = true } label: {
+            Button { onPlan() } label: {
                 Label(store.settings.habitPlans[habit.id]?.cue ?? "Set when & where", systemImage: "clock")
                     .font(.caption.weight(.semibold))
             }
@@ -49,7 +49,6 @@ struct HabitCard: View {
         }
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier("habit-\(habit.id)")
-        .sheet(isPresented: $editingPlan) { HabitPlanSheet(habit: habit) }
     }
 
     private var header: some View {

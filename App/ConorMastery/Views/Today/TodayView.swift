@@ -6,6 +6,8 @@ struct TodayView: View {
     @Environment(MasteryStore.self) private var store
     @State private var newTask = ""
     @State private var timerHabit: HabitDefinition?
+    /// One sheet for the screen, not one per card (nine presentation hosts slowed Today's first render).
+    @State private var planHabit: HabitDefinition?
     @State private var showSleepLog = false
 
     var body: some View {
@@ -19,7 +21,7 @@ struct TodayView: View {
                     if !habits.isEmpty {
                         Section(title(group)) {
                             ForEach(habits) { habit in
-                                HabitCard(habit: habit, onTimer: { timerHabit = habit }, onSleep: { showSleepLog = true })
+                                HabitCard(habit: habit, onTimer: { timerHabit = habit }, onSleep: { showSleepLog = true }, onPlan: { planHabit = habit })
                             }
                         }
                     }
@@ -28,6 +30,7 @@ struct TodayView: View {
             }
             .navigationTitle(Date.now.formatted(.dateTime.weekday(.wide).month().day()))
             .sheet(item: $timerHabit) { habit in HabitTimerSheet(habit: habit) }
+            .sheet(item: $planHabit) { habit in HabitPlanSheet(habit: habit) }
             .sheet(isPresented: $showSleepLog) { SleepLogSheet() }
             .overlay {
                 if store.habits.isEmpty {

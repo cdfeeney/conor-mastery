@@ -28,7 +28,7 @@ struct SettingsView: View {
                     Toggle("Strict streak (no Second Winds)", isOn: setting(\.strictStreak))
                     Toggle("Reward sounds", isOn: setting(\.soundOn))
                     LabeledContent("Second Winds", value: "\(store.streak.secondWinds)")
-                    LabeledContent("Best streak", value: "\(store.streak.best) days")
+                    LabeledContent("Best streak", value: store.streak.best == 1 ? "1 day" : "\(store.streak.best) days")
                 }
                 coachSection
                 Section {
