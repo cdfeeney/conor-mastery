@@ -23,6 +23,10 @@ final class MasteryStore {
     /// Last reward, shown as a toast.
     var lastReward: RewardToast?
     var errorMessage: String?
+    /// History-wide values (strength, streaks, energy, the completion index), computed once per change instead of
+    /// on every screen draw: each habit card used to replay all history ~4 times per draw, which grows with every day.
+    private(set) var derived: DerivedState?
+    private var isBatching = false
 
     init(context: ModelContext) {
         self.context = context
@@ -41,20 +45,31 @@ final class MasteryStore {
     /// Habits shown and required today. `state.habits` also holds archived/retired ones for history.
     var habits: [HabitDefinition] { state.habits.filter { $0.isActive(on: today) } }
 
+    /// Cached values for today; after midnight (until the next reload) they are computed live.
+    private var fresh: DerivedState? { derived.flatMap { $0.day == today ? $0 : nil } }
+
     /// Strength as of the start of today (drives price, plant tier and drop chance).
-    var strength: [String: Double] { state.strength(on: today) }
+    var strength: [String: Double] { fresh?.strength ?? state.strength(on: today) }
     func tier(_ habitID: String) -> HabitTier { StrengthRules.tier(strength[habitID] ?? 0) }
     func multiplier(_ habitID: String) -> Double { StrengthRules.multiplier(strength[habitID] ?? 0) }
-    var energy: EnergyState { state.energy(on: today) }
+    var energy: EnergyState { fresh?.energy ?? state.energy(on: today) }
     var isRestDay: Bool { settings.restDays.contains(today) }
 
     func draftSteps(_ habitID: String) -> [String] { drafts[Self.draftKey(habitID, today)] ?? [] }
 
     static func draftKey(_ habitID: String, _ day: DayKey) -> String { "\(habitID)|\(day.rawValue)" }
-    var streak: StreakState { state.streak(through: today) }
+    var streak: StreakState { fresh?.streak ?? state.streak(through: today) }
     var level: LevelProgress { state.ledger.level }
     var grit: Int { state.ledger.balance }
-    var index: CompletionIndex { CompletionIndex(state.completions) }
+    var index: CompletionIndex { fresh?.index ?? CompletionIndex(state.completions) }
+
+    /// Consecutive days each habit was done before today (the streak bonus in its price).
+    func habitStreak(_ habitID: String) -> Int {
+        if let cached = fresh?.habitStreaks[habitID] { return cached }
+        guard let habit = state.habit(habitID) else { return 0 }
+        return StrengthEngine.habitStreak(habit, completions: state.completions, before: today, start: settings.startDay,
+                                          restDays: settings.restDays, timeZone: timeZone)
+    }
 
     func habits(in group: HabitGroup) -> [HabitDefinition] { habits.filter { $0.group == group } }
 
@@ -146,13 +161,11 @@ final class MasteryStore {
 
     // MARK: - Loading
 
+    /// Re-reads everything from storage: launch, foreground, and changes made outside the app's own actions.
     func reload() {
         let completions = fetch(SortDescriptor(\CompletionRecord.createdAt)).compactMap(Self.completion)
         let ledger = GritLedger(fetch(SortDescriptor(\LedgerRecord.createdAt)).compactMap(Self.transaction))
-        stampFirstSeen()
-        state = MasteryState(habits: habitDefinitions(), completions: completions, ledger: ledger,
-                             startDay: settings.startDay, strictStreak: settings.strictStreak,
-                             restDays: settings.restDays, timeZone: timeZone)
+        rebuildState(completions: completions, ledger: ledger)
         sleep = fetch(SortDescriptor(\SleepRecord.wakeDay)).compactMap(Self.sleepEntry)
         focus = fetch(SortDescriptor(\FocusRecord.createdAt)).compactMap(Self.focusSession)
         world = Self.loadBlob(WorldState.self, key: BlobKey.world, context: context) ?? WorldState()
@@ -162,6 +175,34 @@ final class MasteryStore {
             DayKey(r.day).map { ($0, r.text) }
         }, uniquingKeysWith: { _, last in last })
         fixTodayLesson()
+    }
+
+    /// Rebuilds habits and the cached values from what is already in memory (settings or plan changed): no fetch.
+    func rebuildState(completions: [Completion]? = nil, ledger: GritLedger? = nil) {
+        stampFirstSeen()
+        state = MasteryState(habits: habitDefinitions(), completions: completions ?? state.completions,
+                             ledger: ledger ?? state.ledger, startDay: settings.startDay, strictStreak: settings.strictStreak,
+                             restDays: settings.restDays, timeZone: timeZone)
+        refreshDerived()
+    }
+
+    func refreshDerived() {
+        let day = today, completions = state.completions
+        let streaks = state.habits.map { habit in
+            (habit.id, StrengthEngine.habitStreak(habit, completions: completions, before: day, start: settings.startDay,
+                                                  restDays: settings.restDays, timeZone: timeZone))
+        }
+        derived = DerivedState(day: day, index: CompletionIndex(completions), strength: state.strength(on: day),
+                               streak: state.streak(through: day), energy: state.energy(on: day),
+                               habitStreaks: Dictionary(streaks, uniquingKeysWith: { first, _ in first }))
+    }
+
+    /// Many writes, one recompute (the test fixture replays months of history through the real actions).
+    func batch(_ body: () -> Void) {
+        isBatching = true
+        body()
+        isBatching = false
+        refreshDerived()
     }
 
     func fetch<T: PersistentModel>(_ sort: SortDescriptor<T>) -> [T] {
@@ -193,7 +234,8 @@ final class MasteryStore {
         settings = next
         saveBlob(next, key: BlobKey.settings)
         save()
-        reload()
+        rebuildState()
+        fixTodayLesson()
     }
 
     /// Coach habits with your edits, then your own habits: what the app actually tracks.
@@ -214,7 +256,8 @@ final class MasteryStore {
         plan = next
         saveBlob(next, key: BlobKey.plan)
         save()
-        reload()
+        rebuildState()
+        fixTodayLesson()
     }
 
     /// Current plan habits (with first-seen / archived ranges) plus retired ones, for honest history.
@@ -274,13 +317,25 @@ final class MasteryStore {
         }
     }
 
-    func setState(_ next: MasteryState) { state = next }
+    func setState(_ next: MasteryState) {
+        state = next
+        if !isBatching { refreshDerived() }
+    }
 
     static func loadBlob<T: Decodable>(_ type: T.Type, key: String, context: ModelContext) -> T? {
         let records = try? context.fetch(FetchDescriptor<BlobRecord>(predicate: #Predicate { $0.key == key }))
         guard let data = records?.first?.data else { return nil }
         return try? JSONDecoder().decode(T.self, from: data)
     }
+}
+
+struct DerivedState {
+    let day: DayKey
+    let index: CompletionIndex
+    let strength: [String: Double]
+    let streak: StreakState
+    let energy: EnergyState
+    let habitStreaks: [String: Int]
 }
 
 struct RewardToast: Equatable, Identifiable {

@@ -111,8 +111,7 @@ struct HabitCard: View {
 
     /// Today's full price: weak habits pay more (strength), per-habit streak bonus included.
     private var price: Int {
-        let streak = StrengthEngine.habitStreak(habit, completions: store.state.completions, before: store.today,
-                                                start: store.settings.startDay, restDays: store.settings.restDays)
+        let streak = store.habitStreak(habit.id)
         return RewardRules.habitReward(difficulty: habit.difficulty, level: .full,
                                        strengthValue: store.strength[habit.id] ?? 0, habitStreakDays: streak).grit
     }

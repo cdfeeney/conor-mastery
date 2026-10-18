@@ -70,21 +70,25 @@ enum TestLaunch {
         guard let fixture, !didSeed else { return }
         didSeed = true
         let today = store.today
-        for daysAgo in stride(from: fixture.span - 1, through: 0, by: -1) {
-            let day = today.adding(days: -daysAgo, timeZone: store.timeZone)
-            for night in fixture.sleep where night.daysAgo == daysAgo {
-                store.logSleep(SleepEntry(wakeDay: day, bedtime: clock(night.bed), wakeTime: clock(night.wake),
-                                          quality: night.quality))
+        let history = fixture.history.sorted(by: { $0.key < $1.key }).map { ($0.key, Array($0.value)) }
+        let nights = Dictionary(grouping: fixture.sleep, by: \.daysAgo)
+        store.batch {
+            for daysAgo in stride(from: fixture.span - 1, through: 0, by: -1) {
+                let day = today.adding(days: -daysAgo, timeZone: store.timeZone)
+                for night in nights[daysAgo] ?? [] {
+                    store.logSleep(SleepEntry(wakeDay: day, bedtime: clock(night.bed), wakeTime: clock(night.wake),
+                                              quality: night.quality))
+                }
+                for (habitID, letters) in history {
+                    let index = letters.count - 1 - daysAgo
+                    guard index >= 0, let level = level(letters[index]) else { continue }
+                    store.log(level, habitID: habitID, day: day)
+                }
             }
-            for (habitID, letters) in fixture.history.sorted(by: { $0.key < $1.key }) {
-                let index = letters.count - 1 - daysAgo
-                guard index >= 0, let level = level(Array(letters)[index]) else { continue }
-                store.log(level, habitID: habitID, day: day)
+            for minutes in fixture.focusToday {
+                store.record(focus: FocusSession(day: today, plannedMinutes: minutes, focusedMinutes: minutes,
+                                                 lockedIn: false, habitID: "reset-focus"))
             }
-        }
-        for minutes in fixture.focusToday {
-            store.record(focus: FocusSession(day: today, plannedMinutes: minutes, focusedMinutes: minutes,
-                                             lockedIn: false, habitID: "reset-focus"))
         }
         store.lastReward = nil
     }

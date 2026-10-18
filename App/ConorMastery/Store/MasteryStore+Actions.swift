@@ -202,7 +202,7 @@ extension MasteryStore {
         guard !trimmed.isEmpty else { return }
         context.insert(TaskRecord(title: String(trimmed.prefix(120)), day: today.rawValue))
         save()
-        reload()
+        reloadTasks()
     }
 
     /// Ticking pays 3 grit; unticking reverses exactly what the task paid (balance may go negative),
@@ -221,8 +221,10 @@ extension MasteryStore {
     func delete(task: TaskRecord) {
         context.delete(task)
         save()
-        reload()
+        reloadTasks()
     }
+
+    private func reloadTasks() { tasks = fetch(SortDescriptor(\TaskRecord.day)) }
 
     func saveReflection(_ text: String) {
         let raw = today.rawValue

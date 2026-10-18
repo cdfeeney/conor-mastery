@@ -12,6 +12,10 @@
   {
    "name": "week2",
    "file": "fixtures/week2.json"
+  },
+  {
+   "name": "month6",
+   "file": "fixtures/month6.json"
   }
  ],
  "flows": [

@@ -55,6 +55,8 @@ struct RootView: View {
             refresh()
         }
         .onChange(of: scenePhase) { _, phase in if phase == .active { refresh() } }
+        // Midnight with the app open: the day isn't observable, so recompute on the system's day change.
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.significantTimeChangeNotification)) { _ in refresh() }
         // Any habit change can open or close the morning gate.
         .onChange(of: store.state.completions.count) { _, _ in
             WidgetPublisher.publish(store)
