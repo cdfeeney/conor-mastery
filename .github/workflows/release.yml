@@ -47,7 +47,7 @@ jobs:
   testflight:
     name: Sign and upload internal TestFlight build
     needs: [tests, gate]
-    if: ${{ inputs.upload_testflight && github.event.repository.private == false && github.ref == 'refs/heads/main' && inputs.approved_sha == github.sha && needs.tests.result == 'success' && needs.gate.result == 'success' && needs.gate.outputs.verdict == 'PASS' }}
+    if: ${{ inputs.upload_testflight && github.event.repository.private == false && github.ref == 'refs/heads/master' && inputs.approved_sha == github.sha && needs.tests.result == 'success' && needs.gate.result == 'success' && needs.gate.outputs.verdict == 'PASS' }}
     runs-on: macos-15
     timeout-minutes: 30
     environment: testflight
