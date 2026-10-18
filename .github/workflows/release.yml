@@ -30,12 +30,12 @@ jobs:
     name: Release gate
     if: ${{ github.event.repository.private == false }}
     # Pinned (workflow and kit files) so an approved SHA always meets the same gate; Tour.swift is that commit's copy.
-    # 71116ae = kit main 49753f3 + the optional `prepare` input. Re-pin and re-copy Tour.swift when the kit moves.
+    # d899cd6 = kit main 49753f3 + the optional `prepare` input + reveal clear of bars. Re-pin and re-copy Tour.swift when the kit moves.
     # secrets: inherit passes repository secrets only (the reader's CLAUDE_CODE_OAUTH_TOKEN); signing secrets live in
     # the testflight environment, which only the upload job can open.
-    uses: cdfeeney/app-release-gate/.github/workflows/gate.yml@71116ae36834543714704fc92235e44ac1a5eca0
+    uses: cdfeeney/app-release-gate/.github/workflows/gate.yml@d899cd68f93ca45008c4713a50ee80507022dbc8
     with:
-      kit_ref: 71116ae36834543714704fc92235e44ac1a5eca0
+      kit_ref: d899cd68f93ca45008c4713a50ee80507022dbc8
       container: -project ConorMastery.xcodeproj
       scheme: ConorMastery
       ui_test_target: ConorMasteryUITests

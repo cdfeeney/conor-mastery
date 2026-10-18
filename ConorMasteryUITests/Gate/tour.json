@@ -26,6 +26,9 @@
      "waitFor": "mountain.2.fill"
     },
     {
+     "sleep": 3
+    },
+    {
      "tap": "mountain.2.fill",
      "expectChange": false
     },
