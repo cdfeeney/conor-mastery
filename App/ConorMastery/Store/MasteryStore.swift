@@ -302,6 +302,9 @@ final class MasteryStore {
         update(settings: s)
     }
 
+    /// Tasks only; `tasks` is private(set), so this lives here rather than in the actions file.
+    func reloadTasks() { tasks = fetch(SortDescriptor(\TaskRecord.day)) }
+
     func saveDrafts() { saveBlob(drafts, key: BlobKey.drafts) }
 
     func replace(world next: WorldState) {
