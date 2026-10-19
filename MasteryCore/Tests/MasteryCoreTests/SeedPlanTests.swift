@@ -16,7 +16,8 @@ import Testing
                         "deep-breathing", "no-social-media", "no-nicotine", "night-routine"])
         let defs = plan.habits.map { $0.definition(anchor: DayKey("2026-10-16")!) }
         #expect(defs.allSatisfy { !$0.challenges.isEmpty })
-        #expect(defs.filter { $0.kind == .checklist }.allSatisfy { $0.steps.count == 5 })
+        // Six steps since the visualization steps (owner 10-18).
+        #expect(defs.filter { $0.kind == .checklist }.allSatisfy { $0.steps.count == 6 })
         #expect(defs.first { $0.id == "meditation" }?.minMinutes == 2)
         #expect(defs.first { $0.id == "sleep" }?.kind == .sleep)
     }
