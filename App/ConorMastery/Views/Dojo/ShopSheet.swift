@@ -26,7 +26,10 @@ struct ShopSheet: View {
             .skyBackground()
             .navigationTitle("Shop")
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) { Label("\(store.grit)", systemImage: "seal.fill").foregroundStyle(Theme.gold) }
+                // A toolbar shows a Label icon-only: the balance read as a bare coin (gate run 39320620613).
+                ToolbarItem(placement: .topBarLeading) {
+                    Label("\(store.grit)", systemImage: "seal.fill").labelStyle(.titleAndIcon).foregroundStyle(Theme.gold)
+                }
                 ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() }.buttonStyle(.borderedProminent).accessibilityIdentifier("shop-done") }
             }
         }
