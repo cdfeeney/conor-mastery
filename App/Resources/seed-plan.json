@@ -1,7 +1,7 @@
 {
  "format": "conor-mastery-plan",
  "version": 1,
- "generated_at": "2026-10-18T21:56:05-04:00",
+ "generated_at": "2026-10-18T23:24:09-04:00",
  "weekly_focus": "Foundations first: sleep and phone. Lock those in, then body, then focus.",
  "notes": [
   "Habits take about 2 months to stick, not 21 days. Week 3 feels hardest; keep going.",
@@ -604,7 +604,7 @@
   {
    "id": "yt:5rc4C1JBdHc@04:23#sleep",
    "habit": "sleep",
-   "text": "same bed and wake time daily, no short videos in bed",
+   "text": "no short videos in bed",
    "source": "yt:5rc4C1JBdHc",
    "locator": "04:23"
   },
@@ -1164,7 +1164,7 @@
   {
    "id": "yt:pwzAW1T5j1M@00:31#sleep",
    "habit": "sleep",
-   "text": "same bed and wake time, dark room",
+   "text": "make the bedroom fully dark",
    "source": "yt:pwzAW1T5j1M",
    "locator": "00:31"
   },
@@ -1199,7 +1199,7 @@
   {
    "id": "yt:spvYGKTdWto@00:34#sleep",
    "habit": "sleep",
-   "text": "same bed and wake time, cold dark room, bed only for sleep",
+   "text": "keep the room cold and use the bed only for sleep",
    "source": "yt:spvYGKTdWto",
    "locator": "00:34"
   },
@@ -1265,13 +1265,6 @@
    "text": "If stuck, do the plan only and count that as a win.",
    "source": "yt:WiIr-RgL4hg",
    "locator": "03:18"
-  },
-  {
-   "id": "yt:xcPX3VkQjAY@00:00#morning-routine",
-   "habit": "morning-routine",
-   "text": "get outdoor sunlight after waking",
-   "source": "yt:xcPX3VkQjAY",
-   "locator": "00:00"
   },
   {
    "id": "yt:xcPX3VkQjAY@01:03#morning-routine",

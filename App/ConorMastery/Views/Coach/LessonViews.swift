@@ -97,19 +97,28 @@ struct TipLibraryView: View {
     @State private var query = ""
     @State private var open: Set<String> = []
 
-    /// One collapsed group per habit: 107 tips in one list was a wall (and too long for the gate's tour to reach the
+    /// One collapsed group per habit: 100+ tips in one list was a wall (and too long for the gate's tour to reach the
     /// end). Searching opens every group that has a match.
     var body: some View {
         List {
             ForEach(store.habits) { habit in
                 let lessons = matching(store.plan.lessons.filter { $0.habitID == habit.id })
                 if !lessons.isEmpty {
-                    DisclosureGroup(isExpanded: expanded(habit.id)) {
-                        ForEach(lessons) { lesson in row(lesson) }
-                    } label: {
-                        Text("\(habit.title) · \(lessons.count) tips").font(.headline)
+                    // A whole-row header button: DisclosureGroup's own chevron was a 10x14 pt target.
+                    Section {
+                        Button { toggle(habit.id) } label: {
+                            HStack {
+                                Text("\(habit.title) · \(lessons.count) tips").font(.headline)
+                                Spacer()
+                                Image(systemName: isOpen(habit.id) ? "chevron.up" : "chevron.down").foregroundStyle(.secondary)
+                            }
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(.plain)
+                        .tapTarget()
+                        .accessibilityIdentifier("tips-\(habit.id)")
+                        if isOpen(habit.id) { ForEach(lessons) { lesson in row(lesson) } }
                     }
-                    .accessibilityIdentifier("tips-\(habit.id)")
                 }
             }
         }
@@ -118,9 +127,12 @@ struct TipLibraryView: View {
         .navigationTitle("Tip library")
     }
 
-    private func expanded(_ habitID: String) -> Binding<Bool> {
-        Binding(get: { !query.trimmingCharacters(in: .whitespaces).isEmpty || open.contains(habitID) },
-                set: { isOpen in if isOpen { open.insert(habitID) } else { open.remove(habitID) } })
+    private func isOpen(_ habitID: String) -> Bool {
+        !query.trimmingCharacters(in: .whitespaces).isEmpty || open.contains(habitID)
+    }
+
+    private func toggle(_ habitID: String) {
+        if open.contains(habitID) { open.remove(habitID) } else { open.insert(habitID) }
     }
 
     private func matching(_ lessons: [Lesson]) -> [Lesson] {

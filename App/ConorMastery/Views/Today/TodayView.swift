@@ -83,7 +83,7 @@ struct TodayView: View {
             }
             HStack {
                 TextField("Add task", text: $newTask).submitLabel(.done).onSubmit(addTask)
-                Button("Add", action: addTask).disabled(newTask.trimmingCharacters(in: .whitespaces).isEmpty)
+                Button("Add", action: addTask).buttonStyle(.bordered).disabled(newTask.trimmingCharacters(in: .whitespaces).isEmpty)
             }
         }
     }

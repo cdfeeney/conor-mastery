@@ -13,7 +13,7 @@ evidence: "anecdote/opinion (creator channel, unsourced science)"
 - Social media overstimulates and wrecks sleep, per the video [03:13]
 - Lift heavy, do cardio, sprint [03:48]
 ## Protocol candidates
-- sleep: same bed and wake time, dark room [00:31]
+- sleep: make the bedroom fully dark [00:31]
 - no-social-media: treat the feed as something to cut for a 30-day trial [03:13]
 ## Game-design notes
 - none (app promo skipped)

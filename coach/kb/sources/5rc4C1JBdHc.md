@@ -12,7 +12,7 @@ evidence: "anecdote/opinion (creator channel, unsourced science)"
 - Simple routine: gentle cleanser, moisturizer with SPF in the morning, cleanse at night [02:45]
 - Change pillowcases every few days and avoid picking spots [04:23]
 ## Protocol candidates
-- sleep: same bed and wake time daily, no short videos in bed [04:23]
+- sleep: no short videos in bed [04:23]
 ## Game-design notes
 - none (app promo skipped)
 ## Evidence notes

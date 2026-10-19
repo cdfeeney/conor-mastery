@@ -10,6 +10,6 @@ evidence: "anecdote/opinion (creator channel, unsourced science)"
 - Proposed mechanisms: less luteinizing hormone signalling and higher cortisol [00:00]
 - Claimed fix: consistent times, cold dark room, bed for sleep only [00:34]
 ## Protocol candidates
-- sleep: same bed and wake time, cold dark room, bed only for sleep [00:34]
+- sleep: keep the room cold and use the bed only for sleep [00:34]
 ## Evidence notes
 - Off-topic mostly (testosterone); the 3-7 day recovery claim is unsourced; talk to a doctor. Tips echo GFge24IUcy8.

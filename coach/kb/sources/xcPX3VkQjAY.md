@@ -16,7 +16,6 @@ evidence: "anecdote/opinion (creator channel, unsourced science)"
 - Stop eating four hours before bed [04:26]
 - Use an audiobook rather than screens to fall asleep; keep a consistent bedtime [04:59]
 ## Protocol candidates
-- morning-routine: get outdoor sunlight after waking [00:00]
 - morning-routine: drink water, journal 10 minutes, meditate 10 minutes [01:03]
 - morning-routine: wake within the same 15 minutes every day [01:40]
 - reset-focus: write the task, set a 30-minute timer, block distractions, break 5-15 minutes [02:49]
