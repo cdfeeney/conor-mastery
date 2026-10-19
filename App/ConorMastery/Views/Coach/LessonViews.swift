@@ -95,21 +95,32 @@ struct PinButton: View {
 struct TipLibraryView: View {
     @Environment(MasteryStore.self) private var store
     @State private var query = ""
+    @State private var open: Set<String> = []
 
+    /// One collapsed group per habit: 107 tips in one list was a wall (and too long for the gate's tour to reach the
+    /// end). Searching opens every group that has a match.
     var body: some View {
         List {
             ForEach(store.habits) { habit in
                 let lessons = matching(store.plan.lessons.filter { $0.habitID == habit.id })
                 if !lessons.isEmpty {
-                    Section("\(habit.title) · \(lessons.count)") {
+                    DisclosureGroup(isExpanded: expanded(habit.id)) {
                         ForEach(lessons) { lesson in row(lesson) }
+                    } label: {
+                        Text("\(habit.title) · \(lessons.count) tips").font(.headline)
                     }
+                    .accessibilityIdentifier("tips-\(habit.id)")
                 }
             }
         }
         .searchable(text: $query, prompt: "Search tips")
         .skyBackground()
         .navigationTitle("Tip library")
+    }
+
+    private func expanded(_ habitID: String) -> Binding<Bool> {
+        Binding(get: { !query.trimmingCharacters(in: .whitespaces).isEmpty || open.contains(habitID) },
+                set: { isOpen in if isOpen { open.insert(habitID) } else { open.remove(habitID) } })
     }
 
     private func matching(_ lessons: [Lesson]) -> [Lesson] {

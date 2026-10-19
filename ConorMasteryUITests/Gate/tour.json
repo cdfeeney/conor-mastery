@@ -188,6 +188,13 @@
     {
      "scrollToBottom": true,
      "shot": "tips"
+    },
+    {
+     "tap": "tips-morning-routine"
+    },
+    {
+     "scrollToBottom": true,
+     "shot": "tips-open"
     }
    ]
   }

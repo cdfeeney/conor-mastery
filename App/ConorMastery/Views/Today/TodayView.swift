@@ -45,7 +45,7 @@ struct TodayView: View {
                     NewHabitView()
                         .toolbar {
                             ToolbarItem(placement: .cancellationAction) {
-                                Button("Close") { showAddHabit = false }.accessibilityIdentifier("add-habit-close")
+                                Button("Close") { showAddHabit = false }.tint(.white).accessibilityIdentifier("add-habit-close")
                             }
                         }
                 }

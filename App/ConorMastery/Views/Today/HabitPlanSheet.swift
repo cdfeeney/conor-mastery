@@ -31,9 +31,9 @@ struct HabitPlanSheet: View {
             .skyBackground()
             .navigationTitle(habit.title)
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() }.tint(.white) }
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") { store.setPlan(draft, habitID: habit.id); dismiss() }
+                    Button("Save") { store.setPlan(draft, habitID: habit.id); dismiss() }.buttonStyle(.borderedProminent)
                 }
             }
             .onAppear(perform: load)

@@ -26,7 +26,7 @@ struct YourDayView: View {
         }
         .skyBackground()
         .navigationTitle("Your day")
-        .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Got it") { dismiss() }.accessibilityIdentifier("your-day-done") } }
+        .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Got it") { dismiss() }.buttonStyle(.borderedProminent).accessibilityIdentifier("your-day-done") } }
     }
 
     private func row(_ habit: HabitDefinition) -> some View {

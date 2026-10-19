@@ -66,7 +66,7 @@ struct SettingsView: View {
             }
             .skyBackground()
             .navigationTitle("Settings")
-            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() }.accessibilityIdentifier("settings-done") } }
+            .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() }.buttonStyle(.borderedProminent).accessibilityIdentifier("settings-done") } }
             .familyActivityPicker(isPresented: $showPicker, selection: $screenTime.selection)
             .onChange(of: screenTime.selection) { _, _ in
                 screenTime.saveSelection()

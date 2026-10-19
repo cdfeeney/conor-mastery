@@ -27,7 +27,7 @@ struct ShopSheet: View {
             .navigationTitle("Shop")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) { Label("\(store.grit)", systemImage: "seal.fill").foregroundStyle(Theme.gold) }
-                ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() }.accessibilityIdentifier("shop-done") }
+                ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() }.buttonStyle(.borderedProminent).accessibilityIdentifier("shop-done") }
             }
         }
     }
