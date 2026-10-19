@@ -24,12 +24,8 @@ struct WorldView: View {
                         .accessibilityLabel(Catalog.item(placement.itemID)?.name ?? placement.itemID)
                 }
                 avatar(layout)
+                if building { tileButtons(layout) }
             }
-            .contentShape(Rectangle())
-            .gesture(SpatialTapGesture().onEnded { value in
-                guard building, let tile = layout.tile(at: value.location) else { return }
-                handleTap(x: tile.x, y: tile.y)
-            })
         }
         .accessibilityElement(children: .contain)
         .accessibilityLabel("Your dojo garden, \(store.world.placements.count) items")
@@ -77,6 +73,25 @@ struct WorldView: View {
         return PixelSprite(ItemArt.hero(store.level.belt), scale: layout.scale)
             .position(x: spot.x - offset, y: spot.y)
             .accessibilityLabel("You, \(store.level.belt.title)")
+    }
+
+    /// One button per tile in build mode: a real tap target (and a VoiceOver stop) instead of a hit-test on the image.
+    private func tileButtons(_ layout: GardenLayout) -> some View {
+        ForEach(0..<(layout.landSize * layout.landSize), id: \.self) { index in
+            let x = index % layout.landSize, y = index / layout.landSize
+            let rect = layout.rect(x: x, y: y)
+            let item = store.world.placement(atX: x, y: y).flatMap { Catalog.item($0.itemID)?.name }
+            Button { handleTap(x: x, y: y) } label: {
+                Rectangle()
+                    .fill(selectedItem != nil && item == nil ? Theme.gold.opacity(0.18) : .clear)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .frame(width: rect.width, height: rect.height)
+            .position(x: rect.midX, y: rect.midY)
+            .accessibilityIdentifier("garden-tile-\(x)-\(y)")
+            .accessibilityLabel(item.map { "\($0), tap to pick up" } ?? (selectedItem == nil ? "Empty tile" : "Empty tile, tap to place"))
+        }
     }
 
     private func handleTap(x: Int, y: Int) {
@@ -155,12 +170,5 @@ private struct GardenLayout {
         let first = rect(x: placement.x, y: placement.y)
         let last = rect(x: placement.x + placement.width - 1, y: placement.y + placement.height - 1)
         return CGPoint(x: (first.minX + last.maxX) / 2, y: last.maxY - spriteHeight / 2)
-    }
-
-    func tile(at point: CGPoint) -> (x: Int, y: Int)? {
-        let x = Int(floor((point.x - origin.x) / tile))
-        let y = Int(floor((point.y - origin.y) / tile))
-        guard (0..<landSize).contains(x), (0..<landSize).contains(y) else { return nil }
-        return (x, y)
     }
 }

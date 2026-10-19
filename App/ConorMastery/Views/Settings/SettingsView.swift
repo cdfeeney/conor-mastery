@@ -64,6 +64,7 @@ struct SettingsView: View {
                     }
                 }
             }
+            .skyBackground()
             .navigationTitle("Settings")
             .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Done") { dismiss() }.accessibilityIdentifier("settings-done") } }
             .familyActivityPicker(isPresented: $showPicker, selection: $screenTime.selection)

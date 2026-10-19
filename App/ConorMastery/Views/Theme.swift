@@ -26,6 +26,19 @@ enum Theme {
     }
 }
 
+extension View {
+    /// The Dojo's light-blue sky behind every list and form, so all five tabs read as one game (owner 10-18: the
+    /// other tabs looked like a different, black-and-orange app in dark mode).
+    func skyBackground() -> some View {
+        scrollContentBackground(.hidden).background(Theme.water.ignoresSafeArea())
+    }
+
+    /// At least 44 pt tall to tap: text links and checklist ticks were 14-18 pt (owner 10-18, tap-targets rule).
+    func tapTarget() -> some View {
+        frame(minHeight: 44, alignment: .leading).contentShape(Rectangle())
+    }
+}
+
 /// HUD pill: belt + level bar | streak | grit (Monke's Lvl | fire | bananas pattern).
 struct HUDPill: View {
     @Environment(MasteryStore.self) private var store

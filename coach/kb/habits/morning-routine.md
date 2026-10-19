@@ -7,7 +7,7 @@ group: morning
 schedule: daily
 identity: "I own my mornings before my phone does."
 why: "The first hour sets the day. Light in the eyes soon after waking times your energy and starts the clock for tonight's sleep; picking up the phone first hands the morning to someone else. Finishing this unlocks your blocked apps."
-full: "All five steps"
+full: "All six steps"
 min: "No phone for 30 min + 2 min outside"
 steps:
   - "No phone for the first 30 minutes"
@@ -15,6 +15,7 @@ steps:
   - "10 push-ups"
   - "Water + protein-first breakfast"
   - "First caffeine 90 min after waking"
+  - "10 min positive visualization: picture today going right"   # owner's request 2026-10-18
 citations:
   - {source: "yt:1pbSbW7ABgY", locator: "01:04"}
   - {source: "yt:RTgJSQtvo88", locator: "05:32"}

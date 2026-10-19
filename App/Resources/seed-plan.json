@@ -1,7 +1,7 @@
 {
  "format": "conor-mastery-plan",
  "version": 1,
- "generated_at": "2026-10-18T18:44:11-04:00",
+ "generated_at": "2026-10-18T21:56:05-04:00",
  "weekly_focus": "Foundations first: sleep and phone. Lock those in, then body, then focus.",
  "notes": [
   "Habits take about 2 months to stick, not 21 days. Week 3 feels hardest; keep going.",
@@ -19,14 +19,15 @@
    "schedule": "daily",
    "identity": "I own my mornings before my phone does.",
    "why": "The first hour sets the day. Light in the eyes soon after waking times your energy and starts the clock for tonight's sleep; picking up the phone first hands the morning to someone else. Finishing this unlocks your blocked apps.",
-   "full": "All five steps",
+   "full": "All six steps",
    "min": "No phone for 30 min + 2 min outside",
    "steps": [
     "No phone for the first 30 minutes",
     "Outside light 5-15 min (no sunglasses)",
     "10 push-ups",
     "Water + protein-first breakfast",
-    "First caffeine 90 min after waking"
+    "First caffeine 90 min after waking",
+    "10 min positive visualization: picture today going right"
    ],
    "citations": [
     {
@@ -503,14 +504,15 @@
    "schedule": "daily",
    "identity": "I end my day on purpose.",
    "why": "Tomorrow's morning starts tonight. Dim light and no screens let sleep come, a cool body falls asleep faster, and writing tomorrow's first move removes morning decisions. Franklin tracked his virtues the same way, marking the day's faults every evening.",
-   "full": "All five steps",
+   "full": "All six steps",
    "min": "Phone out of bed + lights dim",
    "steps": [
     "Last-orders alarm: teeth + pajamas 15 min before bed",
     "Lights dim, screens off 1 hour before bed",
     "Hot shower, cool bedroom",
     "Phone charges outside the bedroom",
-    "Write tomorrow's first action + a 2-line reflection"
+    "Write tomorrow's first action + a 2-line reflection",
+    "10 min negative visualization: picture tomorrow going wrong, then plan your answer"
    ],
    "citations": [
     {
@@ -560,6 +562,10 @@
     {
      "source": "yt:xcPX3VkQjAY",
      "locator": "04:26"
+    },
+    {
+     "source": "yt:U_nzqnXWvSo",
+     "locator": "01:33"
     }
    ],
    "challenges": [

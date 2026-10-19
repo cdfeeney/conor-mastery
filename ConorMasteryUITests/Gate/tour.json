@@ -69,6 +69,20 @@
    ]
   },
   {
+   "name": "build",
+   "steps": [
+    {
+     "tap": "dojo-build"
+    },
+    {
+     "shot": "build"
+    },
+    {
+     "tap": "dojo-build"
+    }
+   ]
+  },
+  {
    "name": "today",
    "steps": [
     {
@@ -77,6 +91,12 @@
     {
      "scrollToBottom": true,
      "shot": "today"
+    },
+    {
+     "tap": "habit-why-workout"
+    },
+    {
+     "shot": "why"
     },
     {
      "tap": "habit-action-workout"
@@ -89,6 +109,20 @@
     },
     {
      "shot": "after-lesson-kept"
+    }
+   ]
+  },
+  {
+   "name": "add-habit",
+   "steps": [
+    {
+     "tap": "today-add-habit"
+    },
+    {
+     "shot": "add-habit"
+    },
+    {
+     "tap": "add-habit-close"
     }
    ]
   },

@@ -14,17 +14,26 @@ struct DojoView: View {
         ZStack {
             LinearGradient(colors: [Theme.night, Theme.night.opacity(0.75)], startPoint: .top, endPoint: .bottom)
                 .ignoresSafeArea()
-            WorldView(building: building, selectedItem: $selectedItem)
-                // Low energy greys the garden out; a Perfect Day or level-up brings colour back.
-                .saturation(1 - store.energy.greyness * 0.85)
+            if building {
+                Theme.water.ignoresSafeArea()
+            } else {
+                WorldView(building: false, selectedItem: $selectedItem)
+                    // Low energy greys the garden out; a Perfect Day or level-up brings colour back.
+                    .saturation(1 - store.energy.greyness * 0.85)
+            }
             VStack(spacing: 10) {
                 topBar
-                if !building {
+                if building {
+                    // Its own space between the bar and the tray: as a backdrop the tray covered the bottom row and
+                    // the tiles were hard to hit (owner 10-18).
+                    WorldView(building: true, selectedItem: $selectedItem)
+                        .frame(maxHeight: .infinity)
+                } else {
                     EnergyBar(energy: store.energy, isRestDay: store.isRestDay)
                     ProgressCard()
                     if let challenge = store.challenge { ChallengeCard(challenge: challenge) }
+                    Spacer()
                 }
-                Spacer()
                 if building { BuildPalette(selectedItem: $selectedItem) } else { HabitPlantsRow(tab: $tab) }
                 bottomBar
             }
@@ -41,6 +50,8 @@ struct DojoView: View {
             Spacer()
             Button { showSettings = true } label: {
                 Image(systemName: "gearshape.fill").font(.title2).foregroundStyle(.white)
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
             }
             .accessibilityLabel("Settings")
             .accessibilityIdentifier("dojo-settings")

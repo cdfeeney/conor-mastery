@@ -48,6 +48,7 @@ struct LessonSourceLink: View {
             // A tip from the first second of a video has no useful time to show ("Watch it (00:00)").
             Link(destination: url) { Label(lesson.locator == "00:00" ? "Watch it" : "Watch it (\(lesson.locator))", systemImage: "play.rectangle") }
                 .font(.caption)
+                .tapTarget()
         } else {
             Label("\(SourceName.readable(lesson.source)) · \(lesson.locator)", systemImage: "book").font(.caption).foregroundStyle(.secondary)
         }
@@ -86,6 +87,7 @@ struct PinButton: View {
             Label(pinned ? "One of your rules" : "Make it a rule", systemImage: pinned ? "pin.fill" : "pin")
         }
         .font(.caption).buttonStyle(.borderless)
+        .tapTarget()
     }
 }
 
@@ -106,6 +108,7 @@ struct TipLibraryView: View {
             }
         }
         .searchable(text: $query, prompt: "Search tips")
+        .skyBackground()
         .navigationTitle("Tip library")
     }
 

@@ -61,6 +61,7 @@ struct HabitEditorView: View {
             if let problem { Section { Text(problem).foregroundStyle(Theme.accent) } }
             if !isNew { removalSection }
         }
+        .skyBackground()
         .navigationTitle(isNew ? "New habit" : "Edit habit")
         .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Save", action: save) } }
     }
@@ -193,6 +194,7 @@ struct NewHabitView: View {
             .pickerStyle(.inline)
             NavigationLink("Next") { HabitEditorView(habit: draft, isNew: true) }
         }
+        .skyBackground()
         .navigationTitle("Add a habit")
     }
 

@@ -24,6 +24,7 @@ struct YourDayView: View {
                 Label("Pin tips you want to follow as rules. They stay on the Coach tab.", systemImage: "pin")
             }
         }
+        .skyBackground()
         .navigationTitle("Your day")
         .toolbar { ToolbarItem(placement: .confirmationAction) { Button("Got it") { dismiss() }.accessibilityIdentifier("your-day-done") } }
     }

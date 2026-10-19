@@ -9,6 +9,7 @@ struct HabitCard: View {
     let onPlan: () -> Void
     @Environment(MasteryStore.self) private var store
     @State private var expanded = false
+    @State private var showWhy = false
 
     private var completion: Completion? { store.completion(habit.id) }
     private var level: CompletionLevel? { completion?.level }
@@ -17,13 +18,31 @@ struct HabitCard: View {
         VStack(alignment: .leading, spacing: 8) {
             header
             Text(habit.identity).font(.subheadline.italic()).foregroundStyle(.secondary)
-            Button { onPlan() } label: {
-                Label(store.settings.habitPlans[habit.id]?.cue ?? "Set when & where", systemImage: "clock")
-                    .font(.caption.weight(.semibold))
+            HStack(spacing: 16) {
+                Button { onPlan() } label: {
+                    Label(store.settings.habitPlans[habit.id]?.cue ?? "Set when & where", systemImage: "clock")
+                        .font(.caption.weight(.semibold))
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(store.settings.habitPlans[habit.id] == nil ? Theme.accent : .secondary)
+                .tapTarget()
+                .accessibilityIdentifier("habit-plan-\(habit.id)")
+                if !habit.why.isEmpty {
+                    Button { withAnimation { showWhy.toggle() } } label: {
+                        Label(showWhy ? "Hide why" : "Why?", systemImage: "lightbulb")
+                            .font(.caption.weight(.semibold))
+                    }
+                    .buttonStyle(.plain)
+                    .foregroundStyle(Theme.gold)
+                    .tapTarget()
+                    .accessibilityIdentifier("habit-why-\(habit.id)")
+                }
             }
-            .buttonStyle(.plain)
-            .foregroundStyle(store.settings.habitPlans[habit.id] == nil ? Theme.accent : .secondary)
-            .accessibilityIdentifier("habit-plan-\(habit.id)")
+            if showWhy {
+                Text(habit.why).font(.subheadline)
+                    .padding(10)
+                    .background(Theme.gold.opacity(0.15), in: RoundedRectangle(cornerRadius: 10))
+            }
             if let min = habit.min { Text("Min: \(min)").font(.caption).foregroundStyle(.secondary) }
             if habit.kind == .checklist && (expanded || level == nil) { checklist }
             HStack {
@@ -130,6 +149,7 @@ struct HabitCard: View {
                         .foregroundStyle(ticked.contains(step) ? Theme.jade : .primary)
                 }
                 .buttonStyle(.plain)
+                .tapTarget()
                 .accessibilityIdentifier("habit-step-\(habit.id)-\(i)")
             }
         }

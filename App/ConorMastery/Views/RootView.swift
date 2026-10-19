@@ -39,6 +39,9 @@ struct RootView: View {
             Tab("Coach", systemImage: "book.closed.fill", value: .coach) { CoachView() }
         }
         .tint(Theme.accent)
+        // Dark cards on the Dojo's sky in every tab, whatever the phone's light/dark setting.
+        .preferredColorScheme(.dark)
+        .fontDesign(.rounded)
         .environment(store)
         .environment(screenTime)
         .overlay(alignment: .top) { RewardToastView() .environment(store) }

@@ -38,6 +38,7 @@ struct HabitTimerSheet: View {
                 Spacer()
             }
             .padding(.top, 32)
+            .skyBackground()
             .navigationTitle(habit.title)
             .toolbar { ToolbarItem(placement: .cancellationAction) { Button("Close") { dismiss() } } }
             .interactiveDismissDisabled(startedAt != nil)

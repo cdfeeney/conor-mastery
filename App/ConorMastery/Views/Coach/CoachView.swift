@@ -59,6 +59,7 @@ struct CoachView: View {
                         .font(.caption).foregroundStyle(.secondary)
                 }
             }
+            .skyBackground()
             .navigationTitle("Coach")
             .refreshable { store.syncCoach() }
             .onAppear { reflection = store.reflections[store.today] ?? "" }
@@ -130,6 +131,7 @@ struct HabitProtocolView: View {
                 }
             }
         }
+        .skyBackground()
         .navigationTitle(habit.title)
         .toolbar {
             if let planHabit = store.effectivePlanHabits.first(where: { $0.id == habit.id }) {

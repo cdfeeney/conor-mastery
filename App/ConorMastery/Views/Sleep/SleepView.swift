@@ -28,6 +28,7 @@ struct SleepView: View {
                     Section(month.title) { ForEach(month.nights, id: \.wakeDay) { nightRow($0) } }
                 }
             }
+            .skyBackground()
             .navigationTitle("Sleep")
             .sheet(isPresented: $showLog) { SleepLogSheet() }
         }
@@ -128,6 +129,7 @@ struct SleepLogSheet: View {
                         .foregroundStyle(onTarget ? Theme.jade : Theme.gold)
                 }
             }
+            .skyBackground()
             .navigationTitle("Log sleep")
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() }.accessibilityIdentifier("sleep-cancel") }

@@ -23,6 +23,7 @@ struct ShopSheet: View {
                 }
                 .padding()
             }
+            .skyBackground()
             .navigationTitle("Shop")
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) { Label("\(store.grit)", systemImage: "seal.fill").foregroundStyle(Theme.gold) }
@@ -70,6 +71,7 @@ struct ShopSheet: View {
                 TextField("New treat (e.g. cheat meal)", text: $treatName)
                 Stepper("\(treatPrice)", value: $treatPrice, in: 10...2000, step: 10).fixedSize()
                 Button("Add") { store.addTreat(name: treatName, price: treatPrice); treatName = "" }
+                    .buttonStyle(.bordered)
                     .disabled(treatName.trimmingCharacters(in: .whitespaces).isEmpty)
             }
             .font(.subheadline)

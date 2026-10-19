@@ -16,5 +16,7 @@
  ],
  "forbiddenIdentifiers": [],
  "maxTapMillis": 3000,
- "_maxTapMillis": "same simulator budget as ConorHealth's first gate; lower it once real timings are known"
+ "_maxTapMillis": "same simulator budget as ConorHealth's first gate; lower it once real timings are known",
+ "minTapPoints": 30,
+ "_minTapPoints": "Owner 10-18: hard to tap in the Dojo. 30 pt catches the tiny targets (26 pt gear, 14-18 pt links and ticks) while standard 34 pt bordered buttons pass; raise toward Apple's 44 as controls are resized."
 }

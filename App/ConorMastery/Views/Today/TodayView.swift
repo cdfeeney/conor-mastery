@@ -9,6 +9,7 @@ struct TodayView: View {
     /// One sheet for the screen, not one per card (nine presentation hosts slowed Today's first render).
     @State private var planHabit: HabitDefinition?
     @State private var showSleepLog = false
+    @State private var showAddHabit = false
 
     var body: some View {
         NavigationStack {
@@ -28,10 +29,27 @@ struct TodayView: View {
                 }
                 tasksSection
             }
+            .skyBackground()
             .navigationTitle(Date.now.formatted(.dateTime.weekday(.wide).month().day()))
             .sheet(item: $timerHabit) { habit in HabitTimerSheet(habit: habit) }
             .sheet(item: $planHabit) { habit in HabitPlanSheet(habit: habit) }
             .sheet(isPresented: $showSleepLog) { SleepLogSheet() }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button { showAddHabit = true } label: { Label("Add a habit", systemImage: "plus") }
+                        .accessibilityIdentifier("today-add-habit")
+                }
+            }
+            .sheet(isPresented: $showAddHabit) {
+                NavigationStack {
+                    NewHabitView()
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Close") { showAddHabit = false }.accessibilityIdentifier("add-habit-close")
+                            }
+                        }
+                }
+            }
             .overlay {
                 if store.habits.isEmpty {
                     ContentUnavailableView("No habits yet", systemImage: "list.bullet.clipboard",

@@ -38,6 +38,7 @@ struct FocusView: View {
             Group {
                 if let active { running(active) } else { setup }
             }
+            .skyBackground()
             .navigationTitle("Focus")
         }
     }

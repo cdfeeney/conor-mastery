@@ -28,6 +28,7 @@ struct HabitPlanSheet: View {
                     }
                 }
             }
+            .skyBackground()
             .navigationTitle(habit.title)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }

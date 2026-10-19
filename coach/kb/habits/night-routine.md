@@ -7,7 +7,7 @@ group: night
 schedule: daily
 identity: "I end my day on purpose."
 why: "Tomorrow's morning starts tonight. Dim light and no screens let sleep come, a cool body falls asleep faster, and writing tomorrow's first move removes morning decisions. Franklin tracked his virtues the same way, marking the day's faults every evening."
-full: "All five steps"
+full: "All six steps"
 min: "Phone out of bed + lights dim"
 steps:
   - "Last-orders alarm: teeth + pajamas 15 min before bed"
@@ -15,6 +15,7 @@ steps:
   - "Hot shower, cool bedroom"
   - "Phone charges outside the bedroom"
   - "Write tomorrow's first action + a 2-line reflection"
+  - "10 min negative visualization: picture tomorrow going wrong, then plan your answer"
 citations:
   - {source: "yt:lRp5AC9W_F8", locator: "06:46"}
   - {source: "yt:bt5ue-1wLvc", locator: "03:01"}
@@ -28,6 +29,7 @@ citations:
   - {source: "yt:pNDJr_s69wY", locator: "00:35"}
   - {source: "yt:nuesDJf4EYA", locator: "00:31"}
   - {source: "yt:xcPX3VkQjAY", locator: "04:26"}
+  - {source: "yt:U_nzqnXWvSo", locator: "01:33"}   # failure pre-mortem; the 10-minute step is the owner's request 2026-10-18
 challenges:
   - "Set the last-orders alarm 15 minutes before bed and obey it."
   - "Audiobook instead of scrolling in bed tonight."
