@@ -127,8 +127,11 @@ struct HabitCard: View {
         }
     }
 
-    /// Today's full price: weak habits pay more (strength), per-habit streak bonus included.
+    /// What it paid today once logged (so the cards add up to the Dojo's total); before that, today's full price:
+    /// weak habits pay more (strength), per-habit streak bonus included.
     private var price: Int {
+        let paid = MasteryEngine.paidReward(habitID: habit.id, day: store.today, ledger: store.state.ledger).grit
+        if completion != nil { return paid }
         let streak = store.habitStreak(habit.id)
         return RewardRules.habitReward(difficulty: habit.difficulty, level: .full,
                                        strengthValue: store.strength[habit.id] ?? 0, habitStreakDays: streak).grit

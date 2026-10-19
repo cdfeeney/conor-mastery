@@ -104,7 +104,7 @@ public enum MasteryEngine {
 
     static func habitRef(_ habitID: String, _ day: DayKey) -> String { "\(habitID)@\(day.rawValue)" }
 
-    static func paidReward(habitID: String, day: DayKey, ledger: GritLedger) -> Reward {
+    public static func paidReward(habitID: String, day: DayKey, ledger: GritLedger) -> Reward {
         let ref = habitRef(habitID, day)
         return ledger.transactions
             .filter { $0.ref == ref && ($0.reason == .habit || $0.reason == .refund) }

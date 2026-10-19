@@ -22,6 +22,22 @@ public struct GritTransaction: Codable, Sendable, Hashable, Identifiable {
     }
 }
 
+/// Where earned grit came from, as the Dojo names it. Spending (shop, land, unblock, treats) is not earning.
+public enum EarnSource: String, Sendable, Hashable {
+    case habits, focus, challenge, tasks, lesson
+
+    init?(_ reason: GritReason) {
+        switch reason {
+        case .habit, .refund: self = .habits
+        case .focus, .penalty: self = .focus
+        case .challenge: self = .challenge
+        case .task: self = .tasks
+        case .lesson: self = .lesson
+        case .purchase, .landExpansion, .unblock, .treat, .drop: return nil
+        }
+    }
+}
+
 public enum LedgerError: Error, Equatable, Sendable {
     case insufficientGrit(needed: Int, balance: Int)
 }
@@ -39,8 +55,20 @@ public struct GritLedger: Sendable {
 
     public var level: LevelProgress { Leveling.progress(totalXP: totalXP) }
 
+    /// What a day earned, net of undos and downgrades, spending left out: positives alone over-counted a habit
+    /// paid and then undone, and "+39 grit" matched nothing on screen (gate run 39314550527).
     public func earned(on day: DayKey) -> Int {
-        transactions.filter { $0.day == day && $0.amount > 0 }.reduce(0) { $0 + $1.amount }
+        earnedBySource(on: day).reduce(0) { $0 + $1.grit }
+    }
+
+    /// Today's earnings by where they came from, biggest first, sources that net to zero left out.
+    public func earnedBySource(on day: DayKey) -> [(source: EarnSource, grit: Int)] {
+        var totals: [EarnSource: Int] = [:]
+        for t in transactions where t.day == day {
+            if let source = EarnSource(t.reason) { totals[source, default: 0] += t.amount }
+        }
+        return totals.filter { $0.value > 0 }.map { (source: $0.key, grit: $0.value) }
+            .sorted { $0.grit != $1.grit ? $0.grit > $1.grit : $0.source.rawValue < $1.source.rawValue }
     }
 
     public func appending(_ transaction: GritTransaction) -> GritLedger {

@@ -94,12 +94,20 @@ struct ProgressCard: View {
     @Environment(MasteryStore.self) private var store
 
     var body: some View {
-        HStack {
-            stat("\(store.doneTodayCount)/\(store.requiredToday.count)", "habits", "checkmark.circle.fill")
-            Spacer()
-            stat("\(store.focusMinutesToday)m", "focused", "timer")
-            Spacer()
-            stat("+\(store.gritEarnedToday)", "grit", "seal.fill")
+        VStack(alignment: .leading, spacing: 8) {
+            HStack {
+                stat("\(store.doneTodayCount)/\(store.requiredToday.count)", "habits", "checkmark.circle.fill")
+                Spacer()
+                stat("\(store.focusMinutesToday)m", "focused", "timer")
+                Spacer()
+                stat("+\(store.gritEarnedToday)", "grit", "seal.fill")
+            }
+            // Where today's grit came from: the total alone matched nothing on screen.
+            let sources = store.state.ledger.earnedBySource(on: store.today)
+            if !sources.isEmpty {
+                Text(sources.map { "\($0.source.rawValue.capitalized) +\($0.grit)" }.joined(separator: " · "))
+                    .font(.caption.monospacedDigit()).foregroundStyle(.white.opacity(0.7))
+            }
         }
         .padding(14)
         .background(Theme.ink.opacity(0.85), in: RoundedRectangle(cornerRadius: 16))
