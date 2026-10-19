@@ -100,10 +100,17 @@ xcodebuild -exportArchive -archivePath "$STATE/ConorMastery.xcarchive" \
   -exportPath "$STATE/export" -exportOptionsPlist "$STATE/ExportOptions.plist"
 IPA=$(ls "$STATE"/export/*.ipa)
 test -f "$IPA"
+# Apple refuses a build number it has seen; check the archive carries this run's number before uploading.
+APP_PLIST="$STATE/ConorMastery.xcarchive/Products/Applications/ConorMastery.app/Info.plist"
+BUILT=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP_PLIST")
+[ "$BUILT" = "$GITHUB_RUN_NUMBER" ] || { echo "::error::archive build number is $BUILT, expected $GITHUB_RUN_NUMBER"; exit 1; }
 # altool finds AuthKey_<ID>.p8 in ./private_keys.
 (
   cd "$STATE"
-  xcrun altool --validate-app -f "$IPA" -t ios --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
-  xcrun altool --upload-app -f "$IPA" -t ios --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
+  # altool exits 0 even when Apple rejects the build (run 14): trust only its success line.
+  xcrun altool --validate-app -f "$IPA" -t ios --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID" 2>&1 | tee validate.log
+  grep -q "VERIFY SUCCEEDED" validate.log || { echo "::error::Apple rejected the build at validation"; exit 1; }
+  xcrun altool --upload-app -f "$IPA" -t ios --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID" 2>&1 | tee upload.log
+  grep -q "UPLOAD SUCCEEDED" upload.log || { echo "::error::Apple rejected the upload"; exit 1; }
 )
 echo "Build $GITHUB_RUN_NUMBER sent to Apple for processing (internal TestFlight). Screen Time blocking is off in this build." >> "$GITHUB_STEP_SUMMARY"

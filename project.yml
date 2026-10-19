@@ -9,7 +9,8 @@ settings:
   base:
     DEVELOPMENT_TEAM: 6VBFL287PT
     SWIFT_VERSION: "6.0"
-    MARKETING_VERSION: "0.1.0"
+    # Above XcodeGen's default 1.0 that the first build went up as.
+    MARKETING_VERSION: "1.0.1"
     CURRENT_PROJECT_VERSION: "1"
 packages:
   MasteryCore:
@@ -36,6 +37,9 @@ targets:
       path: App/Info.plist
       properties:
         CFBundleDisplayName: Mastery
+        # XcodeGen's own defaults are literal "1.0" / "1": every upload read 1.0 (1) and Apple refused the second.
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         UILaunchScreen: {}
         UISupportedInterfaceOrientations: [UIInterfaceOrientationPortrait]
         CFBundleURLTypes:
@@ -73,6 +77,9 @@ targets:
       path: Extensions/MasteryMonitor/Info.plist
       properties:
         CFBundleDisplayName: Mastery Monitor
+        # XcodeGen's own defaults are literal "1.0" / "1": every upload read 1.0 (1) and Apple refused the second.
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         NSExtension:
           NSExtensionPointIdentifier: com.apple.deviceactivity.monitor-extension
           NSExtensionPrincipalClass: $(PRODUCT_MODULE_NAME).MasteryMonitor
@@ -99,6 +106,9 @@ targets:
       path: Extensions/MasteryWidgets/Info.plist
       properties:
         CFBundleDisplayName: Mastery Widgets
+        # XcodeGen's own defaults are literal "1.0" / "1": every upload read 1.0 (1) and Apple refused the second.
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         NSExtension:
           NSExtensionPointIdentifier: com.apple.widgetkit-extension
     settings:
