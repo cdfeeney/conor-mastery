@@ -87,10 +87,13 @@ for p in app widgets monitor; do
   INSTALLED+=("$dest")
 done
 
-# Per-target profiles come from project.yml's Release settings; the build number is the run number.
+# Per-target profiles come from project.yml's Release settings; style and identity go on the command line because
+# XcodeGen's per-target iOS defaults override project-level ones (run 39176590275 looked for "iOS Development").
+# The build number is the run number.
 xcodebuild -project ConorMastery.xcodeproj -scheme ConorMastery -configuration Release \
   -destination 'generic/platform=iOS' -archivePath "$STATE/ConorMastery.xcarchive" \
   -derivedDataPath "$STATE/DerivedData" \
+  DEVELOPMENT_TEAM="$TEAM_ID" CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="Apple Distribution" \
   CURRENT_PROJECT_VERSION="$GITHUB_RUN_NUMBER" MASTERY_SCREEN_TIME=NO archive
 
 xcodebuild -exportArchive -archivePath "$STATE/ConorMastery.xcarchive" \

@@ -116,8 +116,9 @@ struct HabitCard: View {
     }
 
     private var minutesLabel: String {
-        let done = completion?.minutes ?? 0
-        return "\(done)/\(habit.targetMinutes ?? 0) min"
+        let done = completion?.minutes ?? 0, target = habit.targetMinutes ?? 0
+        // Past the goal, "75/25 min" reads like an error.
+        return done > target ? "\(done) min (goal \(target))" : "\(done)/\(target) min"
     }
 
     private var checklist: some View {
