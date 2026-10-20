@@ -64,7 +64,7 @@ struct FocusView: View {
             }
             Section {
                 Button { start() } label: { Label("Start", systemImage: "play.fill").frame(maxWidth: .infinity) }
-                    .buttonStyle(.borderedProminent).tint(Theme.accent).controlSize(.large)
+                    .buttonStyle(.borderedProminent).tint(Theme.navy).controlSize(.large)
                     .accessibilityIdentifier("focus-start")
             }
             Section("Today") {

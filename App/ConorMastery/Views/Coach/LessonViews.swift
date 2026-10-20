@@ -9,7 +9,7 @@ struct LessonCard: View {
         if let lesson = store.lesson {
             VStack(alignment: .leading, spacing: 10) {
                 Text(store.state.habit(lesson.habitID)?.title.uppercased() ?? lesson.habitID)
-                    .font(.caption.weight(.bold)).foregroundStyle(Theme.accent)
+                    .font(.caption.weight(.bold)).foregroundStyle(Theme.navy)
                 Text(lesson.text).font(.body.weight(.semibold))
                 LessonSourceLink(lesson: lesson)
                 answerRow
@@ -30,7 +30,7 @@ struct LessonCard: View {
         } else {
             HStack {
                 Button("I did it  +\(RewardRules.lessonGrit)") { store.answerLesson(kept: true) }
-                    .buttonStyle(.borderedProminent).tint(Theme.ink)
+                    .buttonStyle(.borderedProminent).tint(Theme.navy)
                     .accessibilityIdentifier("lesson-kept")
                 Button("Not today") { store.answerLesson(kept: false) }
                     .buttonStyle(.bordered)

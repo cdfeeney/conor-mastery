@@ -7,6 +7,8 @@ enum Theme {
     static let gold = Color(red: 0.95, green: 0.69, blue: 0.20)
     static let jade = Color(red: 0.17, green: 0.66, blue: 0.29)
     static let ink = Color(red: 0.09, green: 0.10, blue: 0.14)
+    /// Buttons and links on the white cards (owner 10-19: no more black-and-orange controls).
+    static let navy = Color(red: 0.07, green: 0.20, blue: 0.38)
     static let paper = Color(red: 0.98, green: 0.96, blue: 0.90)
     static let night = Color(red: 0.11, green: 0.14, blue: 0.25)
     static let water = Color(red: 0.36, green: 0.60, blue: 0.78)

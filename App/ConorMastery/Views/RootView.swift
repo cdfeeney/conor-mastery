@@ -38,9 +38,9 @@ struct RootView: View {
             Tab("Sleep", systemImage: "moon.zzz.fill", value: .sleep) { SleepView() }
             Tab("Coach", systemImage: "book.closed.fill", value: .coach) { CoachView() }
         }
-        .tint(Theme.accent)
-        // Dark cards on the Dojo's sky in every tab, whatever the phone's light/dark setting.
-        .preferredColorScheme(.dark)
+        .tint(Theme.navy)
+        // White cards with dark text on the Dojo's sky in every tab, whatever the phone's setting (owner 10-19).
+        .preferredColorScheme(.light)
         .fontDesign(.rounded)
         .environment(store)
         .environment(screenTime)

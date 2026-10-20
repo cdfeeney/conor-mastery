@@ -132,7 +132,7 @@ struct SleepLogSheet: View {
             .skyBackground()
             .navigationTitle("Log sleep")
             .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() }.tint(.white).accessibilityIdentifier("sleep-cancel") }
+                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() }.accessibilityIdentifier("sleep-cancel") }
                 ToolbarItem(placement: .confirmationAction) { Button("Save") { store.logSleep(draft); dismiss() }.buttonStyle(.borderedProminent).accessibilityIdentifier("sleep-save") }
             }
             .onAppear(perform: prefill)

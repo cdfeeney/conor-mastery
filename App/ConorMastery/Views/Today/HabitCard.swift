@@ -24,7 +24,7 @@ struct HabitCard: View {
                         .font(.caption.weight(.semibold))
                 }
                 .buttonStyle(.plain)
-                .foregroundStyle(store.settings.habitPlans[habit.id] == nil ? Theme.accent : .secondary)
+                .foregroundStyle(store.settings.habitPlans[habit.id] == nil ? Theme.navy : .secondary)
                 .tapTarget()
                 .accessibilityIdentifier("habit-plan-\(habit.id)")
                 if !habit.why.isEmpty {
@@ -116,7 +116,7 @@ struct HabitCard: View {
                 .buttonStyle(.bordered).tint(Theme.jade).disabled(level == .full)
         case .timer:
             Button { onTimer() } label: { Label(minutesLabel, systemImage: "play.fill") }
-                .buttonStyle(.borderedProminent).tint(Theme.ink)
+                .buttonStyle(.borderedProminent).tint(Theme.navy)
         case .sleep:
             Button(level == nil ? "Log sleep" : "Edit") { onSleep() }.buttonStyle(.bordered)
         case .focus:

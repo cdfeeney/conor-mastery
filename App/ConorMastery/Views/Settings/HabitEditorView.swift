@@ -166,7 +166,7 @@ struct ScheduleEditor: View {
                     }
                     .frame(maxWidth: .infinity)
                     .padding(.vertical, 6)
-                    .background(isOn ? Theme.ink : Color.clear, in: Circle())
+                    .background(isOn ? Theme.navy : Color.clear, in: Circle())
                     .foregroundStyle(isOn ? .white : .primary)
                     .buttonStyle(.plain)
                     .accessibilityAddTraits(isOn ? .isSelected : [])

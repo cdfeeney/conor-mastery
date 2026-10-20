@@ -53,7 +53,7 @@ struct ShopSheet: View {
     private func chip(_ title: String, selected: Bool, action: @escaping () -> Void) -> some View {
         Button(title, action: action)
             .buttonStyle(.bordered)
-            .tint(selected ? Theme.accent : .secondary)
+            .tint(selected ? Theme.navy : .secondary)
     }
 
     /// Real-life rewards you price yourself (Habitica's custom rewards).
@@ -65,7 +65,7 @@ struct ShopSheet: View {
                     Text(treat.name)
                     Spacer()
                     Button { store.buy(treat: treat) } label: { Label("\(treat.price)", systemImage: "seal.fill") }
-                        .buttonStyle(.borderedProminent).tint(Theme.accent).disabled(store.grit < treat.price)
+                        .buttonStyle(.borderedProminent).tint(Theme.navy).disabled(store.grit < treat.price)
                 }
                 .swipeActions { Button("Delete", role: .destructive) { store.removeTreat(treat) } }
                 .contextMenu { Button("Delete", role: .destructive) { store.removeTreat(treat) } }
@@ -80,7 +80,7 @@ struct ShopSheet: View {
             .font(.subheadline)
         }
         .padding()
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 14))
+        .background(.white, in: RoundedRectangle(cornerRadius: 14))
     }
 
     private func landCard(_ expansion: (size: Int, price: Int)) -> some View {
@@ -95,7 +95,7 @@ struct ShopSheet: View {
                 .disabled(store.grit < expansion.price)
         }
         .padding()
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 14))
+        .background(.white, in: RoundedRectangle(cornerRadius: 14))
     }
 
     private func itemTile(_ item: ShopItem) -> some View {
@@ -110,12 +110,12 @@ struct ShopSheet: View {
                 else { Label("\(item.price)", systemImage: "seal.fill") }
             }
             .buttonStyle(.borderedProminent)
-            .tint(locked ? .gray : Theme.ink)
+            .tint(locked ? .gray : Theme.navy)
             .disabled(locked || store.grit < item.price)
         }
         .frame(maxWidth: .infinity)
         .padding(.vertical, 14)
-        .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 14))
+        .background(.white, in: RoundedRectangle(cornerRadius: 14))
         .accessibilityElement(children: .combine)
     }
 }
