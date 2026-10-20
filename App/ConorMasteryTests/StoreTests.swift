@@ -145,12 +145,32 @@ final class StoreTests: XCTestCase {
         XCTAssertEqual(tomorrow.streak, snapshot.streak)
     }
 
-    func testChecklistCompletesOnLastStep() throws {
+    /// Codex review 10-20: an install that tracked the routine whole keeps those days judged by the whole routine.
+    func testWholeRoutineKeepsJudgingDaysBeforeTheSplit() throws {
         let store = try makeStore()
-        let routine = try XCTUnwrap(store.habits.first { $0.kind == .checklist && !$0.steps.isEmpty })
-        for step in routine.steps { store.toggleStep(step, habit: routine) }
-        XCTAssertEqual(store.completion(routine.id)?.level, .full)
-        store.toggleStep(routine.steps[0], habit: routine)
-        XCTAssertNil(store.completion(routine.id))
+        let weekAgo = store.today.adding(days: -7, timeZone: store.timeZone)
+        var s = store.settings
+        s.startDay = weekAgo
+        s.habitFirstSeen["morning-routine"] = weekAgo
+        store.update(settings: s)
+        let legacy = try XCTUnwrap(store.state.habits.first { $0.id == "morning-routine" })
+        XCTAssertEqual(legacy.activeUntil, store.today)
+        XCTAssertTrue(legacy.isRequired(on: weekAgo, timeZone: store.timeZone))
+        XCTAssertFalse(store.habits.contains { $0.id == "morning-routine" })
+    }
+
+    /// Owner 10-20: each routine step is its own habit; the morning gate opens only when every step is done.
+    func testRoutineStepsAreSeparateHabitsAndGateTheMorning() throws {
+        let store = try makeStore()
+        let steps = store.habits.filter { $0.routine == store.settings.gate.morningHabitID }
+        XCTAssertEqual(steps.count, 6)
+        XCTAssertEqual(store.habits.filter { $0.routine == "night-routine" }.count, 6)
+        XCTAssertFalse(store.habits.contains { $0.id == "morning-routine" })
+        store.log(.full, habitID: steps[0].id)
+        XCTAssertNil(store.completion(steps[1].id))
+        XCTAssertFalse(store.morningGateMet)
+        for step in steps.dropFirst() { store.log(.full, habitID: step.id) }
+        XCTAssertTrue(store.morningGateMet)
+        XCTAssertEqual(store.planHabits.filter { $0.id.hasSuffix("-routine") }.count, 2)
     }
 }

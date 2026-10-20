@@ -55,14 +55,17 @@ public enum CoachAdvisor {
             focusLine = "Focus: keep everything going."
         }
         let weakestFirst = ordered.sorted { $0.rate < $1.rate }.map(\.habitID)
-        let lessonOrder = ([focus?.habitID].compactMap { $0 } + weakestFirst + habits.map(\.id)).uniqued()
+        // Lessons are written per plan habit, so a routine step asks for its routine's lessons.
+        let lessonOrder = ([focus?.habitID].compactMap { $0 } + weakestFirst + habits.map(\.id))
+            .map { byID[$0]?.routine ?? $0 }.uniqued()
         return CoachAdvice(focusHabitID: focus?.habitID, focusLine: focusLine,
                            notes: Array(notes.prefix(maxNotes)), lessonOrder: lessonOrder)
     }
 
     /// Foundation habits first, in their order; anything else after, in plan order.
     static func rank(_ id: String, _ habits: [HabitDefinition]) -> Int {
-        foundationOrder.firstIndex(of: id) ?? foundationOrder.count + (habits.firstIndex { $0.id == id } ?? 0)
+        let planID = habits.first { $0.id == id }?.routine ?? id
+        return foundationOrder.firstIndex(of: planID) ?? foundationOrder.count + (habits.firstIndex { $0.id == id } ?? 0)
     }
 
     static func slipNotes(habits: [HabitDefinition], completions: [Completion], today: DayKey,

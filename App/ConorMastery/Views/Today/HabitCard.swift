@@ -7,6 +7,8 @@ struct HabitCard: View {
     let onTimer: () -> Void
     let onSleep: () -> Void
     let onPlan: () -> Void
+    /// A routine step: title, dots and Done only; the routine's header carries its why and when/where.
+    var compact = false
     @Environment(MasteryStore.self) private var store
     @State private var expanded = false
     @State private var showWhy = false
@@ -17,33 +19,7 @@ struct HabitCard: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
             header
-            Text(habit.identity).font(.subheadline.italic()).foregroundStyle(.secondary)
-            HStack(spacing: 16) {
-                Button { onPlan() } label: {
-                    Label(store.settings.habitPlans[habit.id]?.cue ?? "Set when & where", systemImage: "clock")
-                        .font(.caption.weight(.semibold))
-                }
-                .buttonStyle(.plain)
-                .foregroundStyle(store.settings.habitPlans[habit.id] == nil ? Theme.navy : .secondary)
-                .tapTarget()
-                .accessibilityIdentifier("habit-plan-\(habit.id)")
-                if !habit.why.isEmpty {
-                    Button { withAnimation { showWhy.toggle() } } label: {
-                        Label(showWhy ? "Hide why" : "Why?", systemImage: "lightbulb")
-                            .font(.caption.weight(.semibold))
-                    }
-                    .buttonStyle(.plain)
-                    .foregroundStyle(Theme.gold)
-                    .tapTarget()
-                    .accessibilityIdentifier("habit-why-\(habit.id)")
-                }
-            }
-            if showWhy {
-                Text(habit.why).font(.subheadline)
-                    .padding(10)
-                    .background(Theme.gold.opacity(0.15), in: RoundedRectangle(cornerRadius: 10))
-            }
-            if let min = habit.min { Text("Min: \(min)").font(.caption).foregroundStyle(.secondary) }
+            if !compact { details }
             if habit.kind == .checklist && (expanded || level == nil) { checklist }
             HStack {
                 WeekStrip(entries: store.weekStrip(habit.id))
@@ -51,7 +27,8 @@ struct HabitCard: View {
                 actions
             }
         }
-        .padding(.vertical, 6)
+        .padding(.vertical, compact ? 2 : 6)
+        .padding(.leading, compact ? 12 : 0)
         .contentShape(Rectangle())
         .onTapGesture { expanded.toggle() }
         .swipeActions(edge: .leading) {
@@ -70,10 +47,40 @@ struct HabitCard: View {
         .accessibilityIdentifier("habit-\(habit.id)")
     }
 
+    @ViewBuilder private var details: some View {
+        Text(habit.identity).font(.subheadline.italic()).foregroundStyle(.secondary)
+        HStack(spacing: 16) {
+            Button { onPlan() } label: {
+                Label(store.settings.habitPlans[habit.id]?.cue ?? "Set when & where", systemImage: "clock")
+                    .font(.caption.weight(.semibold))
+            }
+            .buttonStyle(.plain)
+            .foregroundStyle(store.settings.habitPlans[habit.id] == nil ? Theme.navy : .secondary)
+            .tapTarget()
+            .accessibilityIdentifier("habit-plan-\(habit.id)")
+            if !habit.why.isEmpty {
+                Button { withAnimation { showWhy.toggle() } } label: {
+                    Label(showWhy ? "Hide why" : "Why?", systemImage: "lightbulb")
+                        .font(.caption.weight(.semibold))
+                }
+                .buttonStyle(.plain)
+                .foregroundStyle(Theme.gold)
+                .tapTarget()
+                .accessibilityIdentifier("habit-why-\(habit.id)")
+            }
+        }
+        if showWhy {
+            Text(habit.why).font(.subheadline)
+                .padding(10)
+                .background(Theme.gold.opacity(0.15), in: RoundedRectangle(cornerRadius: 10))
+        }
+        if let min = habit.min { Text("Min: \(min)").font(.caption).foregroundStyle(.secondary) }
+    }
+
     private var header: some View {
         HStack(alignment: .firstTextBaseline) {
             statusIcon
-            Text(habit.title).font(.headline)
+            Text(habit.title).font(compact ? .subheadline.weight(.semibold) : .headline)
             if habit.kind == .avoid {
                 Text("\(store.cleanDays(habit.id))d clean").font(.caption.weight(.semibold)).foregroundStyle(Theme.jade)
             }

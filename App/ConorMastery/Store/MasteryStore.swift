@@ -50,8 +50,15 @@ final class MasteryStore {
 
     /// Strength as of the start of today (drives price, plant tier and drop chance).
     var strength: [String: Double] { fresh?.strength ?? state.strength(on: today) }
-    func tier(_ habitID: String) -> HabitTier { StrengthRules.tier(strength[habitID] ?? 0) }
-    func multiplier(_ habitID: String) -> Double { StrengthRules.multiplier(strength[habitID] ?? 0) }
+    func tier(_ habitID: String) -> HabitTier { StrengthRules.tier(strengthValue(habitID)) }
+    func multiplier(_ habitID: String) -> Double { StrengthRules.multiplier(strengthValue(habitID)) }
+
+    /// A routine's strength is its steps' average (the routine itself is not tracked, its steps are).
+    func strengthValue(_ habitID: String) -> Double {
+        if let value = strength[habitID] { return value }
+        let steps = habits.filter { $0.routine == habitID }.map { strength[$0.id] ?? 0 }
+        return steps.isEmpty ? 0 : steps.reduce(0, +) / Double(steps.count)
+    }
     var energy: EnergyState { fresh?.energy ?? state.energy(on: today) }
     var isRestDay: Bool { settings.restDays.contains(today) }
 
@@ -72,6 +79,12 @@ final class MasteryStore {
     }
 
     func habits(in group: HabitGroup) -> [HabitDefinition] { habits.filter { $0.group == group } }
+
+    /// One row per plan habit, a routine as one row rather than its steps: Coach, Your day, tips, Dojo plants.
+    var planHabits: [HabitDefinition] {
+        effectivePlanHabits.filter { settings.archivedHabits[$0.id].map { today < $0 } ?? true }
+            .map { $0.definition(anchor: settings.startDay) }
+    }
 
     func completion(_ habitID: String, on day: DayKey? = nil) -> Completion? {
         index.completion(habitID, on: day ?? today)
@@ -144,9 +157,7 @@ final class MasteryStore {
     /// The morning gate opens when its habit is done, or when it isn't required today (edited to weekdays,
     /// switched off, or dropped by the coach), so apps can never stay locked with nothing to complete.
     var morningGateMet: Bool {
-        let id = settings.gate.morningHabitID
-        guard let habit = habits.first(where: { $0.id == id }), habit.isRequired(on: today, timeZone: timeZone) else { return true }
-        return index.isDone(id, on: today)
+        GatePolicy.morningDone(habitID: settings.gate.morningHabitID, habits: habits, index: index, day: today, timeZone: timeZone)
     }
 
     func gateDecision(now: Date = .now, lockedInActive: Bool = false) -> ShieldDecision {
@@ -262,15 +273,19 @@ final class MasteryStore {
 
     /// Current plan habits (with first-seen / archived ranges) plus retired ones, for honest history.
     func habitDefinitions() -> [HabitDefinition] {
-        let current = effectivePlanHabits.map { habit -> HabitDefinition in
-            let def = habit.definition(anchor: settings.startDay, scheduleChanges: settings.scheduleChanges[habit.id] ?? [])
-            // A habit starts on install day or the day it first appeared, whichever is later; never before,
-            // or the coach and challenges would score the days before you installed as misses.
-            let from = max(settings.habitFirstSeen[habit.id] ?? settings.startDay, settings.startDay)
-            return def.active(from: from, until: settings.archivedHabits[habit.id])
+        let current = effectivePlanHabits.flatMap { habit -> [HabitDefinition] in
+            let changes = settings.scheduleChanges[habit.id] ?? []
+            let defs = habit.definitions(anchor: settings.startDay, scheduleChanges: changes).map { def in
+                // A habit starts on install day or the day it first appeared, whichever is later; never before,
+                // or the coach and challenges would score the days before you installed as misses.
+                let from = max(settings.habitFirstSeen[def.id] ?? settings.startDay, settings.startDay)
+                return def.active(from: from, until: settings.archivedHabits[habit.id])
+            }
+            return legacyRoutine(habit, steps: defs, changes: changes) + defs
         }
-        let retired = settings.retiredHabits.map {
-            $0.habit.definition(anchor: settings.startDay, scheduleChanges: settings.scheduleChanges[$0.habit.id] ?? []).active(from: settings.habitFirstSeen[$0.habit.id], until: $0.until)
+        let retired = settings.retiredHabits.flatMap { retired in
+            retired.habit.definitions(anchor: settings.startDay, scheduleChanges: settings.scheduleChanges[retired.habit.id] ?? [])
+                .map { $0.active(from: settings.habitFirstSeen[$0.id], until: retired.until) }
         }
         return current + retired
     }
@@ -285,9 +300,20 @@ final class MasteryStore {
         save()
     }
 
-    /// Records the first day each plan habit appeared (once).
+    /// A routine tracked whole before it split into steps (10-20) keeps judging the days it was tracked whole,
+    /// so its old completions and misses still count. History only: it ends the day its steps first appeared.
+    private func legacyRoutine(_ habit: PlanHabit, steps: [HabitDefinition], changes: [ScheduleChange]) -> [HabitDefinition] {
+        guard steps.first?.routine == habit.id, let wholeFrom = settings.habitFirstSeen[habit.id],
+              let split = steps.compactMap(\.activeFrom).min(), wholeFrom < split else { return [] }
+        let from = max(wholeFrom, settings.startDay)
+        let until = min(split, settings.archivedHabits[habit.id] ?? split)
+        return [habit.definition(anchor: settings.startDay, scheduleChanges: changes).active(from: from, until: until)]
+    }
+
+    /// Records the first day each tracked habit (routine steps included) appeared (once).
     func stampFirstSeen() {
-        let missing = effectivePlanHabits.map(\.id).filter { settings.habitFirstSeen[$0] == nil }
+        let missing = effectivePlanHabits.flatMap { $0.definitions(anchor: settings.startDay) }.map(\.id)
+            .filter { settings.habitFirstSeen[$0] == nil }
         guard !missing.isEmpty else { return }
         var s = settings
         for id in missing { s.habitFirstSeen[id] = today }

@@ -183,7 +183,7 @@ struct HabitPlantsRow: View {
     var body: some View {
         Button { tab = .today } label: {
             HStack(spacing: 6) {
-                ForEach(store.habits) { habit in plant(habit) }
+                ForEach(store.planHabits) { habit in plant(habit) }
             }
             .padding(.horizontal, 12).padding(.vertical, 8)
             .background(Theme.ink.opacity(0.55), in: Capsule())

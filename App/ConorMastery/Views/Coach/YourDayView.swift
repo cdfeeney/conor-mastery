@@ -14,7 +14,7 @@ struct YourDayView: View {
                 if let focus = store.weeklyFocus { Label(focus, systemImage: "scope").font(.subheadline.weight(.semibold)) }
             }
             ForEach(HabitGroup.allCases, id: \.self) { group in
-                let habits = store.habits(in: group)
+                let habits = store.planHabits.filter { $0.group == group }
                 if !habits.isEmpty {
                     Section(Self.title(group)) { ForEach(habits) { habit in row(habit) } }
                 }

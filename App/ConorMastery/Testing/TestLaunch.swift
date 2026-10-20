@@ -53,7 +53,7 @@ enum TestLaunch {
         let start = DayKey(date: .now).adding(days: -(fixture.span - 1))
         var settings = AppSettings.fresh(today: start)
         settings.soundOn = false
-        for habit in SeedPlan.load().habits { settings.habitFirstSeen[habit.id] = start }
+        for habit in SeedPlan.load().habits.flatMap({ $0.definitions(anchor: start) }) { settings.habitFirstSeen[habit.id] = start }
         do {
             context.insert(BlobRecord(key: BlobKey.settings, data: try JSONEncoder().encode(settings)))
             try context.save()
@@ -82,7 +82,9 @@ enum TestLaunch {
                 for (habitID, letters) in history {
                     let index = letters.count - 1 - daysAgo
                     guard index >= 0, let level = level(letters[index]) else { continue }
-                    store.log(level, habitID: habitID, day: day)
+                    // A routine's letter logs every one of its steps.
+                    let steps = store.state.habits.filter { $0.routine == habitID }.map(\.id)
+                    for id in steps.isEmpty ? [habitID] : steps { store.log(level, habitID: id, day: day) }
                 }
             }
             for minutes in fixture.focusToday {

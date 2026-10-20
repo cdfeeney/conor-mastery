@@ -34,7 +34,7 @@ struct CoachView: View {
                     Section("Your rules") { RulesList() }
                 }
                 Section("Your habits") {
-                    ForEach(store.habits) { habit in
+                    ForEach(store.planHabits) { habit in
                         NavigationLink { HabitProtocolView(habit: habit) } label: {
                             VStack(alignment: .leading) {
                                 Text(habit.title).font(.headline)

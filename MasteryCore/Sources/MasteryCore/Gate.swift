@@ -52,6 +52,16 @@ public struct ShieldDecision: Sendable, Hashable {
 
 /// Pure policy: should distraction apps be shielded right now? (PRD section 5)
 public enum GatePolicy {
+    /// The morning gate's habit is done: every step of it when it is a routine. Nothing required today (edited
+    /// to weekdays, switched off, dropped by the coach) counts as done, so apps never stay locked with nothing to do.
+    public static func morningDone(habitID: String, habits: [HabitDefinition], index: CompletionIndex, day: DayKey,
+                                   timeZone: TimeZone = .current) -> Bool {
+        // A whole-routine completion (logged before routines split into steps) still counts that day.
+        if index.isDone(habitID, on: day) { return true }
+        return habits.filter { ($0.id == habitID || $0.routine == habitID) && $0.isRequired(on: day, timeZone: timeZone) }
+            .allSatisfy { index.isDone($0.id, on: day) }
+    }
+
     public static func decide(config: GateConfig, now: ClockTime, morningDone: Bool,
                               lockedInActive: Bool, unblockActive: Bool) -> ShieldDecision {
         if lockedInActive { return .locked(.lockedInFocus, "Locked in. Apps open when the session ends.") }

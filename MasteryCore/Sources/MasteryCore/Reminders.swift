@@ -50,10 +50,13 @@ public enum ReminderPlanner {
         let weeklyOpen = habits.filter { WeeklyTargets.isOpen($0, index: index, on: day, timeZone: timeZone) }
         var out: [Reminder] = []
 
-        // 1. A cue for each open habit that has a planned time still ahead today.
+        // 1. A cue for each open habit that has a planned time still ahead today. A routine's plan is set on the
+        //    routine: one cue while any step is open, titled with the first open step.
+        var cued = Set<String>()
         for habit in open + weeklyOpen {
-            guard let plan = plans[habit.id], let time = plan.time, time > now else { continue }
-            out.append(Reminder(id: "cue.\(habit.id)", kind: .habitCue, time: time,
+            let key = habit.routine ?? habit.id
+            guard cued.insert(key).inserted, let plan = plans[key], let time = plan.time, time > now else { continue }
+            out.append(Reminder(id: "cue.\(key)", kind: .habitCue, time: time,
                                 title: habit.title, body: [plan.cue, habit.identity].compactMap { $0 }.joined(separator: ". ")))
         }
 

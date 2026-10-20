@@ -10,6 +10,8 @@ struct TodayView: View {
     @State private var planHabit: HabitDefinition?
     @State private var showSleepLog = false
     @State private var showAddHabit = false
+    /// Routines folded or unfolded by hand, against their default (open until every step is done).
+    @State private var toggled: Set<String> = []
 
     var body: some View {
         NavigationStack {
@@ -22,7 +24,19 @@ struct TodayView: View {
                     if !habits.isEmpty {
                         Section(title(group)) {
                             ForEach(habits) { habit in
-                                HabitCard(habit: habit, onTimer: { timerHabit = habit }, onSleep: { showSleepLog = true }, onPlan: { planHabit = habit })
+                                if let routineID = habit.routine {
+                                    let steps = habits.filter { $0.routine == routineID }
+                                    if habit.id == steps.first?.id, let routine = store.planHabits.first(where: { $0.id == routineID }) {
+                                        RoutineHeader(routine: routine, steps: steps, isOpen: isOpen(routineID, steps: steps),
+                                                      onToggle: { toggled.formSymmetricDifference([routineID]) },
+                                                      onPlan: { planHabit = routine })
+                                    }
+                                    if isOpen(routineID, steps: steps) {
+                                        HabitCard(habit: habit, onTimer: {}, onSleep: {}, onPlan: {}, compact: true)
+                                    }
+                                } else {
+                                    HabitCard(habit: habit, onTimer: { timerHabit = habit }, onSleep: { showSleepLog = true }, onPlan: { planHabit = habit })
+                                }
                             }
                         }
                     }
@@ -57,6 +71,12 @@ struct TodayView: View {
                 }
             }
         }
+    }
+
+    /// A routine shows its steps until they are all done, then folds; tapping its header flips that.
+    private func isOpen(_ routineID: String, steps: [HabitDefinition]) -> Bool {
+        let allDone = steps.allSatisfy { store.index.isDone($0.id, on: store.today) }
+        return allDone == toggled.contains(routineID)
     }
 
     private func title(_ group: HabitGroup) -> String {

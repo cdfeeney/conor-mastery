@@ -85,19 +85,21 @@ public struct HabitDefinition: Codable, Sendable, Hashable, Identifiable {
     /// added, archived or dropped from the plan: past days are judged by the habits that existed then.
     public let activeFrom: DayKey?
     public let activeUntil: DayKey?
+    /// The routine (plan habit id) this step belongs to; nil for a standalone habit.
+    public let routine: String?
 
     public init(
         id: String, title: String, kind: HabitKind, difficulty: Difficulty, group: HabitGroup,
         schedule: Schedule = .daily, identity: String, full: String, min: String? = nil,
         steps: [String] = [], targetMinutes: Int? = nil, minMinutes: Int? = nil,
         why: String = "", citations: [Citation] = [], challenges: [String] = [], isArchived: Bool = false,
-        activeFrom: DayKey? = nil, activeUntil: DayKey? = nil
+        activeFrom: DayKey? = nil, activeUntil: DayKey? = nil, routine: String? = nil
     ) {
         self.id = id; self.title = title; self.kind = kind; self.difficulty = difficulty
         self.group = group; self.schedule = schedule; self.identity = identity; self.full = full
         self.min = min; self.steps = steps; self.targetMinutes = targetMinutes; self.minMinutes = minMinutes
         self.why = why; self.citations = citations; self.challenges = challenges; self.isArchived = isArchived
-        self.activeFrom = activeFrom; self.activeUntil = activeUntil
+        self.activeFrom = activeFrom; self.activeUntil = activeUntil; self.routine = routine
     }
 
     public func isActive(on day: DayKey) -> Bool {
@@ -116,7 +118,7 @@ public struct HabitDefinition: Codable, Sendable, Hashable, Identifiable {
             id: id, title: title, kind: kind, difficulty: difficulty, group: group, schedule: schedule,
             identity: identity, full: full, min: min, steps: steps, targetMinutes: targetMinutes,
             minMinutes: minMinutes, why: why, citations: citations, challenges: challenges,
-            isArchived: until != nil, activeFrom: from ?? activeFrom, activeUntil: until ?? activeUntil
+            isArchived: until != nil, activeFrom: from ?? activeFrom, activeUntil: until ?? activeUntil, routine: routine
         )
     }
 }

@@ -8,7 +8,7 @@ struct LessonCard: View {
     var body: some View {
         if let lesson = store.lesson {
             VStack(alignment: .leading, spacing: 10) {
-                Text(store.state.habit(lesson.habitID)?.title.uppercased() ?? lesson.habitID)
+                Text((store.planHabits.first { $0.id == lesson.habitID } ?? store.state.habit(lesson.habitID))?.title.uppercased() ?? lesson.habitID)
                     .font(.caption.weight(.bold)).foregroundStyle(Theme.navy)
                 Text(lesson.text).font(.body.weight(.semibold))
                 LessonSourceLink(lesson: lesson)
@@ -101,7 +101,7 @@ struct TipLibraryView: View {
     /// end). Searching opens every group that has a match.
     var body: some View {
         List {
-            ForEach(store.habits) { habit in
+            ForEach(store.planHabits) { habit in
                 let lessons = matching(store.plan.lessons.filter { $0.habitID == habit.id })
                 if !lessons.isEmpty {
                     // A whole-row header button: DisclosureGroup's own chevron was a 10x14 pt target.

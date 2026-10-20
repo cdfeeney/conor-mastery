@@ -101,6 +101,32 @@ public struct PlanHabit: Codable, Sendable, Hashable {
         )
     }
 
+    /// What the app tracks: a routine becomes one easy habit per step (owner 10-20: missing one step is one miss,
+    /// not the whole routine), linked back by `routine`. Ids are `<routine>.<step slug>`, so history follows the
+    /// step's text. A routine with no steps stays whole.
+    public func definitions(anchor: DayKey, scheduleChanges: [ScheduleChange] = []) -> [HabitDefinition] {
+        let whole = definition(anchor: anchor, scheduleChanges: scheduleChanges)
+        guard kind == .checklist, !whole.steps.isEmpty else { return [whole] }
+        // "Water" and "Water!" share a slug; duplicate ids would trap the strength dictionary on every launch.
+        var taken = Set<String>()
+        let ids = whole.steps.map { step -> String in
+            let base = "\(id).\(Self.slug(step).isEmpty ? "step" : Self.slug(step))"
+            var candidate = base, n = 2
+            while !taken.insert(candidate).inserted { candidate = "\(base)-\(n)"; n += 1 }
+            return candidate
+        }
+        return whole.steps.enumerated().map { i, step in
+            HabitDefinition(id: ids[i], title: step, kind: .build, difficulty: .easy, group: group,
+                            schedule: whole.schedule, identity: identity, full: step, why: why,
+                            citations: i == 0 ? citations : [], challenges: i == 0 ? challenges : [], routine: id)
+        }
+    }
+
+    static func slug(_ text: String) -> String {
+        text.lowercased().map { $0.isLetter || $0.isNumber ? String($0) : "-" }.joined()
+            .split(separator: "-").joined(separator: "-")
+    }
+
     /// Unknown schedule strings fall back to daily (readers stay lenient).
     public static func parseSchedule(_ raw: String, anchor: DayKey) -> Schedule {
         let parts = raw.split(separator: ":", maxSplits: 1).map(String.init)
