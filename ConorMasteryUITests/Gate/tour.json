@@ -133,6 +133,24 @@
    ]
   },
   {
+   "name": "history",
+   "steps": [
+    {
+     "tap": "today-history"
+    },
+    {
+     "shot": "history"
+    },
+    {
+     "scrollToBottom": true,
+     "shot": "history-habits"
+    },
+    {
+     "tap": "history-close"
+    }
+   ]
+  },
+  {
    "name": "sleep",
    "steps": [
     {

@@ -1,7 +1,7 @@
 import MasteryCore
 import SwiftUI
 
-/// The daily check-in: today's lesson, habit cards grouped Morning / Day / Night, then tasks.
+/// The daily check-in: what keeps the streak, today's lesson, habit cards grouped Morning / Day / Night, then tasks.
 struct TodayView: View {
     @Environment(MasteryStore.self) private var store
     @State private var newTask = ""
@@ -10,12 +10,16 @@ struct TodayView: View {
     @State private var planHabit: HabitDefinition?
     @State private var showSleepLog = false
     @State private var showAddHabit = false
+    @State private var showHistory = false
     /// Routines folded or unfolded by hand, against their default (open until every step is done).
     @State private var toggled: Set<String> = []
 
     var body: some View {
         NavigationStack {
             List {
+                if !store.habits.isEmpty {
+                    Section { StreakKeeperCard() }
+                }
                 if !store.plan.lessons.isEmpty {
                     Section("Today's lesson") { LessonCard() }
                 }
@@ -48,7 +52,21 @@ struct TodayView: View {
             .sheet(item: $timerHabit) { habit in HabitTimerSheet(habit: habit) }
             .sheet(item: $planHabit) { habit in HabitPlanSheet(habit: habit) }
             .sheet(isPresented: $showSleepLog) { SleepLogSheet() }
+            .sheet(isPresented: $showHistory) {
+                NavigationStack {
+                    HistoryView()
+                        .toolbar {
+                            ToolbarItem(placement: .cancellationAction) {
+                                Button("Close") { showHistory = false }.accessibilityIdentifier("history-close")
+                            }
+                        }
+                }
+            }
             .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button { showHistory = true } label: { Label("History", systemImage: "square.grid.3x3.fill") }
+                        .accessibilityIdentifier("today-history")
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { showAddHabit = true } label: { Label("Add a habit", systemImage: "plus") }
                         .accessibilityIdentifier("today-add-habit")
@@ -99,7 +117,10 @@ struct TodayView: View {
                     .accessibilityLabel(task.isDone ? "Mark not done" : "Mark done")
                     Text(task.title).strikethrough(task.isDone)
                 }
-                .swipeActions { Button("Delete", role: .destructive) { store.delete(task: task) } }
+                .swipeActions(edge: .leading) {
+                    Button(task.isDone ? "Undo" : "Done") { store.toggle(task: task) }.tint(task.isDone ? .blue : Theme.jade)
+                }
+                .swipeActions(edge: .trailing) { Button("Delete", role: .destructive) { store.delete(task: task) } }
             }
             HStack {
                 TextField("Add task", text: $newTask).submitLabel(.done).onSubmit(addTask)

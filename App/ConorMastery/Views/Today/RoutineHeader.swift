@@ -42,7 +42,21 @@ struct RoutineHeader: View {
             .foregroundStyle(store.settings.habitPlans[routine.id] == nil ? Theme.navy : .secondary)
             .tapTarget()
             .accessibilityIdentifier("habit-plan-\(routine.id)")
+            if let min = routine.min {
+                Text("Min: \(min)").font(.caption).foregroundStyle(.secondary)
+                    .accessibilityIdentifier("routine-min-\(routine.id)")
+            }
         }
         .padding(.vertical, 4)
+        // The whole routine in one swipe (owner 10-21); each step still swipes on its own.
+        .swipeActions(edge: .leading) {
+            Button("Done all") { store.logRoutine(.full, routineID: routine.id) }.tint(Theme.jade)
+            if routine.min != nil { Button("Min") { store.logRoutine(.minimum, routineID: routine.id) }.tint(Theme.gold) }
+        }
+        .swipeActions(edge: .trailing) {
+            if steps.contains(where: { store.completion($0.id) != nil }) {
+                Button("Undo") { store.clearRoutine(routine.id) }.tint(.blue)
+            }
+        }
     }
 }

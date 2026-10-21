@@ -173,4 +173,29 @@ final class StoreTests: XCTestCase {
         XCTAssertTrue(store.morningGateMet)
         XCTAssertEqual(store.planHabits.filter { $0.id.hasSuffix("-routine") }.count, 2)
     }
+
+    /// Owner 10-21: swiping Min on a routine header keeps the streak; steps already done in full stay full.
+    func testRoutineMinSwipeKeepsFullStepsAndUndoClearsAll() throws {
+        let store = try makeStore()
+        let steps = store.steps(ofRoutine: "night-routine")
+        XCTAssertNotNil(store.routine("night-routine")?.min)
+        store.log(.full, habitID: steps[0].id)
+        store.logRoutine(.minimum, routineID: "night-routine")
+        XCTAssertEqual(store.completion(steps[0].id)?.level, .full)
+        XCTAssertTrue(steps.dropFirst().allSatisfy { store.completion($0.id)?.level == .minimum })
+        XCTAssertFalse(store.streakOpen.contains { $0.routine == "night-routine" })
+        store.clearRoutine("night-routine")
+        XCTAssertTrue(steps.allSatisfy { store.completion($0.id) == nil })
+        XCTAssertEqual(store.streakOpen.filter { $0.routine == "night-routine" }.count, steps.count)
+    }
+
+    func testHistoryRowsListEachRoutineOnceWithItsSteps() throws {
+        let store = try makeStore()
+        let rows = store.historyRows
+        XCTAssertEqual(rows.count, store.planHabits.count)
+        let night = try XCTUnwrap(rows.first { $0.id == "night-routine" })
+        XCTAssertEqual(night.habits.filter { $0.routine == "night-routine" }.count, 6)
+        store.logRoutine(.full, routineID: "night-routine")
+        XCTAssertEqual(store.historyMark(night.habits, on: store.today), .full)
+    }
 }
