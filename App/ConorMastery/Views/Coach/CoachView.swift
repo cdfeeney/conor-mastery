@@ -69,7 +69,8 @@ struct CoachView: View {
     /// "Plan from coach · Oct 18, 3:43 PM", never the raw ISO timestamp.
     private var planLine: String {
         let raw = store.plan.generatedAt
-        guard !raw.isEmpty else { return "Plan: bundled starter" }
+        // Gate run 21: the bundled plan's export date read like the date coaching started; say it is built in.
+        guard !raw.isEmpty, raw != SeedPlan.bundledGeneratedAt else { return "Plan: starter plan built into the app" }
         guard let date = ISO8601DateFormatter().date(from: raw) else { return "Plan from coach" }
         return "Plan from coach · \(date.formatted(date: .abbreviated, time: .shortened))"
     }

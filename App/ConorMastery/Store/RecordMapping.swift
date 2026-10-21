@@ -34,6 +34,9 @@ extension MasteryStore {
 }
 
 enum SeedPlan {
+    /// Tells the bundled plan apart from one synced from the coach.
+    static let bundledGeneratedAt = load().generatedAt
+
     /// The coach plan bundled at build time (coach/tools/export_plan.py writes it).
     static func load() -> MasteryPlan {
         guard let url = Bundle.main.url(forResource: "seed-plan", withExtension: "json"),

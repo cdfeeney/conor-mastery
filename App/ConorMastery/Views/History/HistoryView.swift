@@ -4,8 +4,8 @@ import SwiftUI
 /// GitHub-style history (owner 10-21): the Perfect Day grid, then one smaller grid per habit.
 struct HistoryView: View {
     @Environment(MasteryStore.self) private var store
-    private static let perfectWeeks = 26
-    private static let habitWeeks = 15
+    /// 26 weeks at 9 pt fit a phone's width; the Perfect Day grid scrolls (13 pt squares).
+    private static let weekCount = 26
 
     var body: some View {
         let streak = store.streak
@@ -17,24 +17,27 @@ struct HistoryView: View {
                     stat("\(streak.perfectDays)", "Perfect")
                     stat("\(streak.secondWinds)", "Second Winds")
                 }
-                let weeks = HabitHistory.weeks(endingOn: store.today, count: Self.perfectWeeks, timeZone: store.timeZone)
+                let weeks = HabitHistory.weeks(endingOn: store.today, count: Self.weekCount, timeZone: store.timeZone)
                 ScrollView(.horizontal, showsIndicators: false) {
                     ContributionGrid(weeks: weeks, cell: 13) { store.perfectDayMark(on: $0) }
                 }
                 .defaultScrollAnchor(.trailing)
                 .accessibilityIdentifier("history-perfect-grid")
-                HistoryLegend()
+                // Gate run 21: "2 Perfect" with no green squares read as broken; a Min day is still a Perfect Day.
+                HistoryLegend(items: [("Perfect", .full), ("Perfect with a Min", .minimum), ("Some", .partial),
+                                      ("Saved", .saved), ("Missed", .missed)])
             }
-            Section("Each habit · last \(Self.habitWeeks) weeks") {
-                let weeks = HabitHistory.weeks(endingOn: store.today, count: Self.habitWeeks, timeZone: store.timeZone)
+            Section("Each habit · last \(Self.weekCount) weeks") {
+                let weeks = HabitHistory.weeks(endingOn: store.today, count: Self.weekCount, timeZone: store.timeZone)
                 ForEach(store.historyRows) { row in
                     VStack(alignment: .leading, spacing: 6) {
                         HStack {
                             Text(row.title).font(.subheadline.weight(.semibold))
                             Spacer()
-                            Text("\(doneCount(row, weeks)) days").font(.caption.monospacedDigit()).foregroundStyle(.secondary)
+                            let tally = ContributionGrid.tally(weeks) { store.historyMark(row.habits, on: $0) }
+                            Text("\(tally.done) of \(tally.counted) days").font(.caption.monospacedDigit()).foregroundStyle(.secondary)
                         }
-                        ContributionGrid(weeks: weeks, cell: 10) { store.historyMark(row.habits, on: $0) }
+                        ContributionGrid(weeks: weeks, cell: 9) { store.historyMark(row.habits, on: $0) }
                     }
                     .padding(.vertical, 2)
                     .accessibilityElement(children: .combine)
@@ -56,12 +59,6 @@ struct HistoryView: View {
         .accessibilityElement(children: .combine)
     }
 
-    private func doneCount(_ row: MasteryStore.HistoryRow, _ weeks: [[DayKey?]]) -> Int {
-        weeks.joined().compactMap { $0 }.filter {
-            let mark = store.historyMark(row.habits, on: $0)
-            return mark == .full || mark == .minimum
-        }.count
-    }
 }
 
 /// Week columns, Sunday on top; days after today are left empty.
@@ -73,8 +70,7 @@ struct ContributionGrid: View {
     var body: some View {
         let spacing = cell * 0.25
         let marks = weeks.map { $0.map { $0.map(mark) } }
-        let done = marks.joined().filter { $0 == .full || $0 == .minimum }.count
-        let counted = marks.joined().compactMap { $0 }.filter { ![.beforeStart, .future, .off].contains($0) }.count
+        let tally = Self.tally(marks)
         HStack(alignment: .top, spacing: spacing) {
             ForEach(marks.indices, id: \.self) { w in
                 VStack(spacing: spacing) {
@@ -92,7 +88,17 @@ struct ContributionGrid: View {
             }
         }
         .accessibilityElement(children: .ignore)
-        .accessibilityLabel("\(done) of \(counted) days done")
+        .accessibilityLabel("\(tally.done) of \(tally.counted) days done")
+    }
+
+    /// Days done (full or Min) out of days that counted (not before start, in the future, or off).
+    static func tally(_ weeks: [[DayKey?]], mark: (DayKey) -> HistoryMark) -> (done: Int, counted: Int) {
+        tally(weeks.map { $0.map { $0.map(mark) } })
+    }
+
+    private static func tally(_ marks: [[HistoryMark?]]) -> (done: Int, counted: Int) {
+        let counted = marks.joined().compactMap { $0 }.filter { ![.beforeStart, .future, .off].contains($0) }
+        return (counted.filter { $0 == .full || $0 == .minimum }.count, counted.count)
     }
 
     static func color(_ mark: HistoryMark?) -> Color {
@@ -111,10 +117,21 @@ struct ContributionGrid: View {
 }
 
 struct HistoryLegend: View {
-    private let items: [(String, HistoryMark)] = [("Full", .full), ("Min", .minimum), ("Some", .partial),
-                                                    ("Saved", .saved), ("Missed", .missed)]
+    let items: [(String, HistoryMark)]
 
     var body: some View {
+        // Wraps onto two lines on a narrow phone rather than squeezing.
+        ViewThatFits {
+            row(items)
+            VStack(alignment: .leading, spacing: 6) {
+                row(Array(items.prefix(2)))
+                row(Array(items.dropFirst(2)))
+            }
+        }
+        .accessibilityHidden(true)
+    }
+
+    private func row(_ items: [(String, HistoryMark)]) -> some View {
         HStack(spacing: 10) {
             ForEach(items, id: \.0) { item in
                 HStack(spacing: 4) {
@@ -123,6 +140,5 @@ struct HistoryLegend: View {
                 }
             }
         }
-        .accessibilityHidden(true)
     }
 }

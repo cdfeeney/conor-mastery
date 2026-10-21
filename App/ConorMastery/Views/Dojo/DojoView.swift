@@ -128,19 +128,24 @@ struct ChallengeCard: View {
     @Environment(MasteryStore.self) private var store
 
     var body: some View {
+        // Ticks each minute so the countdown and the 5 PM opening update while the Dojo stays open.
+        TimelineView(.everyMinute) { context in card(now: context.date) }
+    }
+
+    private func card(now: Date) -> some View {
         VStack(alignment: .leading, spacing: 8) {
             HStack {
                 Text("Daily challenge").font(.caption.weight(.bold)).foregroundStyle(Theme.gold)
                 Spacer()
-                Text(timeLeft).font(.caption.monospacedDigit()).foregroundStyle(.white.opacity(0.7))
+                Text(timeLeft(now)).font(.caption.monospacedDigit()).foregroundStyle(.white.opacity(0.7))
             }
             Text(challenge.text).font(.subheadline.weight(.semibold))
             HStack {
                 Label("+\(challenge.reward)", systemImage: "seal.fill").foregroundStyle(Theme.gold)
                 Spacer()
-                Button(store.challengeDone ? "Done" : "Mark complete") { store.completeChallenge() }
+                Button(buttonTitle(now)) { store.completeChallenge() }
                     .buttonStyle(.borderedProminent).tint(Theme.jade)
-                    .disabled(store.challengeDone)
+                    .disabled(store.challengeDone || isTooEarly(now))
                     .accessibilityIdentifier("challenge-complete")
             }
         }
@@ -149,9 +154,21 @@ struct ChallengeCard: View {
         .background(Theme.ink.opacity(0.85), in: RoundedRectangle(cornerRadius: 16))
     }
 
-    private var timeLeft: String {
-        let end = Calendar.current.startOfDay(for: .now).addingTimeInterval(86_400)
-        let minutes = Int(end.timeIntervalSinceNow / 60)
+    /// Gate run 21: a "tonight" challenge could be marked complete at 8 AM, before it could have been done.
+    private func isTooEarly(_ now: Date) -> Bool {
+        challenge.text.localizedCaseInsensitiveContains("tonight")
+            && Calendar.current.component(.hour, from: now) < Self.eveningHour
+    }
+    private static let eveningHour = 17
+
+    private func buttonTitle(_ now: Date) -> String {
+        if store.challengeDone { return "Done" }
+        return isTooEarly(now) ? "Opens at 5 PM" : "Mark complete"
+    }
+
+    private func timeLeft(_ now: Date) -> String {
+        let end = Calendar.current.startOfDay(for: now).addingTimeInterval(86_400)
+        let minutes = Int(end.timeIntervalSince(now) / 60)
         return "\(minutes / 60)h \(minutes % 60)m left"
     }
 }
